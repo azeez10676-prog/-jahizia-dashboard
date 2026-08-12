@@ -1,142 +1,54 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>نظام مراقبة جاهزية المنشآت الصحية</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جاهزية المنشآت الصحية</title>
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--line:#e4e8ef;--blue:#2563eb;--green:#16834b;--orange:#d97706;--red:#dc2626}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}
-.app{max-width:900px;margin:auto;min-height:100vh;padding-bottom:90px}
-header{background:#fff;border-bottom:1px solid var(--line);padding:20px;position:sticky;top:0;z-index:5}
-h1{margin:0;font-size:21px}.sub{font-size:12px;color:var(--muted);margin-top:5px}
-.section{padding:16px}.title{font-size:16px;font-weight:800;margin-bottom:10px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px;text-align:center}.stat span{font-size:11px;color:var(--muted)}.stat b{display:block;font-size:25px;margin-top:4px}.green{color:var(--green)}.orange{color:var(--orange)}.red{color:var(--red)}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 2px 9px #00000008}
-.fac-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.name{font-weight:800;font-size:14px}.badge{font-size:11px;padding:6px 8px;border-radius:99px;background:#ecfdf3;color:var(--green);white-space:nowrap}.badge.o{background:#fff7ed;color:var(--orange)}.badge.r{background:#fef2f2;color:var(--red)}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}.sys{border:1px solid var(--line);border-radius:10px;text-align:center;padding:8px 3px;font-size:10px}.sys i{display:block;font-style:normal;font-size:18px}.sys span{display:block;color:var(--muted);margin:3px 0}.sys b{font-size:10px}
-.row{display:flex;justify-content:space-between;gap:8px;margin-top:10px;color:var(--muted);font-size:11px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-button{border:0;border-radius:11px;padding:11px 13px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#eef2ff;color:#1d4ed8}.danger{background:#fee2e2;color:#b91c1c}
-nav{position:fixed;bottom:0;left:0;right:0;max-width:900px;margin:auto;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:10}nav button{background:transparent;color:#6b7280}nav .active{color:var(--blue)}
-.overlay{display:none;position:fixed;inset:0;background:#0007;z-index:20;align-items:center;justify-content:center;padding:16px}.modal{width:min(520px,100%);background:#fff;border-radius:18px;padding:18px}.modal h2{margin:0 0 13px;font-size:17px}.field{margin:9px 0}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.field select,.field input,.field textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:13px}.ma{display:flex;gap:8px;margin-top:13px}.ma button{flex:1}
-.toast{display:none;position:fixed;top:80px;left:16px;right:16px;max-width:600px;margin:auto;background:#172033;color:#fff;padding:12px;border-radius:11px;text-align:center;font-size:12px;z-index:30}
-table{width:100%;border-collapse:collapse;font-size:11px}th,td{border-bottom:1px solid var(--line);padding:9px;text-align:right}th{background:#f8fafc}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.grid{gap:3px}.sys{font-size:8px}.sys i{font-size:16px}.section{padding:13px}.actions{grid-template-columns:1fr 1fr}}
-</style>
-</head>
-<body>
-<div class="app">
-<header>
-<h1>🏥 مركز عمليات جاهزية المنشآت الصحية</h1>
-<div class="sub">نسخة ويب فعلية تجريبية • البيانات تحفظ محليًا على هذا الجهاز</div>
-</header>
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#687386;--line:#e3e8ef;--blue:#2563eb;--green:#16834b;--orange:#d97706;--red:#dc2626;--nav:#0f766e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif}.app{max-width:980px;margin:auto;min-height:100vh;padding-bottom:92px}
+header{background:#fff;border-bottom:1px solid var(--line);padding:15px 16px;position:sticky;top:0;z-index:5}.head{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:26px}.brand h1{margin:0;font-size:20px}.brand p{margin:3px 0 0;color:var(--muted);font-size:11px}.section{padding:15px}.title{font-size:17px;font-weight:900;margin-bottom:11px}.subline{font-size:11px;color:var(--muted);margin-top:-7px;margin-bottom:11px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px;text-align:center}.stat span{font-size:11px;color:var(--muted)}.stat b{display:block;font-size:23px;margin-top:4px}.green{color:var(--green)}.orange{color:var(--orange)}.red{color:var(--red)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 2px 9px #00000008}.fac-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.name{font-weight:900;font-size:14px}.badge{font-size:10px;padding:6px 8px;border-radius:99px;background:#ecfdf3;color:var(--green);white-space:nowrap}.badge.o{background:#fff7ed;color:var(--orange)}.badge.r{background:#fef2f2;color:var(--red)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}.sys{border:1px solid var(--line);border-radius:10px;text-align:center;padding:8px 3px;font-size:9px}.sys i{display:block;font-style:normal;font-size:18px}.sys span{display:block;color:var(--muted);margin:3px 0}.sys b{font-size:10px}.row{display:flex;justify-content:space-between;gap:8px;margin-top:10px;color:var(--muted);font-size:11px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+button{border:0;border-radius:11px;padding:11px 13px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:#eef2ff;color:#1d4ed8}.danger{background:#fee2e2;color:#b91c1c}.filterbar{display:flex;gap:7px;overflow:auto;padding-bottom:3px}.filterbar button{white-space:nowrap;background:#fff;border:1px solid var(--line);color:var(--muted)}.filterbar button.active{background:#eaf2ff;color:#1d4ed8;border-color:#b9d0ff}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:980px;margin:auto;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:7px 10px calc(7px + env(safe-area-inset-bottom));z-index:10}nav button{background:transparent;color:#6b7280}nav .active{color:var(--blue)}
+.overlay{display:none;position:fixed;inset:0;background:#0007;z-index:20;align-items:center;justify-content:center;padding:16px}.modal{width:min(560px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;padding:18px}.modal h2{margin:0 0 13px;font-size:17px}.field{margin:9px 0}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}.field select,.field input,.field textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:13px;background:#fff}.ma{display:flex;gap:8px;margin-top:13px}.ma button{flex:1}.hidden{display:none}.required:after{content:' *';color:var(--red)}
+.toast{display:none;position:fixed;top:80px;left:16px;right:16px;max-width:600px;margin:auto;background:#172033;color:#fff;padding:12px;border-radius:11px;text-align:center;font-size:12px;z-index:30}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border-bottom:1px solid var(--line);padding:9px;text-align:right;white-space:nowrap}th{background:#f8fafc}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.grid{gap:3px}.sys{font-size:8px}.section{padding:13px}.actions{grid-template-columns:1fr 1fr}.brand h1{font-size:18px}}
+</style></head>
+<body><div class="app">
+<header><div class="head"><div class="logo">🏥</div><div class="brand"><h1>جاهزية المنشآت الصحية</h1><p>مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي</p></div></div></header>
+<div class="section"><div class="title">لوحة المتابعة</div><div class="subline">نظرة موحدة على جاهزية 21 منشأة — شفا 1 إلى شفا 21</div><div class="stats"><div class="stat"><span>إجمالي المنشآت</span><b id="total">21</b></div><div class="stat"><span>جاهزة</span><b class="green" id="normal">0</b></div><div class="stat"><span>تحتاج متابعة</span><b class="orange" id="follow">0</b></div><div class="stat"><span>بلاغات نشطة</span><b class="red" id="openTotal">0</b></div></div></div>
+<div class="section"><div class="title">🚨 البلاغات النشطة <span id="openCount" style="color:#6b7280;font-size:11px"></span></div><div class="subline">البلاغات المفتوحة تظهر أولًا لمتابعة الحالة وإغلاقها.</div><div id="openIncidents"></div><button class="primary" style="width:100%" onclick="openIncidentModal()">＋ تسجيل بلاغ جديد</button></div>
+<div class="section"><div class="title">المنشآت</div><div class="filterbar"><button class="active" onclick="setFilter('all',this)">الكل</button><button onclick="setFilter('normal',this)">🟢 جاهزة</button><button onclick="setFilter('follow',this)">🟠 تحتاج متابعة</button></div><div id="facilities" style="margin-top:10px"></div></div>
+<div class="section"><div class="title">📋 سجل البلاغات المغلقة</div><div class="card" style="overflow:auto"><table><thead><tr><th>المنشأة</th><th>نوع البلاغ</th><th>نطاق التأثير</th><th>البداية</th><th>النهاية</th><th>المدة</th></tr></thead><tbody id="history"></tbody></table></div></div>
+<nav><button class="active" onclick="scrollToTop()">🏠<br>الرئيسية</button><button onclick="openIncidentModal()">🚨<br>بلاغ جديد</button><button onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">📋<br>السجل</button><button onclick="report()">📊<br>التقارير</button></nav></div>
 
-<div class="section">
-<div class="stats">
-<div class="stat"><span>🏥 المنشآت</span><b id="total">21</b></div>
-<div class="stat"><span>🟢 طبيعية</span><b class="green" id="normal">0</b></div>
-<div class="stat"><span>🟠 متابعة</span><b class="orange" id="follow">0</b></div>
-<div class="stat"><span>🔴 حرجة</span><b class="red" id="critical">0</b></div>
-</div>
-</div>
-
-<div class="section">
-<div class="title">🏥 الحالة الحالية للمنشآت</div>
-<div id="facilities"></div>
-</div>
-
-<div class="section">
-<div class="title">🚨 البلاغات النشطة <span id="openCount" style="color:#6b7280;font-size:11px"></span></div>
-<div id="openIncidents"></div>
-<button class="primary" style="width:100%" onclick="openIncidentModal()">＋ تسجيل بلاغ جديد</button>
-</div>
-
-<div class="section">
-<div class="title">📋 سجل الحوادث</div>
-<div class="card" style="overflow:auto"><table><thead><tr><th>المنشأة</th><th>النظام</th><th>البداية</th><th>النهاية</th><th>المدة</th><th>الحالة</th></tr></thead><tbody id="history"></tbody></table></div>
-</div>
-
-<nav>
-<button class="active" onclick="scrollToTop()">🏠<br>الرئيسية</button>
-<button onclick="openIncidentModal()">🚨<br>بلاغ جديد</button>
-<button onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">📋<br>السجل</button>
-<button onclick="report()">📊<br>التقارير</button>
-</nav>
-</div>
-
-<div class="overlay" id="modal">
-<div class="modal">
-<h2>🚨 تسجيل بلاغ جديد</h2>
-<div class="field"><label>المنشأة</label><select id="f"><option>شفا 1</option><option>شفا 2</option><option>شفا 3</option><option>شفا 4</option><option>شفا 5</option><option>شفا 6</option><option>شفا 7</option><option>شفا 8</option><option>شفا 9</option><option>شفا 10</option><option>شفا 11</option><option>شفا 12</option><option>شفا 13</option><option>شفا 14</option><option>شفا 15</option><option>شفا 16</option><option>شفا 17</option><option>شفا 18</option><option>شفا 19</option><option>شفا 20</option><option>شفا 21</option></select></div>
-<div class="field"><label>النظام المتأثر</label><select id="s"><option>الكهرباء</option><option>المولد</option><option>المياه</option><option>التكييف</option><option>النظام الإلكتروني</option></select></div>
-<div class="field"><label>الحالة</label><select id="st"><option>منقطع</option><option>متوقف</option><option>مشكلة جزئية</option><option>على المولد</option></select></div>
-<div class="field"><label>مصدر البلاغ</label><select id="src"><option>اتصال هاتفي</option><option>تحديث المنشأة</option></select></div>
-<div class="field"><label>وقت بداية الحالة</label><input id="start" type="datetime-local"></div>
-<div class="field"><label>ملاحظات</label><textarea id="note" rows="2"></textarea></div>
-<div class="ma"><button class="primary" onclick="saveIncident()">حفظ البلاغ</button><button onclick="closeModal()">إلغاء</button></div>
-</div></div>
-
-<div class="overlay" id="closeModalBox">
-<div class="modal">
-<h2>✅ إنهاء البلاغ</h2>
-<div class="field"><label>وقت عودة الخدمة</label><input id="end" type="datetime-local"></div>
-<div class="ma"><button class="primary" onclick="finishIncident()">إنهاء وحساب المدة</button><button onclick="closeEnd()">إلغاء</button></div>
-</div></div>
-<div class="toast" id="toast"></div>
-
+<div class="overlay" id="modal"><div class="modal"><h2>🚨 تسجيل بلاغ جديد</h2>
+<div class="field"><label class="required">المنشأة</label><select id="f"></select></div>
+<div class="field"><label class="required">نوع البلاغ</label><select id="type" onchange="toggleOther()"><option>الكهرباء</option><option>المياه</option><option>التكييف</option><option>النظام الإلكتروني</option><option>الطاقة الاحتياطية</option><option>أخرى</option></select></div>
+<div class="field hidden" id="otherWrap"><label class="required">نوع البلاغ - أخرى</label><input id="otherType" placeholder="اكتب نوع البلاغ"></div>
+<div class="field"><label>مصدر الكهرباء</label><select id="power"><option>داخلي</option><option>خارجي</option><option>لا ينطبق</option></select></div>
+<div class="field"><label class="required">نطاق التأثير</label><select id="scope" onchange="togglePartial()"><option>كلي</option><option>جزئي</option></select></div>
+<div class="field hidden" id="partialWrap"><label class="required">القسم المتأثر</label><input id="partialDept" placeholder="اكتب اسم القسم المتأثر"></div>
+<div class="field"><label class="required">تأثير البلاغ على الخدمات الصحية</label><select id="serviceImpact"><option>لا يوجد تأثير</option><option>تأثير محدود</option><option>تأثير على الخدمة</option><option>توقف خدمة</option></select></div>
+<div class="field"><label class="required">مصدر البلاغ</label><select id="src"><option>المنشأة</option><option>اتصال هاتفي</option><option>تحديث المنشأة</option><option>جولة ميدانية</option><option>أخرى</option></select></div>
+<div class="field"><label class="required">اسم المبلّغ</label><input id="reporter" placeholder="اسم المبلّغ"></div>
+<div class="field"><label class="required">وقت بداية البلاغ</label><input id="start" type="datetime-local"></div>
+<div class="field"><label>الوصف</label><textarea id="desc" rows="2" placeholder="وصف مختصر للحالة"></textarea></div>
+<div class="field"><label>الملاحظات</label><textarea id="note" rows="2"></textarea></div>
+<div class="ma"><button class="primary" onclick="saveIncident()">حفظ البلاغ</button><button onclick="closeModal()">إلغاء</button></div></div></div>
+<div class="overlay" id="closeModalBox"><div class="modal"><h2>✅ إنهاء البلاغ</h2><div class="field"><label>وقت عودة الخدمة</label><input id="end" type="datetime-local"></div><div class="ma"><button class="primary" onclick="finishIncident()">إنهاء وحساب المدة</button><button onclick="closeEnd()">إلغاء</button></div></div></div><div class="toast" id="toast"></div>
 <script>
-const KEY='facility_monitor_v1';
-const facilities=['شفا 1', 'شفا 2', 'شفا 3', 'شفا 4', 'شفا 5', 'شفا 6', 'شفا 7', 'شفا 8', 'شفا 9', 'شفا 10', 'شفا 11', 'شفا 12', 'شفا 13', 'شفا 14', 'شفا 15', 'شفا 16', 'شفا 17', 'شفا 18', 'شفا 19', 'شفا 20', 'شفا 21'];
-let data=JSON.parse(localStorage.getItem(KEY)||'null');
-if(!data){
- data={incidents:[
-  {id:1,facility:'شفا 1',system:'الكهرباء',status:'منقطع',source:'اتصال هاتفي',start:'2026-08-11T20:52',end:'2026-08-11T21:17',note:'انقطاع الكهرباء الرئيسية، المولد يعمل.'},
-  {id:2,facility:'شفا 2',system:'التكييف',status:'متوقف',source:'اتصال هاتفي',start:'2026-08-11T21:20',end:null,note:''},
-  {id:3,facility:'شفا 3',system:'النظام الإلكتروني',status:'متوقف',source:'اتصال هاتفي',start:'2026-08-11T21:20',end:null,note:''}
-]};
- save();
-}
-let closingId=null;
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
-function fmtDate(x){if(!x)return'-';return new Date(x).toLocaleString('ar-SA',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})}
-function dur(a,b){let ms=new Date(b)-new Date(a);if(ms<0)ms=0;let s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),z=s%60;return [h,m,z].map(x=>String(x).padStart(2,'0')).join(':')}
-function elapsed(a){return dur(a,new Date().toISOString())}
-function state(f){
- let open=data.incidents.filter(x=>x.facility===f&&!x.end);
- if(!open.length)return'طبيعي';
- return open.some(x=>x.status==='متوقف'||x.status==='منقطع')?'تحتاج متابعة':'تحتاج متابعة';
-}
-function icon(s){return {'الكهرباء':'⚡','المولد':'🔋','المياه':'💧','التكييف':'❄️','النظام الإلكتروني':'💻'}[s]||'⚙️'}
-function render(){
- let normal=0,follow=0,critical=0;
- const el=document.getElementById('facilities');el.innerHTML='';
- facilities.forEach(f=>{
-  const open=data.incidents.filter(x=>x.facility===f&&!x.end);
-  const st=state(f);st==='طبيعي'?normal++:st==='حرج'?critical++:follow++;
-  const systems=['الكهرباء','المولد','المياه','التكييف','النظام الإلكتروني'];
-  let cards=systems.map(s=>{
-   const x=open.find(i=>i.system===s);
-   return `<div class="sys">${icon(s)}<span>${s==='النظام الإلكتروني'?'الإلكتروني':s}</span><b class="${x?'red':'green'}">${x?(x.status==='على المولد'?'على المولد':x.status): (s==='المولد'?'جاهز':s==='النظام الإلكتروني'?'يعمل':'طبيعي')}</b></div>`;
-  }).join('');
-  let last=open[0];
-  el.innerHTML+=`<div class="card"><div class="fac-head"><div class="name">${f}</div><span class="badge ${st==='حرج'?'r':st==='تحتاج متابعة'?'o':''}">${st==='طبيعي'?'🟢 طبيعي':st==='حرج'?'🔴 حرج':'🟠 تحتاج متابعة'}</span></div><div class="grid">${cards}</div>${last?`<div class="row"><span>📞 ${last.source}</span><span>⏱️ ${elapsed(last.start)}</span></div><div class="actions"><button class="secondary" onclick="toast('آخر بلاغ: ${last.system}')">فتح التفاصيل</button><button class="danger" onclick="openEnd(${last.id})">إنهاء البلاغ</button></div>`:`<div class="row"><span>📱 آخر حالة</span><span>لا توجد بلاغات نشطة</span></div>`}</div>`;
- });
- document.getElementById('total').textContent=facilities.length;document.getElementById('normal').textContent=normal;document.getElementById('follow').textContent=follow;document.getElementById('critical').textContent=critical;
- const open=data.incidents.filter(x=>!x.end);document.getElementById('openCount').textContent=`(${open.length})`;
- document.getElementById('openIncidents').innerHTML=open.length?open.map(x=>`<div class="card"><div class="fac-head"><div class="name">🟠 ${x.facility} — ${icon(x.system)} ${x.system}</div><span class="badge o">مفتوح</span></div><div class="row"><span>${x.source}</span><span>بدأ ${fmtDate(x.start)}</span></div><div class="row"><span>الحالة: ${x.status}</span><span>⏱️ ${elapsed(x.start)}</span></div><button class="danger" style="width:100%;margin-top:9px" onclick="openEnd(${x.id})">إنهاء البلاغ</button></div>`).join(''):'<div class="card" style="text-align:center;color:#16834b">🟢 لا توجد بلاغات نشطة</div>';
- document.getElementById('history').innerHTML=data.incidents.filter(x=>x.end).slice().reverse().map(x=>`<tr><td>${x.facility}</td><td>${x.system}</td><td>${fmtDate(x.start)}</td><td>${fmtDate(x.end)}</td><td>${dur(x.start,x.end)}</td><td>منتهية</td></tr>`).join('')||'<tr><td colspan="6">لا يوجد سجل</td></tr>';
-}
-function openIncidentModal(){document.getElementById('start').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);document.getElementById('modal').style.display='flex'}
-function closeModal(){document.getElementById('modal').style.display='none'}
-function saveIncident(){let x={id:Date.now(),facility:document.getElementById('f').value,system:document.getElementById('s').value,status:document.getElementById('st').value,source:document.getElementById('src').value,start:document.getElementById('start').value,end:null,note:document.getElementById('note').value};data.incidents.push(x);save();closeModal();render();toast('✅ تم حفظ البلاغ وتحديث لوحة التحكم')}
-function openEnd(id){closingId=id;document.getElementById('end').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);document.getElementById('closeModalBox').style.display='flex'}
-function closeEnd(){document.getElementById('closeModalBox').style.display='none';closingId=null}
-function finishIncident(){let x=data.incidents.find(i=>i.id===closingId);let end=document.getElementById('end').value;if(!x||!end)return;if(new Date(end)<new Date(x.start)){toast('⚠️ وقت العودة لا يمكن أن يسبق وقت البداية');return}x.end=end;save();closeEnd();render();toast('✅ تم إنهاء البلاغ وحساب مدة الحالة تلقائيًا')}
-function report(){let open=data.incidents.filter(x=>!x.end).length;let closed=data.incidents.filter(x=>x.end).length;toast(`📊 التقرير: ${open} بلاغ مفتوح • ${closed} بلاغ منتهٍ`)}
-function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2600)}
-function scrollToTop(){scrollTo({top:0,behavior:'smooth'})}
-setInterval(render,1000);render();
-</script>
-  <script src="jahizia_approved_model.js"></script>
-</body>
-</html>
+const KEY='jahizia_readiness_v3';const facilities=Array.from({length:21},(_,i)=>`شفا ${i+1}`);let filter='all';let closingId=null;
+let data=JSON.parse(localStorage.getItem(KEY)||'null');if(!data){data={incidents:[{id:1,facility:'شفا 1',type:'الكهرباء',status:'منقطع',power:'داخلي',scope:'كلي',serviceImpact:'تأثير محدود',source:'اتصال هاتفي',reporter:'مركز العمليات',start:'2026-08-11T20:52',end:'2026-08-11T21:17',department:'',description:'انقطاع الكهرباء الرئيسية',note:'المولد يعمل.'},{id:2,facility:'شفا 2',type:'التكييف',status:'متوقف',power:'لا ينطبق',scope:'جزئي',department:'العناية المركزة',serviceImpact:'تأثير على الخدمة',source:'المنشأة',reporter:'مسؤول التشغيل',start:'2026-08-11T21:20',end:null,description:'تعطل وحدة التكييف',note:''}]};save()}
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}function fmtDate(x){if(!x)return'-';return new Date(x).toLocaleString('ar-SA',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'})}function dur(a,b){let ms=new Date(b)-new Date(a);if(ms<0)ms=0;let s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),z=s%60;return [h,m,z].map(x=>String(x).padStart(2,'0')).join(':')}function elapsed(a){return dur(a,new Date().toISOString())}
+function icon(s){return {'الكهرباء':'⚡','الطاقة الاحتياطية':'🔋','المياه':'💧','التكييف':'❄️','النظام الإلكتروني':'💻'}[s]||'⚙️'}function currentType(x){return x.type==='أخرى'?x.otherType:x.type}
+function state(f){return data.incidents.some(x=>x.facility===f&&!x.end)?'تحتاج متابعة':'طبيعي'}
+function setFilter(v,btn){filter=v;document.querySelectorAll('.filterbar button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderFacilities()}
+function renderFacilities(){let el=document.getElementById('facilities');el.innerHTML='';let list=facilities.filter(f=>filter==='all'||(filter==='normal'?state(f)==='طبيعي':state(f)==='تحتاج متابعة'));list.forEach(f=>{const open=data.incidents.filter(x=>x.facility===f&&!x.end);const st=state(f);const systems=['الكهرباء','الطاقة الاحتياطية','المياه','التكييف','النظام الإلكتروني'];let cards=systems.map(s=>{const x=open.find(i=>currentType(i)===s);return `<div class="sys">${icon(s)}<span>${s}</span><b class="${x?'red':'green'}">${x?(x.status||'نشط'):(s==='الطاقة الاحتياطية'?'جاهز':'طبيعي')}</b></div>`}).join('');let last=open[0];el.innerHTML+=`<div class="card"><div class="fac-head"><div class="name">${f}</div><span class="badge ${st==='تحتاج متابعة'?'o':''}">${st==='طبيعي'?'🟢 جاهزة':'🟠 تحتاج متابعة'}</span></div><div class="grid">${cards}</div>${last?`<div class="row"><span>🚨 ${currentType(last)}</span><span>⏱️ ${elapsed(last.start)}</span></div><div class="actions"><button class="secondary" onclick="toast('القسم المتأثر: ${last.scope==='جزئي'?(last.department||'-'):'كامل المنشأة'}')">فتح التفاصيل</button><button class="danger" onclick="openEnd(${last.id})">إنهاء البلاغ</button></div>`:`<div class="row"><span>📱 آخر حالة</span><span>لا توجد بلاغات نشطة</span></div>`}</div>`})}
+function render(){let normal=0,follow=0;facilities.forEach(f=>state(f)==='طبيعي'?normal++:follow++);document.getElementById('total').textContent=21;document.getElementById('normal').textContent=normal;document.getElementById('follow').textContent=follow;const open=data.incidents.filter(x=>!x.end).sort((a,b)=>new Date(a.start)-new Date(b.start));document.getElementById('openTotal').textContent=open.length;document.getElementById('openCount').textContent=`(${open.length})`;document.getElementById('openIncidents').innerHTML=open.length?open.map(x=>`<div class="card"><div class="fac-head"><div class="name">🟠 ${x.facility} — ${icon(currentType(x))} ${currentType(x)}</div><span class="badge o">مفتوح</span></div><div class="row"><span>${x.source} • ${x.reporter||'-'}</span><span>بدأ ${fmtDate(x.start)}</span></div><div class="row"><span>النطاق: ${x.scope}${x.scope==='جزئي'?` • ${x.department||'-'}`:''}</span><span>⏱️ ${elapsed(x.start)}</span></div><button class="danger" style="width:100%;margin-top:9px" onclick="openEnd(${x.id})">إنهاء البلاغ</button></div>`).join(''):'<div class="card" style="text-align:center;color:#16834b">🟢 لا توجد بلاغات نشطة</div>';document.getElementById('history').innerHTML=data.incidents.filter(x=>x.end).slice().reverse().map(x=>`<tr><td>${x.facility}</td><td>${currentType(x)}</td><td>${x.scope}${x.scope==='جزئي'?` — ${x.department||'-'}`:''}</td><td>${fmtDate(x.start)}</td><td>${fmtDate(x.end)}</td><td>${dur(x.start,x.end)}</td></tr>`).join('')||'<tr><td colspan="6">لا يوجد سجل</td></tr>';renderFacilities()}
+function openIncidentModal(){document.getElementById('f').innerHTML=facilities.map(f=>`<option>${f}</option>`).join('');document.getElementById('start').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);toggleOther();togglePartial();document.getElementById('modal').style.display='flex'}function closeModal(){document.getElementById('modal').style.display='none'}function toggleOther(){document.getElementById('otherWrap').classList.toggle('hidden',document.getElementById('type').value!=='أخرى')}function togglePartial(){document.getElementById('partialWrap').classList.toggle('hidden',document.getElementById('scope').value!=='جزئي')}
+function saveIncident(){let type=document.getElementById('type').value,other=document.getElementById('otherType').value.trim(),scope=document.getElementById('scope').value,dept=document.getElementById('partialDept').value.trim();if(type==='أخرى'&&!other)return toast('⚠️ اكتب نوع البلاغ');if(scope==='جزئي'&&!dept)return toast('⚠️ اكتب القسم المتأثر');if(!document.getElementById('reporter').value.trim())return toast('⚠️ اكتب اسم المبلّغ');let x={id:Date.now(),facility:document.getElementById('f').value,type,otherType:other,power:document.getElementById('power').value,scope,department:dept,serviceImpact:document.getElementById('serviceImpact').value,source:document.getElementById('src').value,reporter:document.getElementById('reporter').value.trim(),start:document.getElementById('start').value,end:null,description:document.getElementById('desc').value,note:document.getElementById('note').value,status:'نشط'};data.incidents.push(x);save();closeModal();render();toast('✅ تم تسجيل البلاغ وتحديث لوحة المتابعة')}
+function openEnd(id){closingId=id;document.getElementById('end').value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);document.getElementById('closeModalBox').style.display='flex'}function closeEnd(){document.getElementById('closeModalBox').style.display='none';closingId=null}function finishIncident(){let x=data.incidents.find(i=>i.id===closingId),end=document.getElementById('end').value;if(!x||!end)return;if(new Date(end)<new Date(x.start))return toast('⚠️ وقت العودة لا يمكن أن يسبق وقت البداية');x.end=end;save();closeEnd();render();toast('✅ تم إغلاق البلاغ ونقله إلى السجل')}function report(){let o=data.incidents.filter(x=>!x.end).length,c=data.incidents.filter(x=>x.end).length;toast(`📊 التقرير: ${o} نشط • ${c} مغلق`)}function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2600)}function scrollToTop(){scrollTo({top:0,behavior:'smooth'})}setInterval(render,1000);render();
+</script></body></html>
