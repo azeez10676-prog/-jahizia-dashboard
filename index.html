@@ -9,156 +9,415 @@
 
 <style>
 :root{
---bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#687386;
---line:#e3e8ef;--blue:#2563eb;--green:#16834b;
---orange:#d97706;--red:#dc2626;--nav:#0f766e
+  --bg:#f4f7fb;
+  --card:#fff;
+  --text:#172033;
+  --muted:#687386;
+  --line:#e3e8ef;
+  --blue:#2563eb;
+  --green:#16834b;
+  --orange:#d97706;
+  --red:#dc2626;
+  --nav:#0f766e
 }
-*{box-sizing:border-box}
-body{
-margin:0;background:var(--bg);color:var(--text);
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif
-}
-.app{max-width:980px;margin:auto;min-height:100vh;padding-bottom:92px}
-header{
-background:#fff;border-bottom:1px solid var(--line);padding:15px 16px;
-position:sticky;top:0;z-index:5
-}
-.head{display:flex;align-items:center;gap:12px}
-.logo{
-width:46px;height:46px;border-radius:12px;background:#fff;
-border:1px solid var(--line);display:grid;place-items:center;font-size:26px
-}
-.brand h1{margin:0;font-size:20px}
-.brand p{margin:3px 0 0;color:var(--muted);font-size:11px}
-.section{padding:15px}
-.title{font-size:17px;font-weight:900;margin-bottom:11px}
-.subline{font-size:11px;color:var(--muted);margin-top:-7px;margin-bottom:11px}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.stat{
-background:#fff;border:1px solid var(--line);border-radius:15px;
-padding:12px;text-align:center
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif
 }
-.stat span{font-size:11px;color:var(--muted)}
-.stat b{display:block;font-size:23px;margin-top:4px}
+
+.app{
+  max-width:980px;
+  margin:auto;
+  min-height:100vh;
+  padding-bottom:92px
+}
+
+header{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:15px 16px;
+  position:sticky;
+  top:0;
+  z-index:5
+}
+
+.head{
+  display:flex;
+  align-items:center;
+  gap:12px
+}
+
+.logo{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid var(--line);
+  display:grid;
+  place-items:center;
+  font-size:26px
+}
+
+.brand h1{
+  margin:0;
+  font-size:20px
+}
+
+.brand p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:11px
+}
+
+.section{
+  padding:15px
+}
+
+.title{
+  font-size:17px;
+  font-weight:900;
+  margin-bottom:11px
+}
+
+.subline{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:-7px;
+  margin-bottom:11px
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px
+}
+
+.stat{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:12px;
+  text-align:center
+}
+
+.stat span{
+  font-size:11px;
+  color:var(--muted)
+}
+
+.stat b{
+  display:block;
+  font-size:23px;
+  margin-top:4px
+}
+
 .green{color:var(--green)}
 .orange{color:var(--orange)}
 .red{color:var(--red)}
 
 .card{
-background:#fff;border:1px solid var(--line);border-radius:16px;
-padding:14px;margin-bottom:10px;box-shadow:0 2px 9px #00000008
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:10px;
+  box-shadow:0 2px 9px #00000008
 }
+
 .fac-head{
-display:flex;justify-content:space-between;gap:10px;align-items:center
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center
 }
-.name{font-weight:900;font-size:14px}
+
+.name{
+  font-weight:900;
+  font-size:14px
+}
+
 .badge{
-font-size:10px;padding:6px 8px;border-radius:99px;
-background:#ecfdf3;color:var(--green);white-space:nowrap
+  font-size:10px;
+  padding:6px 8px;
+  border-radius:99px;
+  background:#ecfdf3;
+  color:var(--green);
+  white-space:nowrap
 }
-.badge.o{background:#fff7ed;color:var(--orange)}
-.badge.r{background:#fef2f2;color:var(--red)}
+
+.badge.o{
+  background:#fff7ed;
+  color:var(--orange)
+}
+
+.badge.r{
+  background:#fef2f2;
+  color:var(--red)
+}
 
 .grid{
-display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+  margin-top:12px
 }
+
 .sys{
-border:1px solid var(--line);border-radius:10px;text-align:center;
-padding:8px 3px;font-size:9px
+  border:1px solid var(--line);
+  border-radius:10px;
+  text-align:center;
+  padding:8px 3px;
+  font-size:9px
 }
-.sys i{display:block;font-style:normal;font-size:18px}
-.sys span{display:block;color:var(--muted);margin:3px 0}
-.sys b{font-size:10px}
+
+.sys i{
+  display:block;
+  font-style:normal;
+  font-size:18px
+}
+
+.sys span{
+  display:block;
+  color:var(--muted);
+  margin:3px 0
+}
+
+.sys b{
+  font-size:10px
+}
 
 .row{
-display:flex;justify-content:space-between;gap:8px;
-margin-top:10px;color:var(--muted);font-size:11px
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:10px;
+  color:var(--muted);
+  font-size:11px
 }
+
 .actions{
-display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:10px
 }
 
 button{
-border:0;border-radius:11px;padding:11px 13px;
-font:inherit;font-size:12px;font-weight:800;cursor:pointer
+  border:0;
+  border-radius:11px;
+  padding:11px 13px;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer
 }
-.primary{background:var(--blue);color:#fff}
-.secondary{background:#eef2ff;color:#1d4ed8}
-.danger{background:#fee2e2;color:#b91c1c}
+
+.primary{
+  background:var(--blue);
+  color:#fff
+}
+
+.secondary{
+  background:#eef2ff;
+  color:#1d4ed8
+}
+
+.danger{
+  background:#fee2e2;
+  color:#b91c1c
+}
 
 .filterbar{
-display:flex;gap:7px;overflow:auto;padding-bottom:3px
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding-bottom:3px
 }
+
 .filterbar button{
-white-space:nowrap;background:#fff;border:1px solid var(--line);
-color:var(--muted)
+  white-space:nowrap;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--muted)
 }
+
 .filterbar button.active{
-background:#eaf2ff;color:#1d4ed8;border-color:#b9d0ff
+  background:#eaf2ff;
+  color:#1d4ed8;
+  border-color:#b9d0ff
 }
 
 nav{
-position:fixed;bottom:0;left:0;right:0;max-width:980px;margin:auto;
-background:#fff;border-top:1px solid var(--line);
-display:grid;grid-template-columns:repeat(4,1fr);
-padding:7px 10px calc(7px + env(safe-area-inset-bottom));
-z-index:10
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  max-width:980px;
+  margin:auto;
+  background:#fff;
+  border-top:1px solid var(--line);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  padding:7px 10px calc(7px + env(safe-area-inset-bottom));
+  z-index:10
 }
-nav button{background:transparent;color:#6b7280}
-nav .active{color:var(--blue)}
+
+nav button{
+  background:transparent;
+  color:#6b7280
+}
+
+nav .active{
+  color:var(--blue)
+}
 
 .overlay{
-display:none;position:fixed;inset:0;background:#0007;z-index:20;
-align-items:center;justify-content:center;padding:16px
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0007;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  padding:16px
 }
+
 .modal{
-width:min(560px,100%);max-height:92vh;overflow:auto;
-background:#fff;border-radius:18px;padding:18px
+  width:min(560px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:18px;
+  padding:18px
 }
-.modal h2{margin:0 0 13px;font-size:17px}
-.field{margin:9px 0}
+
+.modal h2{
+  margin:0 0 13px;
+  font-size:17px
+}
+
+.field{
+  margin:9px 0
+}
+
 .field label{
-display:block;font-size:11px;color:var(--muted);margin-bottom:5px
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:5px
 }
-.field select,.field input,.field textarea{
-width:100%;padding:11px;border:1px solid var(--line);
-border-radius:10px;font:inherit;font-size:13px;background:#fff
+
+.field select,
+.field input,
+.field textarea{
+  width:100%;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  font:inherit;
+  font-size:13px;
+  background:#fff
 }
-.ma{display:flex;gap:8px;margin-top:13px}
-.ma button{flex:1}
-.hidden{display:none}
-.required:after{content:' *';color:var(--red)}
+
+.ma{
+  display:flex;
+  gap:8px;
+  margin-top:13px
+}
+
+.ma button{
+  flex:1
+}
+
+.hidden{
+  display:none
+}
+
+.required:after{
+  content:' *';
+  color:var(--red)
+}
 
 .toast{
-display:none;position:fixed;top:80px;left:16px;right:16px;
-max-width:600px;margin:auto;background:#172033;color:#fff;
-padding:12px;border-radius:11px;text-align:center;font-size:12px;z-index:30
+  display:none;
+  position:fixed;
+  top:80px;
+  left:16px;
+  right:16px;
+  max-width:600px;
+  margin:auto;
+  background:#172033;
+  color:#fff;
+  padding:12px;
+  border-radius:11px;
+  text-align:center;
+  font-size:12px;
+  z-index:30
 }
 
 .loading{
-text-align:center;color:var(--muted);padding:20px
+  text-align:center;
+  padding:20px;
+  color:var(--muted);
+  font-size:12px
 }
 
-.errorBox{
-background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;
-border-radius:12px;padding:12px;font-size:12px;margin-bottom:10px
+.errorbox{
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+  border-radius:12px;
+  padding:12px;
+  font-size:12px;
+  margin-bottom:10px
 }
 
-table{width:100%;border-collapse:collapse;font-size:11px}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px
+}
+
 th,td{
-border-bottom:1px solid var(--line);padding:9px;
-text-align:right;white-space:nowrap
+  border-bottom:1px solid var(--line);
+  padding:9px;
+  text-align:right;
+  white-space:nowrap
 }
-th{background:#f8fafc}
+
+th{
+  background:#f8fafc
+}
 
 @media(max-width:600px){
-.stats{grid-template-columns:repeat(2,1fr)}
-.grid{gap:3px}
-.sys{font-size:8px}
-.section{padding:13px}
-.actions{grid-template-columns:1fr 1fr}
-.brand h1{font-size:18px}
+  .stats{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .grid{
+    gap:3px
+  }
+
+  .sys{
+    font-size:8px
+  }
+
+  .section{
+    padding:13px
+  }
+
+  .actions{
+    grid-template-columns:1fr 1fr
+  }
+
+  .brand h1{
+    font-size:18px
+  }
 }
 </style>
 </head>
@@ -168,1332 +427,1742 @@ th{background:#f8fafc}
 <div class="app">
 
 <header>
-<div class="head">
-<div class="logo">🏥</div>
-<div class="brand">
-<h1>جاهزية المنشآت الصحية</h1>
-<p>مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي</p>
-</div>
-</div>
+  <div class="head">
+    <div class="logo">🏥</div>
+    <div class="brand">
+      <h1>جاهزية المنشآت الصحية</h1>
+      <p>مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي</p>
+    </div>
+  </div>
 </header>
 
-<div class="section">
-<div class="title">لوحة المتابعة</div>
-<div class="subline">
-نظرة موحدة على جاهزية 21 منشأة — شفا 1 إلى شفا 21
-</div>
-
-<div id="connectionStatus"></div>
-
-<div class="stats">
-<div class="stat">
-<span>إجمالي المنشآت</span>
-<b id="total">21</b>
-</div>
-
-<div class="stat">
-<span>جاهزة</span>
-<b class="green" id="normal">0</b>
-</div>
-
-<div class="stat">
-<span>تحتاج متابعة</span>
-<b class="orange" id="follow">0</b>
-</div>
-
-<div class="stat">
-<span>بلاغات نشطة</span>
-<b class="red" id="openTotal">0</b>
-</div>
-</div>
-</div>
-
+<div id="connectionError"></div>
 
 <div class="section">
+  <div class="title">لوحة المتابعة</div>
 
-<div class="title">
-🚨 البلاغات النشطة
-<span id="openCount" style="color:#6b7280;font-size:11px"></span>
-</div>
+  <div class="subline">
+    نظرة موحدة على جاهزية 21 منشأة — شفا 1 إلى شفا 21
+  </div>
 
-<div class="subline">
-البلاغات المفتوحة تظهر أولًا لمتابعة الحالة وإغلاقها.
-</div>
+  <div class="stats">
 
-<div id="openIncidents">
-<div class="loading">جاري تحميل البلاغات...</div>
-</div>
+    <div class="stat">
+      <span>إجمالي المنشآت</span>
+      <b id="total">21</b>
+    </div>
 
-<button class="primary" style="width:100%" onclick="openIncidentModal()">
-＋ تسجيل بلاغ جديد
-</button>
+    <div class="stat">
+      <span>جاهزة</span>
+      <b class="green" id="normal">21</b>
+    </div>
 
+    <div class="stat">
+      <span>تحتاج متابعة</span>
+      <b class="orange" id="follow">0</b>
+    </div>
+
+    <div class="stat">
+      <span>بلاغات نشطة</span>
+      <b class="red" id="openTotal">0</b>
+    </div>
+
+  </div>
 </div>
 
 
 <div class="section">
 
-<div class="title">المنشآت</div>
+  <div class="title">
+    🚨 البلاغات النشطة
+    <span id="openCount" style="color:#6b7280;font-size:11px"></span>
+  </div>
 
-<div class="filterbar">
-<button class="active" onclick="setFilter('all',this)">الكل</button>
-<button onclick="setFilter('normal',this)">🟢 جاهزة</button>
-<button onclick="setFilter('follow',this)">🟠 تحتاج متابعة</button>
-</div>
+  <div class="subline">
+    البلاغات المفتوحة تظهر أولًا لمتابعة الحالة وإغلاقها.
+  </div>
 
-<div id="facilities" style="margin-top:10px"></div>
+  <div id="openIncidents">
+    <div class="loading">جاري تحميل البلاغات...</div>
+  </div>
+
+  <button
+    class="primary"
+    style="width:100%"
+    onclick="openIncidentModal()">
+    ＋ تسجيل بلاغ جديد
+  </button>
 
 </div>
 
 
 <div class="section">
 
-<div class="title">📋 سجل البلاغات المغلقة</div>
+  <div class="title">المنشآت</div>
 
-<div class="card" style="overflow:auto">
+  <div class="filterbar">
 
-<table>
+    <button
+      class="active"
+      onclick="setFilter('all',this)">
+      الكل
+    </button>
 
-<thead>
-<tr>
-<th>المنشأة</th>
-<th>نوع البلاغ</th>
-<th>نطاق التأثير</th>
-<th>البداية</th>
-<th>النهاية</th>
-<th>المدة</th>
-</tr>
-</thead>
+    <button
+      onclick="setFilter('normal',this)">
+      🟢 جاهزة
+    </button>
 
-<tbody id="history"></tbody>
+    <button
+      onclick="setFilter('follow',this)">
+      🟠 تحتاج متابعة
+    </button>
 
-</table>
+  </div>
+
+  <div
+    id="facilities"
+    style="margin-top:10px">
+  </div>
 
 </div>
+
+
+<div class="section">
+
+  <div class="title">
+    📋 سجل البلاغات المغلقة
+  </div>
+
+  <div
+    class="card"
+    style="overflow:auto">
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>المنشأة</th>
+          <th>نوع البلاغ</th>
+          <th>نطاق التأثير</th>
+          <th>البداية</th>
+          <th>النهاية</th>
+          <th>المدة</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="history">
+        <tr>
+          <td colspan="6">
+            جاري التحميل...
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
 
 </div>
 
 
 <nav>
 
-<button class="active" onclick="scrollToTop()">
-🏠<br>الرئيسية
-</button>
+  <button
+    class="active"
+    onclick="scrollToTop()">
+    🏠<br>الرئيسية
+  </button>
 
-<button onclick="openIncidentModal()">
-🚨<br>بلاغ جديد
-</button>
+  <button
+    onclick="openIncidentModal()">
+    🚨<br>بلاغ جديد
+  </button>
 
-<button onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">
-📋<br>السجل
-</button>
+  <button
+    onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">
+    📋<br>السجل
+  </button>
 
-<button onclick="report()">
-📊<br>التقارير
-</button>
+  <button
+    onclick="report()">
+    📊<br>التقارير
+  </button>
 
 </nav>
 
 </div>
 
 
-<!-- تسجيل البلاغ -->
+<!-- تسجيل بلاغ -->
 
-<div class="overlay" id="modal">
+<div
+  class="overlay"
+  id="modal">
 
-<div class="modal">
+  <div class="modal">
 
-<h2>🚨 تسجيل بلاغ جديد</h2>
+    <h2>🚨 تسجيل بلاغ جديد</h2>
 
-<div class="field">
-<label class="required">المنشأة</label>
-<select id="f"></select>
+
+    <div class="field">
+      <label class="required">المنشأة</label>
+
+      <select id="f"></select>
+    </div>
+
+
+    <div class="field">
+
+      <label class="required">
+        نوع البلاغ
+      </label>
+
+      <select
+        id="type"
+        onchange="toggleOther()">
+
+        <option>الكهرباء</option>
+        <option>المياه</option>
+        <option>التكييف</option>
+        <option>النظام الإلكتروني</option>
+        <option>الطاقة الاحتياطية</option>
+        <option>أخرى</option>
+
+      </select>
+
+    </div>
+
+
+    <div
+      class="field hidden"
+      id="otherWrap">
+
+      <label class="required">
+        نوع البلاغ - أخرى
+      </label>
+
+      <input
+        id="otherType"
+        placeholder="اكتب نوع البلاغ">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        مصدر الكهرباء
+      </label>
+
+      <select id="power">
+
+        <option>داخلي</option>
+        <option>خارجي</option>
+        <option>لا ينطبق</option>
+
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label class="required">
+        نطاق التأثير
+      </label>
+
+      <select
+        id="scope"
+        onchange="togglePartial()">
+
+        <option>كلي</option>
+        <option>جزئي</option>
+
+      </select>
+
+    </div>
+
+
+    <div
+      class="field hidden"
+      id="partialWrap">
+
+      <label class="required">
+        القسم المتأثر
+      </label>
+
+      <input
+        id="partialDept"
+        placeholder="اكتب اسم القسم المتأثر">
+
+    </div>
+
+
+    <div class="field">
+
+      <label class="required">
+        تأثير البلاغ على الخدمات الصحية
+      </label>
+
+      <select id="serviceImpact">
+
+        <option>لا يوجد تأثير</option>
+        <option>تأثير محدود</option>
+        <option>تأثير على الخدمة</option>
+        <option>توقف خدمة</option>
+
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label class="required">
+        مصدر البلاغ
+      </label>
+
+      <select id="src">
+
+        <option>المنشأة</option>
+        <option>اتصال هاتفي</option>
+        <option>تحديث المنشأة</option>
+        <option>جولة ميدانية</option>
+        <option>أخرى</option>
+
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label class="required">
+        اسم المبلّغ
+      </label>
+
+      <input
+        id="reporter"
+        placeholder="اسم المبلّغ">
+
+    </div>
+
+
+    <div class="field">
+
+      <label class="required">
+        وقت بداية البلاغ
+      </label>
+
+      <input
+        id="start"
+        type="datetime-local">
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        الوصف
+      </label>
+
+      <textarea
+        id="desc"
+        rows="2"
+        placeholder="وصف مختصر للحالة"></textarea>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        الملاحظات
+      </label>
+
+      <textarea
+        id="note"
+        rows="2"></textarea>
+
+    </div>
+
+
+    <div class="ma">
+
+      <button
+        class="primary"
+        onclick="saveIncident()">
+        حفظ البلاغ
+      </button>
+
+      <button
+        onclick="closeModal()">
+        إلغاء
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 
-<div class="field">
-<label class="required">نوع البلاغ</label>
 
-<select id="type" onchange="toggleOther()">
-<option>الكهرباء</option>
-<option>المياه</option>
-<option>التكييف</option>
-<option>النظام الإلكتروني</option>
-<option>الطاقة الاحتياطية</option>
-<option>أخرى</option>
-</select>
+<!-- إغلاق البلاغ -->
 
-</div>
+<div
+  class="overlay"
+  id="closeModalBox">
 
-<div class="field hidden" id="otherWrap">
-<label class="required">نوع البلاغ - أخرى</label>
-<input id="otherType" placeholder="اكتب نوع البلاغ">
-</div>
+  <div class="modal">
 
-<div class="field">
-<label>مصدر الكهرباء</label>
+    <h2>✅ إنهاء البلاغ</h2>
 
-<select id="power">
-<option>داخلي</option>
-<option>خارجي</option>
-<option>لا ينطبق</option>
-</select>
+    <div class="field">
 
-</div>
+      <label>
+        وقت عودة الخدمة
+      </label>
 
-<div class="field">
-<label class="required">نطاق التأثير</label>
+      <input
+        id="end"
+        type="datetime-local">
 
-<select id="scope" onchange="togglePartial()">
-<option>كلي</option>
-<option>جزئي</option>
-</select>
+    </div>
 
-</div>
+    <div class="ma">
 
-<div class="field hidden" id="partialWrap">
-<label class="required">القسم المتأثر</label>
-<input id="partialDept" placeholder="اكتب اسم القسم المتأثر">
-</div>
+      <button
+        class="primary"
+        onclick="finishIncident()">
+        إنهاء وحساب المدة
+      </button>
 
-<div class="field">
-<label class="required">تأثير البلاغ على الخدمات الصحية</label>
+      <button
+        onclick="closeEnd()">
+        إلغاء
+      </button>
 
-<select id="serviceImpact">
-<option>لا يوجد تأثير</option>
-<option>تأثير محدود</option>
-<option>تأثير على الخدمة</option>
-<option>توقف خدمة</option>
-</select>
+    </div>
+
+  </div>
 
 </div>
 
-<div class="field">
-<label class="required">مصدر البلاغ</label>
 
-<select id="src">
-<option>المنشأة</option>
-<option>اتصال هاتفي</option>
-<option>تحديث المنشأة</option>
-<option>جولة ميدانية</option>
-<option>أخرى</option>
-</select>
-
+<div
+  class="toast"
+  id="toast">
 </div>
-
-<div class="field">
-<label class="required">اسم المبلّغ</label>
-<input id="reporter" placeholder="اسم المبلّغ">
-</div>
-
-<div class="field">
-<label class="required">وقت بداية البلاغ</label>
-<input id="start" type="datetime-local">
-</div>
-
-<div class="field">
-<label>الوصف</label>
-<textarea id="desc" rows="2" placeholder="وصف مختصر للحالة"></textarea>
-</div>
-
-<div class="field">
-<label>الملاحظات</label>
-<textarea id="note" rows="2"></textarea>
-</div>
-
-<div class="ma">
-<button class="primary" onclick="saveIncident()">حفظ البلاغ</button>
-<button onclick="closeModal()">إلغاء</button>
-</div>
-
-</div>
-</div>
-
-
-<!-- إنهاء البلاغ -->
-
-<div class="overlay" id="closeModalBox">
-
-<div class="modal">
-
-<h2>✅ إنهاء البلاغ</h2>
-
-<div class="field">
-<label>وقت عودة الخدمة</label>
-<input id="end" type="datetime-local">
-</div>
-
-<div class="ma">
-
-<button class="primary" onclick="finishIncident()">
-إنهاء وحساب المدة
-</button>
-
-<button onclick="closeEnd()">إلغاء</button>
-
-</div>
-
-</div>
-</div>
-
-
-<div class="toast" id="toast"></div>
 
 
 <script>
 
-/* =========================================================
-   SUPABASE
-   ========================================================= */
+/* ============================================
+   إعداد Supabase
+============================================ */
 
 const SUPABASE_URL =
-"https://fecfgkluloyxfpqmazxt.supabase.co";
+  "https://fecfgkluloyxfpqmazxt.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_B5vBcwJ2yGXH41v_njovuA_CfIY9Egh";
+const SUPABASE_KEY =
+  "sb_publishable_B5vBcwJ2yGXH41v_njovuA_CfIY9Egh";
 
 const supabaseClient =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* =========================================================
-   إعداد النظام
-   ========================================================= */
+/* ============================================
+   بيانات النظام
+============================================ */
 
 const facilities =
-Array.from({length:21},(_,i)=>`شفا ${i+1}`);
+  Array.from(
+    {length:21},
+    (_,i)=>`شفا ${i+1}`
+  );
 
-let filter='all';
-let closingId=null;
-let data={incidents:[]};
+let data = {
+  incidents:[]
+};
 
+let filter = "all";
 
-/* =========================================================
-   أدوات عامة
-   ========================================================= */
-
-function toast(message){
-
-const e=document.getElementById('toast');
-
-e.textContent=message;
-e.style.display='block';
-
-setTimeout(()=>{
-e.style.display='none';
-},3000);
-
-}
+let closingId = null;
 
 
-function setConnection(message,good=true){
-
-const el=document.getElementById('connectionStatus');
-
-if(good){
-
-el.innerHTML=`
-<div style="
-background:#ecfdf3;
-color:#16834b;
-border:1px solid #bbf7d0;
-border-radius:11px;
-padding:9px;
-font-size:11px;
-margin-bottom:10px;
-">
-🟢 ${message}
-</div>`;
-
-}else{
-
-el.innerHTML=`
-<div class="errorBox">
-🔴 ${message}
-</div>`;
-
-}
-
-}
-
+/* ============================================
+   أدوات
+============================================ */
 
 function fmtDate(x){
 
-if(!x)return '-';
+  if(!x) return "-";
 
-return new Date(x).toLocaleString(
-'ar-SA',
-{
-hour:'2-digit',
-minute:'2-digit',
-day:'2-digit',
-month:'2-digit'
-}
-);
+  return new Date(x).toLocaleString(
+    "ar-SA",
+    {
+      hour:"2-digit",
+      minute:"2-digit",
+      day:"2-digit",
+      month:"2-digit"
+    }
+  );
 
 }
 
 
 function dur(a,b){
 
-if(!a || !b)return '00:00:00';
+  if(!a || !b) return "00:00:00";
 
-let ms=new Date(b)-new Date(a);
+  let ms =
+    new Date(b) -
+    new Date(a);
 
-if(ms<0)ms=0;
+  if(ms < 0) ms = 0;
 
-let s=Math.floor(ms/1000);
+  let s =
+    Math.floor(ms/1000);
 
-let h=Math.floor(s/3600);
+  let h =
+    Math.floor(s/3600);
 
-let m=Math.floor((s%3600)/60);
+  let m =
+    Math.floor((s%3600)/60);
 
-let z=s%60;
+  let z =
+    s%60;
 
-return [h,m,z]
-.map(x=>String(x).padStart(2,'0'))
-.join(':');
+  return [
+    h,m,z
+  ]
+  .map(
+    x=>String(x).padStart(2,"0")
+  )
+  .join(":");
 
 }
 
 
 function elapsed(a){
 
-return dur(a,new Date().toISOString());
+  return dur(
+    a,
+    new Date().toISOString()
+  );
 
 }
 
 
 function icon(s){
 
-return {
-'الكهرباء':'⚡',
-'الطاقة الاحتياطية':'🔋',
-'المياه':'💧',
-'التكييف':'❄️',
-'النظام الإلكتروني':'💻'
-}[s]||'⚙️';
+  return {
+    "الكهرباء":"⚡",
+    "الطاقة الاحتياطية":"🔋",
+    "المياه":"💧",
+    "التكييف":"❄️",
+    "النظام الإلكتروني":"💻"
+  }[s] || "⚙️";
 
 }
 
 
 function currentType(x){
 
-return x.type==='أخرى'
-?(x.other_type || 'أخرى')
-:x.type;
+  return x.type === "أخرى"
+    ? (x.other_type || "أخرى")
+    : x.type;
 
 }
 
-
-/* =========================================================
-   تحويل بيانات Supabase
-   ========================================================= */
-
-function normalizeIncident(x){
-
-return {
-
-id:x.id,
-
-facility:x.facility,
-
-type:x.type,
-
-other_type:x.other_type,
-
-power:x.power,
-
-scope:x.scope,
-
-department:x.department,
-
-service_impact:x.service_impact,
-
-source:x.source,
-
-reporter:x.reporter,
-
-start_time:x.start_time,
-
-end_time:x.end_time,
-
-description:x.description,
-
-note:x.note,
-
-status:x.status,
-
-created_at:x.created_at
-
-};
-
-}
-
-
-/* =========================================================
-   تحميل البلاغات من Supabase
-   ========================================================= */
-
-async function loadIncidents(){
-
-try{
-
-const {data:rows,error}=await supabaseClient
-.from('incidents')
-.select('*')
-.order('start_time',{ascending:false});
-
-if(error){
-
-console.error(error);
-
-setConnection(
-'تعذر الاتصال بقاعدة البيانات: '+error.message,
-false
-);
-
-return;
-
-}
-
-data.incidents=(rows||[]).map(normalizeIncident);
-
-setConnection(
-'متصل بقاعدة البيانات المركزية — Supabase',
-true
-);
-
-render();
-
-}catch(error){
-
-console.error(error);
-
-setConnection(
-'حدث خطأ أثناء الاتصال بقاعدة البيانات.',
-false
-);
-
-}
-
-}
-
-
-/* =========================================================
-   حالة المنشأة
-   ========================================================= */
 
 function state(f){
 
-return data.incidents.some(
-x=>x.facility===f && !x.end_time
-)
-?'تحتاج متابعة'
-:'طبيعي';
+  return data.incidents.some(
+    x =>
+      x.facility === f &&
+      !x.end_time
+  )
+  ? "تحتاج متابعة"
+  : "طبيعي";
 
 }
 
 
-/* =========================================================
-   الفلاتر
-   ========================================================= */
+/* ============================================
+   تحميل البيانات من Supabase
+============================================ */
+
+async function loadData(){
+
+  try{
+
+    const {
+      data:rows,
+      error
+    } = await supabaseClient
+      .from("incidents")
+      .select("*")
+      .order(
+        "start_time",
+        {ascending:true}
+      );
+
+    if(error){
+
+      console.error(error);
+
+      showConnectionError(
+        "تعذر تحميل البيانات من قاعدة البيانات: " +
+        error.message
+      );
+
+      return false;
+    }
+
+    data.incidents =
+      (rows || []).map(x=>({
+
+        id:x.id,
+
+        facility:x.facility,
+
+        type:x.type,
+
+        other_type:x.other_type,
+
+        power:x.power,
+
+        scope:x.scope,
+
+        department:x.department,
+
+        service_impact:x.service_impact,
+
+        source:x.source,
+
+        reporter:x.reporter,
+
+        start_time:x.start_time,
+
+        end_time:x.end_time,
+
+        description:x.description,
+
+        note:x.note,
+
+        status:x.status,
+
+        created_at:x.created_at
+
+      }));
+
+    clearConnectionError();
+
+    return true;
+
+  }catch(error){
+
+    console.error(error);
+
+    showConnectionError(
+      "حدث خطأ أثناء الاتصال بقاعدة البيانات: " +
+      error.message
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ============================================
+   عرض المنشآت
+============================================ */
 
 function setFilter(v,btn){
 
-filter=v;
+  filter=v;
 
-document
-.querySelectorAll('.filterbar button')
-.forEach(b=>b.classList.remove('active'));
+  document
+    .querySelectorAll(".filterbar button")
+    .forEach(
+      b=>b.classList.remove("active")
+    );
 
-btn.classList.add('active');
+  btn.classList.add("active");
 
-renderFacilities();
+  renderFacilities();
 
 }
 
-
-/* =========================================================
-   عرض المنشآت
-   ========================================================= */
 
 function renderFacilities(){
 
-let el=document.getElementById('facilities');
+  const el =
+    document.getElementById(
+      "facilities"
+    );
 
-el.innerHTML='';
+  el.innerHTML="";
 
-let list=facilities.filter(f=>
-filter==='all'
-||
-(filter==='normal' && state(f)==='طبيعي')
-||
-(filter==='follow' && state(f)==='تحتاج متابعة')
-);
+  const list =
+    facilities.filter(
 
-list.forEach(f=>{
+      f =>
 
-const open=data.incidents.filter(
-x=>x.facility===f && !x.end_time
-);
+      filter==="all"
 
-const st=state(f);
+      ||
 
-const systems=[
-'الكهرباء',
-'الطاقة الاحتياطية',
-'المياه',
-'التكييف',
-'النظام الإلكتروني'
-];
+      (
+        filter==="normal"
+        &&
+        state(f)==="طبيعي"
+      )
 
-let cards=systems.map(s=>{
+      ||
 
-const x=open.find(
-i=>currentType(i)===s
-);
+      (
+        filter==="follow"
+        &&
+        state(f)==="تحتاج متابعة"
+      )
 
-return `
-<div class="sys">
+    );
 
-${icon(s)}
 
-<span>${s}</span>
+  list.forEach(f=>{
 
-<b class="${x?'red':'green'}">
+    const open =
+      data.incidents.filter(
+        x =>
+          x.facility===f &&
+          !x.end_time
+      );
 
-${x
-?(x.status||'نشط')
-:(s==='الطاقة الاحتياطية'?'جاهز':'طبيعي')
+
+    const st =
+      state(f);
+
+
+    const systems = [
+      "الكهرباء",
+      "الطاقة الاحتياطية",
+      "المياه",
+      "التكييف",
+      "النظام الإلكتروني"
+    ];
+
+
+    const cards =
+      systems.map(s=>{
+
+        const x =
+          open.find(
+            i =>
+              currentType(i)===s
+          );
+
+
+        return `
+
+          <div class="sys">
+
+            ${icon(s)}
+
+            <span>${s}</span>
+
+            <b class="${x?'red':'green'}">
+
+              ${
+                x
+                ? (x.status || "نشط")
+                : (
+                    s==="الطاقة الاحتياطية"
+                    ? "جاهز"
+                    : "طبيعي"
+                  )
+              }
+
+            </b>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+
+    let last =
+      open.length
+      ? open[0]
+      : null;
+
+
+    el.innerHTML += `
+
+      <div class="card">
+
+        <div class="fac-head">
+
+          <div class="name">
+            ${f}
+          </div>
+
+          <span
+            class="badge ${
+              st==="تحتاج متابعة"
+              ? "o"
+              : ""
+            }">
+
+            ${
+              st==="طبيعي"
+              ? "🟢 جاهزة"
+              : "🟠 تحتاج متابعة"
+            }
+
+          </span>
+
+        </div>
+
+
+        <div class="grid">
+          ${cards}
+        </div>
+
+
+        ${
+          last
+
+          ?
+
+          `
+
+          <div class="row">
+
+            <span>
+              🚨 ${currentType(last)}
+            </span>
+
+            <span>
+              ⏱️ ${elapsed(last.start_time)}
+            </span>
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              class="secondary"
+              onclick="showDetails(${last.id})">
+
+              فتح التفاصيل
+
+            </button>
+
+
+            <button
+              class="danger"
+              onclick="openEnd(${last.id})">
+
+              إنهاء البلاغ
+
+            </button>
+
+          </div>
+
+          `
+
+          :
+
+          `
+
+          <div class="row">
+
+            <span>
+              📱 آخر حالة
+            </span>
+
+            <span>
+              لا توجد بلاغات نشطة
+            </span>
+
+          </div>
+
+          `
+
+        }
+
+      </div>
+
+    `;
+
+  });
+
 }
 
-</b>
 
-</div>
-`;
-
-}).join('');
-
-let last=open[0];
-
-el.innerHTML+=`
-
-<div class="card">
-
-<div class="fac-head">
-
-<div class="name">${f}</div>
-
-<span class="badge ${st==='تحتاج متابعة'?'o':''}">
-
-${st==='طبيعي'
-?'🟢 جاهزة'
-:'🟠 تحتاج متابعة'}
-
-</span>
-
-</div>
-
-<div class="grid">
-${cards}
-</div>
-
-${
-last
-?
-
-`
-
-<div class="row">
-
-<span>
-🚨 ${currentType(last)}
-</span>
-
-<span>
-⏱️ ${elapsed(last.start_time)}
-</span>
-
-</div>
-
-<div class="actions">
-
-<button
-class="secondary"
-onclick="showDetails(${last.id})"
->
-فتح التفاصيل
-</button>
-
-<button
-class="danger"
-onclick="openEnd('${last.id}')"
->
-إنهاء البلاغ
-</button>
-
-</div>
-
-`
-
-:
-
-`
-
-<div class="row">
-
-<span>📱 آخر حالة</span>
-
-<span>لا توجد بلاغات نشطة</span>
-
-</div>
-
-`
-
-}
-
-</div>
-
-`;
-
-});
-
-}
-
-
-/* =========================================================
-   تفاصيل البلاغ
-   ========================================================= */
-
-function showDetails(id){
-
-const x=data.incidents.find(i=>String(i.id)===String(id));
-
-if(!x)return;
-
-let details=
-`المنشأة: ${x.facility}
-\nنوع البلاغ: ${currentType(x)}
-\nالنطاق: ${x.scope}`;
-
-if(x.scope==='جزئي'){
-details+=`\nالقسم المتأثر: ${x.department||'-'}`;
-}
-
-details+=
-`\nتأثير الخدمة: ${x.service_impact||'-'}
-\nمصدر البلاغ: ${x.source||'-'}
-\nالمبلّغ: ${x.reporter||'-'}
-\nالوصف: ${x.description||'-'}
-\nالملاحظات: ${x.note||'-'}`;
-
-toast(details);
-
-}
-
-
-/* =========================================================
-   الرسم الرئيسي
-   ========================================================= */
+/* ============================================
+   عرض الصفحة
+============================================ */
 
 function render(){
 
-let normal=0;
-let follow=0;
+  let normal=0;
 
-facilities.forEach(f=>{
-
-if(state(f)==='طبيعي')
-normal++;
-else
-follow++;
-
-});
-
-document.getElementById('total').textContent=21;
-document.getElementById('normal').textContent=normal;
-document.getElementById('follow').textContent=follow;
+  let follow=0;
 
 
-const open=data.incidents
-.filter(x=>!x.end_time)
-.sort(
-(a,b)=>
-new Date(a.start_time)-
-new Date(b.start_time)
-);
+  facilities.forEach(f=>{
 
-document.getElementById('openTotal').textContent=open.length;
+    if(state(f)==="طبيعي")
+      normal++;
+    else
+      follow++;
 
-document.getElementById('openCount').textContent=
-`(${open.length})`;
+  });
 
 
-document.getElementById('openIncidents').innerHTML=
+  document.getElementById(
+    "total"
+  ).textContent=21;
 
-open.length
 
-?
+  document.getElementById(
+    "normal"
+  ).textContent=normal;
 
-open.map(x=>`
 
-<div class="card">
+  document.getElementById(
+    "follow"
+  ).textContent=follow;
 
-<div class="fac-head">
 
-<div class="name">
+  const open =
+    data.incidents
+      .filter(x=>!x.end_time)
+      .sort(
+        (a,b)=>
+          new Date(a.start_time) -
+          new Date(b.start_time)
+      );
 
-🟠 ${x.facility}
-—
-${icon(currentType(x))}
-${currentType(x)}
 
-</div>
+  document.getElementById(
+    "openTotal"
+  ).textContent=open.length;
 
-<span class="badge o">
-مفتوح
-</span>
 
-</div>
+  document.getElementById(
+    "openCount"
+  ).textContent=
+    `(${open.length})`;
 
-<div class="row">
 
-<span>
-${x.source||'-'}
-•
-${x.reporter||'-'}
-</span>
+  const openEl =
+    document.getElementById(
+      "openIncidents"
+    );
 
-<span>
-بدأ ${fmtDate(x.start_time)}
-</span>
 
-</div>
+  if(open.length){
 
-<div class="row">
+    openEl.innerHTML =
+      open.map(x=>`
 
-<span>
+        <div class="card">
 
-النطاق:
-${x.scope}
+          <div class="fac-head">
 
-${
-x.scope==='جزئي'
-?` • ${x.department||'-'}`
-:''
+            <div class="name">
+
+              🟠 ${x.facility}
+
+              —
+
+              ${icon(currentType(x))}
+
+              ${currentType(x)}
+
+            </div>
+
+            <span class="badge o">
+              مفتوح
+            </span>
+
+          </div>
+
+
+          <div class="row">
+
+            <span>
+              ${x.source || "-"}
+              •
+              ${x.reporter || "-"}
+            </span>
+
+            <span>
+              بدأ ${fmtDate(x.start_time)}
+            </span>
+
+          </div>
+
+
+          <div class="row">
+
+            <span>
+
+              النطاق:
+              ${x.scope}
+
+              ${
+                x.scope==="جزئي"
+                ? ` • ${x.department || "-"}`
+                : ""
+              }
+
+            </span>
+
+
+            <span>
+              ⏱️ ${elapsed(x.start_time)}
+            </span>
+
+          </div>
+
+
+          <button
+            class="danger"
+            style="width:100%;margin-top:9px"
+            onclick="openEnd(${x.id})">
+
+            إنهاء البلاغ
+
+          </button>
+
+        </div>
+
+      `).join("");
+
+  }else{
+
+    openEl.innerHTML = `
+
+      <div
+        class="card"
+        style="text-align:center;color:#16834b">
+
+        🟢 لا توجد بلاغات نشطة
+
+      </div>
+
+    `;
+
+  }
+
+
+  const history =
+    data.incidents
+      .filter(x=>x.end_time)
+      .slice()
+      .reverse();
+
+
+  document.getElementById(
+    "history"
+  ).innerHTML =
+
+    history.length
+
+    ?
+
+    history.map(x=>`
+
+      <tr>
+
+        <td>
+          ${x.facility}
+        </td>
+
+        <td>
+          ${currentType(x)}
+        </td>
+
+        <td>
+
+          ${x.scope}
+
+          ${
+            x.scope==="جزئي"
+            ? ` — ${x.department || "-"}`
+            : ""
+          }
+
+        </td>
+
+        <td>
+          ${fmtDate(x.start_time)}
+        </td>
+
+        <td>
+          ${fmtDate(x.end_time)}
+        </td>
+
+        <td>
+          ${dur(
+            x.start_time,
+            x.end_time
+          )}
+        </td>
+
+      </tr>
+
+    `).join("")
+
+    :
+
+    `
+      <tr>
+        <td colspan="6">
+          لا يوجد سجل
+        </td>
+      </tr>
+    `;
+
+
+  renderFacilities();
+
 }
 
-</span>
 
-<span>
-⏱️ ${elapsed(x.start_time)}
-</span>
-
-</div>
-
-<button
-class="danger"
-style="width:100%;margin-top:9px"
-onclick="openEnd('${x.id}')"
->
-
-إنهاء البلاغ
-
-</button>
-
-</div>
-
-`).join('')
-
-:
-
-`
-
-<div class="card" style="
-text-align:center;
-color:#16834b
-">
-
-🟢 لا توجد بلاغات نشطة
-
-</div>
-
-`;
-
-
-/* سجل البلاغات */
-
-const closed=data.incidents
-.filter(x=>x.end_time)
-.slice()
-.sort(
-(a,b)=>
-new Date(b.end_time)-
-new Date(a.end_time)
-);
-
-
-document.getElementById('history').innerHTML=
-
-closed.length
-
-?
-
-closed.map(x=>`
-
-<tr>
-
-<td>${x.facility}</td>
-
-<td>${currentType(x)}</td>
-
-<td>
-
-${x.scope}
-
-${
-x.scope==='جزئي'
-?` — ${x.department||'-'}`
-:''
-}
-
-</td>
-
-<td>${fmtDate(x.start_time)}</td>
-
-<td>${fmtDate(x.end_time)}</td>
-
-<td>${dur(x.start_time,x.end_time)}</td>
-
-</tr>
-
-`).join('')
-
-:
-
-`
-
-<tr>
-<td colspan="6">
-لا يوجد سجل
-</td>
-</tr>
-
-`;
-
-
-renderFacilities();
-
-}
-
-
-/* =========================================================
-   فتح نموذج البلاغ
-   ========================================================= */
+/* ============================================
+   تسجيل بلاغ جديد
+============================================ */
 
 function openIncidentModal(){
 
-document.getElementById('f').innerHTML=
+  document.getElementById(
+    "f"
+  ).innerHTML =
 
-facilities
-.map(f=>`<option>${f}</option>`)
-.join('');
-
-
-document.getElementById('start').value=
-
-new Date(
-Date.now()-
-new Date().getTimezoneOffset()*60000
-)
-.toISOString()
-.slice(0,16);
+    facilities
+      .map(
+        f=>`<option>${f}</option>`
+      )
+      .join("");
 
 
-document.getElementById('type').value='الكهرباء';
+  document.getElementById(
+    "start"
+  ).value =
 
-document.getElementById('scope').value='كلي';
+    new Date(
+      Date.now() -
+      new Date().getTimezoneOffset()*60000
+    )
+    .toISOString()
+    .slice(0,16);
 
-document.getElementById('otherType').value='';
-document.getElementById('partialDept').value='';
-document.getElementById('reporter').value='';
-document.getElementById('desc').value='';
-document.getElementById('note').value='';
 
-toggleOther();
-togglePartial();
+  toggleOther();
 
-document.getElementById('modal').style.display='flex';
+  togglePartial();
+
+
+  document.getElementById(
+    "modal"
+  ).style.display="flex";
 
 }
 
 
 function closeModal(){
 
-document.getElementById('modal').style.display='none';
+  document.getElementById(
+    "modal"
+  ).style.display="none";
 
 }
 
 
 function toggleOther(){
 
-document
-.getElementById('otherWrap')
-.classList
-.toggle(
-'hidden',
-document.getElementById('type').value!=='أخرى'
-);
+  document.getElementById(
+    "otherWrap"
+  ).classList.toggle(
+    "hidden",
+    document.getElementById(
+      "type"
+    ).value!=="أخرى"
+  );
 
 }
 
 
 function togglePartial(){
 
-document
-.getElementById('partialWrap')
-.classList
-.toggle(
-'hidden',
-document.getElementById('scope').value!=='جزئي'
-);
+  document.getElementById(
+    "partialWrap"
+  ).classList.toggle(
+    "hidden",
+    document.getElementById(
+      "scope"
+    ).value!=="جزئي"
+  );
 
 }
 
 
-/* =========================================================
+/* ============================================
    حفظ البلاغ في Supabase
-   ========================================================= */
+============================================ */
 
 async function saveIncident(){
 
-let type=document.getElementById('type').value;
-
-let other=
-document.getElementById('otherType')
-.value.trim();
-
-let scope=
-document.getElementById('scope').value;
-
-let dept=
-document.getElementById('partialDept')
-.value.trim();
-
-let reporter=
-document.getElementById('reporter')
-.value.trim();
-
-let start=
-document.getElementById('start').value;
+  const type =
+    document.getElementById(
+      "type"
+    ).value;
 
 
-if(type==='أخرى' && !other){
+  const other =
+    document.getElementById(
+      "otherType"
+    ).value.trim();
 
-return toast('⚠️ اكتب نوع البلاغ');
+
+  const scope =
+    document.getElementById(
+      "scope"
+    ).value;
+
+
+  const dept =
+    document.getElementById(
+      "partialDept"
+    ).value.trim();
+
+
+  const reporter =
+    document.getElementById(
+      "reporter"
+    ).value.trim();
+
+
+  const start =
+    document.getElementById(
+      "start"
+    ).value;
+
+
+  if(type==="أخرى" && !other){
+
+    toast(
+      "⚠️ اكتب نوع البلاغ"
+    );
+
+    return;
+
+  }
+
+
+  if(scope==="جزئي" && !dept){
+
+    toast(
+      "⚠️ اكتب القسم المتأثر"
+    );
+
+    return;
+
+  }
+
+
+  if(!reporter){
+
+    toast(
+      "⚠️ اكتب اسم المبلّغ"
+    );
+
+    return;
+
+  }
+
+
+  if(!start){
+
+    toast(
+      "⚠️ حدد وقت بداية البلاغ"
+    );
+
+    return;
+
+  }
+
+
+  const payload = {
+
+    facility:
+      document.getElementById("f").value,
+
+    type:type,
+
+    other_type:other || null,
+
+    power:
+      document.getElementById("power").value,
+
+    scope:scope,
+
+    department:
+      dept || null,
+
+    service_impact:
+      document.getElementById(
+        "serviceImpact"
+      ).value,
+
+    source:
+      document.getElementById(
+        "src"
+      ).value,
+
+    reporter:reporter,
+
+    start_time:
+      new Date(start).toISOString(),
+
+    end_time:null,
+
+    description:
+      document.getElementById(
+        "desc"
+      ).value.trim() || null,
+
+    note:
+      document.getElementById(
+        "note"
+      ).value.trim() || null,
+
+    status:"نشط"
+
+  };
+
+
+  try{
+
+    const {
+      data:inserted,
+      error
+    } = await supabaseClient
+      .from("incidents")
+      .insert([payload])
+      .select()
+      .single();
+
+
+    if(error){
+
+      console.error(
+        "Supabase INSERT ERROR:",
+        error
+      );
+
+      toast(
+        "❌ لم يتم حفظ البلاغ: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    if(inserted){
+
+      data.incidents.push(
+        inserted
+      );
+
+    }
+
+
+    closeModal();
+
+    render();
+
+    toast(
+      "✅ تم حفظ البلاغ في قاعدة البيانات المركزية"
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "❌ لم يتم حفظ البلاغ: " +
+      error.message
+    );
+
+  }
 
 }
 
 
-if(scope==='جزئي' && !dept){
+/* ============================================
+   تفاصيل البلاغ
+============================================ */
 
-return toast('⚠️ اكتب القسم المتأثر');
+function showDetails(id){
 
-}
-
-
-if(!reporter){
-
-return toast('⚠️ اكتب اسم المبلّغ');
-
-}
+  const x =
+    data.incidents.find(
+      i=>i.id===id
+    );
 
 
-if(!start){
-
-return toast('⚠️ حدد وقت بداية البلاغ');
-
-}
+  if(!x) return;
 
 
-const incident={
-
-facility:
-document.getElementById('f').value,
-
-type:type,
-
-other_type:
-other || null,
-
-power:
-document.getElementById('power').value,
-
-scope:scope,
-
-department:
-dept || null,
-
-service_impact:
-document.getElementById('serviceImpact').value,
-
-source:
-document.getElementById('src').value,
-
-reporter:reporter,
-
-start_time:
-new Date(start).toISOString(),
-
-end_time:null,
-
-description:
-document.getElementById('desc').value.trim() || null,
-
-note:
-document.getElementById('note').value.trim() || null,
-
-status:'نشط'
-
-};
+  let text =
+    `المنشأة: ${x.facility}\n` +
+    `نوع البلاغ: ${currentType(x)}\n` +
+    `النطاق: ${x.scope}\n` +
+    `القسم: ${
+      x.department || "كامل المنشأة"
+    }\n` +
+    `تأثير الخدمة: ${
+      x.service_impact || "-"
+    }\n` +
+    `المصدر: ${
+      x.source || "-"
+    }\n` +
+    `المبلّغ: ${
+      x.reporter || "-"
+    }\n` +
+    `الوصف: ${
+      x.description || "-"
+    }\n` +
+    `الملاحظات: ${
+      x.note || "-"
+    }`;
 
 
-try{
-
-const {data:inserted,error}=await supabaseClient
-.from('incidents')
-.insert([incident])
-.select()
-.single();
-
-
-if(error){
-
-console.error(error);
-
-toast(
-'❌ لم يتم حفظ البلاغ: '+error.message
-);
-
-return;
+  alert(text);
 
 }
 
 
-data.incidents.unshift(
-normalizeIncident(inserted)
-);
-
-closeModal();
-
-render();
-
-toast(
-'✅ تم حفظ البلاغ في قاعدة البيانات المركزية'
-);
-
-}catch(error){
-
-console.error(error);
-
-toast(
-'❌ حدث خطأ أثناء حفظ البلاغ'
-);
-
-}
-
-}
-
-
-/* =========================================================
-   إنهاء البلاغ
-   ========================================================= */
+/* ============================================
+   إغلاق البلاغ
+============================================ */
 
 function openEnd(id){
 
-closingId=id;
+  closingId=id;
 
-document.getElementById('end').value=
 
-new Date(
-Date.now()-
-new Date().getTimezoneOffset()*60000
-)
-.toISOString()
-.slice(0,16);
+  document.getElementById(
+    "end"
+  ).value =
 
-document.getElementById('closeModalBox').style.display='flex';
+    new Date(
+      Date.now() -
+      new Date().getTimezoneOffset()*60000
+    )
+    .toISOString()
+    .slice(0,16);
+
+
+  document.getElementById(
+    "closeModalBox"
+  ).style.display="flex";
 
 }
 
 
 function closeEnd(){
 
-document.getElementById('closeModalBox').style.display='none';
+  document.getElementById(
+    "closeModalBox"
+  ).style.display="none";
 
-closingId=null;
+  closingId=null;
 
 }
 
 
-/* =========================================================
+/* ============================================
    تحديث البلاغ في Supabase
-   ========================================================= */
+============================================ */
 
 async function finishIncident(){
 
-const x=data.incidents.find(
-i=>String(i.id)===String(closingId)
-);
-
-const end=document.getElementById('end').value;
-
-if(!x || !end)return;
+  const x =
+    data.incidents.find(
+      i=>i.id===closingId
+    );
 
 
-if(
-new Date(end)<
-new Date(x.start_time)
-){
+  const end =
+    document.getElementById(
+      "end"
+    ).value;
 
-return toast(
-'⚠️ وقت العودة لا يمكن أن يسبق وقت البداية'
-);
+
+  if(!x || !end)
+    return;
+
+
+  if(
+    new Date(end) <
+    new Date(x.start_time)
+  ){
+
+    toast(
+      "⚠️ وقت العودة لا يمكن أن يسبق وقت البداية"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const {
+      data:updated,
+      error
+    } = await supabaseClient
+
+      .from("incidents")
+
+      .update({
+
+        end_time:
+          new Date(end).toISOString(),
+
+        status:
+          "مغلق"
+
+      })
+
+      .eq(
+        "id",
+        closingId
+      )
+
+      .select()
+      .single();
+
+
+    if(error){
+
+      console.error(
+        "Supabase UPDATE ERROR:",
+        error
+      );
+
+      toast(
+        "❌ لم يتم إغلاق البلاغ: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    const index =
+      data.incidents.findIndex(
+        i=>i.id===closingId
+      );
+
+
+    if(index !== -1){
+
+      data.incidents[index] =
+        updated;
+
+    }
+
+
+    closeEnd();
+
+    render();
+
+    toast(
+      "✅ تم إغلاق البلاغ وحفظه في قاعدة البيانات"
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    toast(
+      "❌ لم يتم إغلاق البلاغ: " +
+      error.message
+    );
+
+  }
 
 }
 
 
-try{
-
-const endISO=
-new Date(end).toISOString();
-
-
-const {data:updated,error}=await supabaseClient
-.from('incidents')
-.update({
-
-end_time:endISO,
-
-status:'مغلق'
-
-})
-.eq('id',closingId)
-.select()
-.single();
-
-
-if(error){
-
-console.error(error);
-
-toast(
-'❌ لم يتم إنهاء البلاغ: '+error.message
-);
-
-return;
-
-}
-
-
-const index=data.incidents.findIndex(
-i=>String(i.id)===String(closingId)
-);
-
-if(index!==-1){
-
-data.incidents[index]=
-normalizeIncident(updated);
-
-}
-
-
-closeEnd();
-
-render();
-
-toast(
-'✅ تم إنهاء البلاغ وحفظه في قاعدة البيانات'
-);
-
-}catch(error){
-
-console.error(error);
-
-toast(
-'❌ حدث خطأ أثناء إنهاء البلاغ'
-);
-
-}
-
-}
-
-
-/* =========================================================
+/* ============================================
    التقارير
-   ========================================================= */
+============================================ */
 
 function report(){
 
-const open=data.incidents.filter(
-x=>!x.end_time
-).length;
-
-const closed=data.incidents.filter(
-x=>x.end_time
-).length;
-
-toast(
-`📊 التقرير: ${open} نشط • ${closed} مغلق`
-);
-
-}
+  const open =
+    data.incidents.filter(
+      x=>!x.end_time
+    ).length;
 
 
-/* =========================================================
-   تحديث البيانات من قاعدة البيانات
-   ========================================================= */
+  const closed =
+    data.incidents.filter(
+      x=>x.end_time
+    ).length;
 
-async function refreshData(){
 
-await loadIncidents();
+  const total =
+    data.incidents.length;
+
+
+  toast(
+    `📊 إجمالي البلاغات: ${total} • نشطة: ${open} • مغلقة: ${closed}`
+  );
 
 }
 
 
-/* =========================================================
-   الصفحة الرئيسية
-   ========================================================= */
+/* ============================================
+   الرسائل
+============================================ */
+
+function toast(t){
+
+  const e =
+    document.getElementById(
+      "toast"
+    );
+
+
+  e.textContent=t;
+
+  e.style.display="block";
+
+
+  setTimeout(
+    ()=>{
+      e.style.display="none";
+    },
+    3500
+  );
+
+}
+
+
+function showConnectionError(message){
+
+  document.getElementById(
+    "connectionError"
+  ).innerHTML = `
+
+    <div class="section">
+
+      <div class="errorbox">
+
+        ⚠️ ${message}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function clearConnectionError(){
+
+  document.getElementById(
+    "connectionError"
+  ).innerHTML="";
+
+}
+
 
 function scrollToTop(){
 
-scrollTo({
-top:0,
-behavior:'smooth'
-});
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
 }
 
 
-/* =========================================================
-   التشغيل
-   ========================================================= */
+/* ============================================
+   بدء النظام
+============================================ */
 
-loadIncidents();
+async function init(){
+
+  document.getElementById(
+    "facilities"
+  ).innerHTML =
+    `<div class="loading">
+      جاري الاتصال بقاعدة البيانات...
+    </div>`;
+
+
+  const success =
+    await loadData();
+
+
+  if(success){
+
+    render();
+
+  }
+
+}
 
 
 /*
-تحديث البيانات من Supabase كل 10 ثواني
-حتى تظهر البلاغات الجديدة على الأجهزة الأخرى.
+   تحديث البيانات من Supabase كل 10 ثوانٍ
+   حتى تظهر البلاغات الجديدة على الأجهزة الأخرى.
 */
 
 setInterval(
-loadIncidents,
-10000
+  async ()=>{
+    const success =
+      await loadData();
+
+    if(success){
+      render();
+    }
+  },
+  10000
 );
+
+
+init();
 
 </script>
 
