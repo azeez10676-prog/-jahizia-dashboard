@@ -17,7 +17,8 @@
   --blue:#2563eb;
   --green:#16834b;
   --orange:#d97706;
-  --red:#dc2626
+  --red:#dc2626;
+  --purple:#7c3aed
 }
 
 *{box-sizing:border-box}
@@ -30,6 +31,8 @@ body{
 }
 
 button,input,select,textarea{font:inherit}
+
+button{cursor:pointer}
 
 .login{
   min-height:100vh;
@@ -72,9 +75,7 @@ button,input,select,textarea{font:inherit}
   margin:7px 0 20px
 }
 
-.login-field{
-  margin:12px 0
-}
+.login-field{margin:12px 0}
 
 .login-field label{
   display:block;
@@ -114,12 +115,10 @@ button,input,select,textarea{font:inherit}
   margin-bottom:10px
 }
 
-#app{
-  display:none
-}
+#app{display:none}
 
 .app{
-  max-width:980px;
+  max-width:1100px;
   margin:auto;
   min-height:100vh;
   padding-bottom:92px
@@ -175,6 +174,15 @@ header{
   margin-bottom:4px
 }
 
+.admin-badge{
+  display:inline-block;
+  background:#ede9fe;
+  color:#6d28d9;
+  padding:4px 7px;
+  border-radius:7px;
+  font-weight:800
+}
+
 .logout{
   background:#fee2e2;
   color:#b91c1c;
@@ -185,9 +193,7 @@ header{
   font-weight:800
 }
 
-.section{
-  padding:15px
-}
+.section{padding:15px}
 
 .title{
   font-size:17px;
@@ -230,6 +236,7 @@ header{
 .green{color:var(--green)}
 .orange{color:var(--orange)}
 .red{color:var(--red)}
+.purple{color:var(--purple)}
 
 .card{
   background:#fff;
@@ -266,6 +273,11 @@ header{
   color:var(--orange)
 }
 
+.badge.p{
+  background:#ede9fe;
+  color:#6d28d9
+}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -293,9 +305,7 @@ header{
   margin:3px 0
 }
 
-.sys b{
-  font-size:10px
-}
+.sys b{font-size:10px}
 
 .row{
   display:flex;
@@ -318,24 +328,14 @@ button{
   border-radius:11px;
   padding:11px 13px;
   font-size:12px;
-  font-weight:800;
-  cursor:pointer
+  font-weight:800
 }
 
-.primary{
-  background:var(--blue);
-  color:#fff
-}
-
-.secondary{
-  background:#eef2ff;
-  color:#1d4ed8
-}
-
-.danger{
-  background:#fee2e2;
-  color:#b91c1c
-}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#eef2ff;color:#1d4ed8}
+.danger{background:#fee2e2;color:#b91c1c}
+.neutral{background:#f1f5f9;color:#334155}
+.admin-button{background:#ede9fe;color:#6d28d9}
 
 .overlay{
   display:none;
@@ -362,9 +362,7 @@ button{
   font-size:17px
 }
 
-.field{
-  margin:9px 0
-}
+.field{margin:9px 0}
 
 .field label{
   display:block;
@@ -390,13 +388,9 @@ button{
   margin-top:13px
 }
 
-.ma button{
-  flex:1
-}
+.ma button{flex:1}
 
-.hidden{
-  display:none
-}
+.hidden{display:none}
 
 .required:after{
   content:' *';
@@ -437,6 +431,62 @@ button{
   margin-bottom:10px
 }
 
+.successbox{
+  background:#ecfdf3;
+  color:#166534;
+  border:1px solid #bbf7d0;
+  border-radius:12px;
+  padding:12px;
+  font-size:12px;
+  margin-bottom:10px
+}
+
+.filter-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px
+}
+
+.filter-grid select,
+.filter-grid input{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  font-size:12px
+}
+
+.report-cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px
+}
+
+.report-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  text-align:center
+}
+
+.report-card span{
+  display:block;
+  font-size:10px;
+  color:var(--muted)
+}
+
+.report-card b{
+  display:block;
+  font-size:20px;
+  margin-top:5px
+}
+
+.table-wrap{
+  overflow:auto
+}
+
 table{
   width:100%;
   border-collapse:collapse;
@@ -450,41 +500,38 @@ th,td{
   white-space:nowrap
 }
 
-th{
-  background:#f8fafc
+th{background:#f8fafc}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:20px
 }
 
-@media(max-width:600px){
-  .stats{
+@media(max-width:700px){
+  .stats,
+  .report-cards{
     grid-template-columns:repeat(2,1fr)
   }
 
-  .grid{
-    gap:3px
+  .filter-grid{
+    grid-template-columns:1fr
   }
 
-  .sys{
-    font-size:8px
-  }
+  .grid{gap:3px}
 
-  .section{
-    padding:13px
-  }
+  .sys{font-size:8px}
 
-  .brand h1{
-    font-size:18px
-  }
+  .section{padding:13px}
 
-  .userbox{
-    display:none
-  }
+  .brand h1{font-size:18px}
+
+  .userbox{display:none}
 }
 </style>
 </head>
 
 <body>
-
-<!-- LOGIN -->
 
 <div id="loginPage" class="login">
 
@@ -494,46 +541,34 @@ th{
 
     <h1>جاهزية المنشآت الصحية</h1>
 
-    <p>
-      تسجيل الدخول إلى نظام متابعة جاهزية المنشآت
-    </p>
+    <p>تسجيل الدخول إلى نظام متابعة جاهزية المنشآت</p>
 
     <div id="loginError" class="login-error"></div>
 
     <div class="login-field">
-
       <label>البريد الإلكتروني</label>
-
       <input
         id="loginEmail"
         type="email"
         placeholder="name@example.com"
         autocomplete="username">
-
     </div>
 
     <div class="login-field">
-
       <label>كلمة المرور</label>
-
       <input
         id="loginPassword"
         type="password"
         placeholder="كلمة المرور"
         autocomplete="current-password">
-
     </div>
 
-    <button onclick="login()">
-      تسجيل الدخول
-    </button>
+    <button onclick="login()">تسجيل الدخول</button>
 
   </div>
 
 </div>
 
-
-<!-- APP -->
 
 <div id="app">
 
@@ -546,30 +581,16 @@ th{
     <div class="logo">🏥</div>
 
     <div class="brand">
-
       <h1>جاهزية المنشآت الصحية</h1>
-
-      <p>
-        مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي
-      </p>
-
+      <p>مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي</p>
     </div>
 
     <div class="userbox">
-
       <b id="userName"></b>
-
       <span id="userRole"></span>
-
     </div>
 
-    <button
-      class="logout"
-      onclick="logout()">
-
-      خروج
-
-    </button>
+    <button class="logout" onclick="logout()">خروج</button>
 
   </div>
 
@@ -581,9 +602,7 @@ th{
 
 <div class="section">
 
-  <div class="title">
-    لوحة المتابعة
-  </div>
+  <div class="title">لوحة المتابعة</div>
 
   <div class="subline" id="dashboardSubtitle"></div>
 
@@ -617,14 +636,8 @@ th{
 <div class="section">
 
   <div class="title">
-
     🚨 البلاغات النشطة
-
-    <span
-      id="openCount"
-      style="color:#6b7280;font-size:11px">
-    </span>
-
+    <span id="openCount" style="color:#6b7280;font-size:11px"></span>
   </div>
 
   <div class="subline">
@@ -632,18 +645,14 @@ th{
   </div>
 
   <div id="openIncidents">
-    <div class="loading">
-      جاري التحميل...
-    </div>
+    <div class="loading">جاري التحميل...</div>
   </div>
 
   <button
     class="primary"
     style="width:100%"
     onclick="openIncidentModal()">
-
     ＋ تسجيل بلاغ جديد
-
   </button>
 
 </div>
@@ -651,9 +660,7 @@ th{
 
 <div class="section">
 
-  <div class="title">
-    المنشآت
-  </div>
+  <div class="title">المنشآت</div>
 
   <div id="facilities"></div>
 
@@ -662,27 +669,25 @@ th{
 
 <div class="section">
 
-  <div class="title">
-    📋 سجل البلاغات المغلقة
+  <div class="title">📋 سجل البلاغات المغلقة</div>
+
+  <div class="subline">
+    جميع البلاغات التي تم إغلاقها حسب صلاحية الحساب.
   </div>
 
-  <div
-    class="card"
-    style="overflow:auto">
+  <div class="card table-wrap">
 
     <table>
 
       <thead>
 
         <tr>
-
           <th>المنشأة</th>
           <th>نوع البلاغ</th>
-          <th>نطاق التأثير</th>
+          <th>النطاق</th>
           <th>البداية</th>
           <th>النهاية</th>
           <th>المدة</th>
-
         </tr>
 
       </thead>
@@ -690,7 +695,7 @@ th{
       <tbody id="history">
 
         <tr>
-          <td colspan="6">
+          <td colspan="6" class="empty">
             جاري التحميل...
           </td>
         </tr>
@@ -704,46 +709,134 @@ th{
 </div>
 
 
+<div class="section">
+
+  <div class="title">📊 التقارير والإحصائيات</div>
+
+  <div class="subline">
+    ملخص البلاغات حسب المنشأة ونوع البلاغ.
+  </div>
+
+  <div class="report-cards">
+
+    <div class="report-card">
+      <span>إجمالي البلاغات</span>
+      <b id="reportTotal">0</b>
+    </div>
+
+    <div class="report-card">
+      <span>البلاغات المغلقة</span>
+      <b class="green" id="reportClosed">0</b>
+    </div>
+
+    <div class="report-card">
+      <span>بلاغات الكهرباء</span>
+      <b class="orange" id="reportElectricity">0</b>
+    </div>
+
+    <div class="report-card">
+      <span>متوسط مدة البلاغ</span>
+      <b id="reportAverage">00:00:00</b>
+    </div>
+
+  </div>
+
 </div>
 
+
+<div class="section">
+
+  <div class="title">📈 تقرير المنشآت</div>
+
+  <div class="card">
+
+    <div class="filter-grid">
+
+      <select id="reportFacility">
+        <option value="">جميع المنشآت</option>
+      </select>
+
+      <select id="reportType">
+        <option value="">جميع أنواع البلاغات</option>
+        <option>الكهرباء</option>
+        <option>المياه</option>
+        <option>التكييف</option>
+        <option>النظام الإلكتروني</option>
+        <option>الطاقة الاحتياطية</option>
+        <option>أخرى</option>
+      </select>
+
+      <select id="reportStatus">
+        <option value="">كل الحالات</option>
+        <option value="open">نشط</option>
+        <option value="closed">مغلق</option>
+      </select>
+
+    </div>
+
+    <button
+      class="secondary"
+      style="width:100%;margin-top:9px"
+      onclick="applyReport()">
+      🔎 تطبيق التقرير
+    </button>
+
+  </div>
+
+
+  <div class="card table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+          <th>المنشأة</th>
+          <th>نوع البلاغ</th>
+          <th>الحالة</th>
+          <th>النطاق</th>
+          <th>البداية</th>
+          <th>النهاية</th>
+          <th>المدة</th>
+        </tr>
+
+      </thead>
+
+      <tbody id="reportsTable"></tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+</div>
 </div>
 
 
 <!-- NEW INCIDENT -->
 
-<div
-  class="overlay"
-  id="modal">
+<div class="overlay" id="modal">
 
   <div class="modal">
 
-    <h2>
-      🚨 تسجيل بلاغ جديد
-    </h2>
+    <h2>🚨 تسجيل بلاغ جديد</h2>
 
     <div class="field">
 
-      <label class="required">
-        المنشأة
-      </label>
+      <label class="required">المنشأة</label>
 
-      <input
-        id="facilityDisplay"
-        readonly
-        style="background:#f8fafc">
+      <select id="facilitySelect"></select>
 
     </div>
 
 
     <div class="field">
 
-      <label class="required">
-        نوع البلاغ
-      </label>
+      <label class="required">نوع البلاغ</label>
 
-      <select
-        id="type"
-        onchange="toggleOther()">
+      <select id="type" onchange="toggleOther()">
 
         <option>الكهرباء</option>
         <option>المياه</option>
@@ -757,26 +850,18 @@ th{
     </div>
 
 
-    <div
-      class="field hidden"
-      id="otherWrap">
+    <div class="field hidden" id="otherWrap">
 
-      <label class="required">
-        نوع البلاغ - أخرى
-      </label>
+      <label class="required">نوع البلاغ - أخرى</label>
 
-      <input
-        id="otherType"
-        placeholder="اكتب نوع البلاغ">
+      <input id="otherType" placeholder="اكتب نوع البلاغ">
 
     </div>
 
 
     <div class="field">
 
-      <label>
-        مصدر الكهرباء
-      </label>
+      <label>مصدر الكهرباء</label>
 
       <select id="power">
 
@@ -791,13 +876,9 @@ th{
 
     <div class="field">
 
-      <label class="required">
-        نطاق التأثير
-      </label>
+      <label class="required">نطاق التأثير</label>
 
-      <select
-        id="scope"
-        onchange="togglePartial()">
+      <select id="scope" onchange="togglePartial()">
 
         <option>كلي</option>
         <option>جزئي</option>
@@ -807,13 +888,9 @@ th{
     </div>
 
 
-    <div
-      class="field hidden"
-      id="partialWrap">
+    <div class="field hidden" id="partialWrap">
 
-      <label class="required">
-        القسم المتأثر
-      </label>
+      <label class="required">القسم المتأثر</label>
 
       <input
         id="partialDept"
@@ -842,9 +919,7 @@ th{
 
     <div class="field">
 
-      <label class="required">
-        مصدر البلاغ
-      </label>
+      <label class="required">مصدر البلاغ</label>
 
       <select id="src">
 
@@ -861,71 +936,48 @@ th{
 
     <div class="field">
 
-      <label class="required">
-        اسم المبلّغ
-      </label>
+      <label class="required">اسم المبلّغ</label>
 
-      <input
-        id="reporter"
-        placeholder="اسم المبلّغ">
+      <input id="reporter" placeholder="اسم المبلّغ">
 
     </div>
 
 
     <div class="field">
 
-      <label class="required">
-        وقت بداية البلاغ
-      </label>
+      <label class="required">وقت بداية البلاغ</label>
 
-      <input
-        id="start"
-        type="datetime-local">
+      <input id="start" type="datetime-local">
 
     </div>
 
 
     <div class="field">
 
-      <label>
-        الوصف
-      </label>
+      <label>الوصف</label>
 
-      <textarea
-        id="desc"
-        rows="2"></textarea>
+      <textarea id="desc" rows="2"></textarea>
 
     </div>
 
 
     <div class="field">
 
-      <label>
-        الملاحظات
-      </label>
+      <label>الملاحظات</label>
 
-      <textarea
-        id="note"
-        rows="2"></textarea>
+      <textarea id="note" rows="2"></textarea>
 
     </div>
 
 
     <div class="ma">
 
-      <button
-        class="primary"
-        onclick="saveIncident()">
-
+      <button class="primary" onclick="saveIncident()">
         حفظ البلاغ
-
       </button>
 
-      <button
-        onclick="closeModal()">
-
+      <button onclick="closeModal()">
         إلغاء
-
       </button>
 
     </div>
@@ -937,43 +989,28 @@ th{
 
 <!-- CLOSE -->
 
-<div
-  class="overlay"
-  id="closeModalBox">
+<div class="overlay" id="closeModalBox">
 
   <div class="modal">
 
-    <h2>
-      ✅ إنهاء البلاغ
-    </h2>
+    <h2>✅ إنهاء البلاغ</h2>
 
     <div class="field">
 
-      <label>
-        وقت عودة الخدمة
-      </label>
+      <label>وقت عودة الخدمة</label>
 
-      <input
-        id="end"
-        type="datetime-local">
+      <input id="end" type="datetime-local">
 
     </div>
 
     <div class="ma">
 
-      <button
-        class="primary"
-        onclick="finishIncident()">
-
+      <button class="primary" onclick="finishIncident()">
         إنهاء وحساب المدة
-
       </button>
 
-      <button
-        onclick="closeEnd()">
-
+      <button onclick="closeEnd()">
         إلغاء
-
       </button>
 
     </div>
@@ -983,13 +1020,14 @@ th{
 </div>
 
 
-<div
-  class="toast"
-  id="toast">
-</div>
+<div class="toast" id="toast"></div>
 
 
 <script>
+
+/* =========================
+   SUPABASE
+========================= */
 
 const SUPABASE_URL =
   "https://fecfgkluloyxfpqmazxt.supabase.co";
@@ -1004,21 +1042,24 @@ const supabaseClient =
   );
 
 
+/* =========================
+   GLOBAL
+========================= */
+
 const allFacilities =
   Array.from(
     {length:21},
     (_,i)=>`شفا ${i+1}`
   );
 
+let currentUser=null;
+let profile=null;
 
-let currentUser = null;
-let profile = null;
-
-let data = {
+let data={
   incidents:[]
 };
 
-let closingId = null;
+let closingId=null;
 
 
 /* =========================
@@ -1028,15 +1069,10 @@ let closingId = null;
 async function login(){
 
   const email =
-    document
-      .getElementById("loginEmail")
-      .value
-      .trim();
+    document.getElementById("loginEmail").value.trim();
 
   const password =
-    document
-      .getElementById("loginPassword")
-      .value;
+    document.getElementById("loginPassword").value;
 
   const errorBox =
     document.getElementById("loginError");
@@ -1049,7 +1085,6 @@ async function login(){
       "⚠️ أدخل البريد الإلكتروني وكلمة المرور";
 
     errorBox.style.display="block";
-
     return;
   }
 
@@ -1068,15 +1103,12 @@ async function login(){
       "❌ بيانات الدخول غير صحيحة";
 
     errorBox.style.display="block";
-
     return;
   }
 
-  currentUser =
-    authData.user;
+  currentUser=authData.user;
 
   await startApp();
-
 }
 
 
@@ -1089,7 +1121,6 @@ async function logout(){
 
   document.getElementById("app").style.display="none";
   document.getElementById("loginPage").style.display="flex";
-
 }
 
 
@@ -1116,10 +1147,13 @@ async function loadProfile(){
 
     await supabaseClient.auth.signOut();
 
-    document.getElementById("loginError").textContent =
+    const errorBox =
+      document.getElementById("loginError");
+
+    errorBox.textContent =
       "هذا الحساب غير مرتبط بمنشأة في النظام";
 
-    document.getElementById("loginError").style.display="block";
+    errorBox.style.display="block";
 
     document.getElementById("app").style.display="none";
     document.getElementById("loginPage").style.display="flex";
@@ -1130,7 +1164,6 @@ async function loadProfile(){
   profile=row;
 
   return true;
-
 }
 
 
@@ -1140,8 +1173,7 @@ async function loadProfile(){
 
 async function startApp(){
 
-  const ok =
-    await loadProfile();
+  const ok=await loadProfile();
 
   if(!ok)
     return;
@@ -1152,25 +1184,33 @@ async function startApp(){
   document.getElementById("userName").textContent =
     currentUser.email;
 
-  document.getElementById("userRole").textContent =
-    profile.role==="admin"
-      ? "الإدارة المركزية"
-      : profile.facility;
+  if(profile.role==="admin"){
+
+    document.getElementById("userRole").innerHTML =
+      '<span class="admin-badge">الإدارة المركزية</span>';
+
+  }else{
+
+    document.getElementById("userRole").textContent =
+      profile.facility;
+
+  }
 
   document.getElementById("dashboardSubtitle").textContent =
     profile.role==="admin"
       ? "لوحة الإدارة المركزية • جميع المنشآت"
       : `لوحة متابعة ${profile.facility}`;
 
+  setupFacilityFilters();
+
   await loadData();
 
   render();
-
 }
 
 
 /* =========================
-   FACILITIES
+   VISIBLE FACILITIES
 ========================= */
 
 function visibleFacilities(){
@@ -1179,7 +1219,6 @@ function visibleFacilities(){
     return allFacilities;
 
   return [profile.facility];
-
 }
 
 
@@ -1209,7 +1248,6 @@ async function loadData(){
     );
 
     return false;
-
   }
 
   data.incidents=rows || [];
@@ -1217,7 +1255,6 @@ async function loadData(){
   clearConnectionError();
 
   return true;
-
 }
 
 
@@ -1227,7 +1264,8 @@ async function loadData(){
 
 function fmtDate(x){
 
-  if(!x) return "-";
+  if(!x)
+    return "-";
 
   return new Date(x).toLocaleString(
     "ar-SA",
@@ -1235,10 +1273,10 @@ function fmtDate(x){
       hour:"2-digit",
       minute:"2-digit",
       day:"2-digit",
-      month:"2-digit"
+      month:"2-digit",
+      year:"numeric"
     }
   );
-
 }
 
 
@@ -1247,10 +1285,11 @@ function dur(a,b){
   if(!a || !b)
     return "00:00:00";
 
-  let ms =
+  let ms=
     new Date(b)-new Date(a);
 
-  if(ms<0)ms=0;
+  if(ms<0)
+    ms=0;
 
   let s=Math.floor(ms/1000);
 
@@ -1265,7 +1304,6 @@ function dur(a,b){
       x=>String(x).padStart(2,"0")
     )
     .join(":");
-
 }
 
 
@@ -1275,7 +1313,6 @@ function elapsed(a){
     a,
     new Date().toISOString()
   );
-
 }
 
 
@@ -1288,7 +1325,6 @@ function icon(s){
     "التكييف":"❄️",
     "النظام الإلكتروني":"💻"
   }[s] || "⚙️";
-
 }
 
 
@@ -1297,7 +1333,6 @@ function currentType(x){
   return x.type==="أخرى"
     ? (x.other_type || "أخرى")
     : x.type;
-
 }
 
 
@@ -1310,7 +1345,6 @@ function state(f){
   )
   ? "تحتاج متابعة"
   : "طبيعي";
-
 }
 
 
@@ -1320,8 +1354,7 @@ function state(f){
 
 function render(){
 
-  const facilities =
-    visibleFacilities();
+  const facilities=visibleFacilities();
 
   let normal=0;
   let follow=0;
@@ -1335,7 +1368,6 @@ function render(){
 
   });
 
-
   document.getElementById("total").textContent =
     facilities.length;
 
@@ -1348,7 +1380,11 @@ function render(){
 
   const open =
     data.incidents
-      .filter(x=>!x.end_time)
+      .filter(
+        x =>
+          !x.end_time &&
+          facilities.includes(x.facility)
+      )
       .sort(
         (a,b)=>
           new Date(a.start_time) -
@@ -1451,7 +1487,6 @@ function render(){
       </div>
 
     `;
-
   }
 
 
@@ -1459,6 +1494,9 @@ function render(){
 
   renderHistory();
 
+  renderSummaryReports();
+
+  renderReportTable();
 }
 
 
@@ -1641,9 +1679,15 @@ function renderFacilities(){
 
 function renderHistory(){
 
+  const facilities=visibleFacilities();
+
   const history =
     data.incidents
-      .filter(x=>x.end_time)
+      .filter(
+        x =>
+          x.end_time &&
+          facilities.includes(x.facility)
+      )
       .slice()
       .reverse();
 
@@ -1690,12 +1734,260 @@ function renderHistory(){
 
     `
       <tr>
-        <td colspan="6">
+        <td colspan="6" class="empty">
           لا يوجد سجل
         </td>
       </tr>
     `;
+}
 
+
+/* =========================
+   REPORT SUMMARY
+========================= */
+
+function renderSummaryReports(){
+
+  const facilities=visibleFacilities();
+
+  const incidents =
+    data.incidents.filter(
+      x=>facilities.includes(x.facility)
+    );
+
+  const total=incidents.length;
+
+  const closed =
+    incidents.filter(
+      x=>!!x.end_time
+    ).length;
+
+  const electricity =
+    incidents.filter(
+      x=>currentType(x)==="الكهرباء"
+    ).length;
+
+  const durations =
+    incidents
+      .filter(
+        x=>x.start_time && x.end_time
+      )
+      .map(
+        x =>
+          new Date(x.end_time) -
+          new Date(x.start_time)
+      );
+
+  let average=0;
+
+  if(durations.length){
+
+    average =
+      durations.reduce(
+        (a,b)=>a+b,
+        0
+      ) /
+      durations.length;
+  }
+
+  document.getElementById("reportTotal").textContent =
+    total;
+
+  document.getElementById("reportClosed").textContent =
+    closed;
+
+  document.getElementById("reportElectricity").textContent =
+    electricity;
+
+  document.getElementById("reportAverage").textContent =
+    formatMilliseconds(average);
+}
+
+
+function formatMilliseconds(ms){
+
+  if(!ms || ms<0)
+    return "00:00:00";
+
+  let seconds=Math.floor(ms/1000);
+
+  let hours=Math.floor(seconds/3600);
+
+  let minutes=Math.floor(
+    (seconds%3600)/60
+  );
+
+  let secondsOnly=seconds%60;
+
+  return [
+    hours,
+    minutes,
+    secondsOnly
+  ]
+  .map(
+    x=>String(x).padStart(2,"0")
+  )
+  .join(":");
+}
+
+
+/* =========================
+   REPORT FILTERS
+========================= */
+
+function setupFacilityFilters(){
+
+  const select =
+    document.getElementById("reportFacility");
+
+  select.innerHTML =
+    '<option value="">جميع المنشآت</option>';
+
+  visibleFacilities().forEach(f=>{
+
+    const option =
+      document.createElement("option");
+
+    option.value=f;
+    option.textContent=f;
+
+    select.appendChild(option);
+
+  });
+
+}
+
+
+function applyReport(){
+
+  renderReportTable();
+
+  toast("✅ تم تحديث التقرير");
+}
+
+
+function renderReportTable(){
+
+  const table =
+    document.getElementById("reportsTable");
+
+  if(!table)
+    return;
+
+  const facility =
+    document.getElementById("reportFacility").value;
+
+  const type =
+    document.getElementById("reportType").value;
+
+  const status =
+    document.getElementById("reportStatus").value;
+
+
+  const allowed=visibleFacilities();
+
+  let rows =
+    data.incidents.filter(
+      x=>allowed.includes(x.facility)
+    );
+
+
+  if(facility){
+
+    rows =
+      rows.filter(
+        x=>x.facility===facility
+      );
+  }
+
+
+  if(type){
+
+    rows =
+      rows.filter(
+        x=>currentType(x)===type
+      );
+  }
+
+
+  if(status==="open"){
+
+    rows =
+      rows.filter(
+        x=>!x.end_time
+      );
+  }
+
+
+  if(status==="closed"){
+
+    rows =
+      rows.filter(
+        x=>!!x.end_time
+      );
+  }
+
+
+  rows =
+    rows.slice().sort(
+      (a,b)=>
+        new Date(b.start_time) -
+        new Date(a.start_time)
+    );
+
+
+  if(!rows.length){
+
+    table.innerHTML=`
+
+      <tr>
+        <td colspan="7" class="empty">
+          لا توجد بيانات مطابقة
+        </td>
+      </tr>
+
+    `;
+
+    return;
+  }
+
+
+  table.innerHTML =
+    rows.map(x=>`
+
+      <tr>
+
+        <td>${x.facility}</td>
+
+        <td>${currentType(x)}</td>
+
+        <td class="${x.end_time?'green':'red'}">
+          ${x.end_time?'مغلق':'نشط'}
+        </td>
+
+        <td>
+          ${x.scope || "-"}
+        </td>
+
+        <td>
+          ${fmtDate(x.start_time)}
+        </td>
+
+        <td>
+          ${fmtDate(x.end_time)}
+        </td>
+
+        <td>
+          ${
+            x.end_time
+            ? dur(x.start_time,x.end_time)
+            : elapsed(x.start_time)
+          }
+        </td>
+
+      </tr>
+
+    `).join("");
 }
 
 
@@ -1705,8 +1997,42 @@ function renderHistory(){
 
 function openIncidentModal(){
 
-  document.getElementById("facilityDisplay").value =
-    profile.facility;
+  const select =
+    document.getElementById("facilitySelect");
+
+  select.innerHTML="";
+
+
+  if(profile.role==="admin"){
+
+    allFacilities.forEach(f=>{
+
+      const option =
+        document.createElement("option");
+
+      option.value=f;
+      option.textContent=f;
+
+      select.appendChild(option);
+
+    });
+
+  }else{
+
+    const option =
+      document.createElement("option");
+
+    option.value=profile.facility;
+    option.textContent=profile.facility;
+
+    select.appendChild(option);
+
+    select.value=profile.facility;
+  }
+
+
+  select.disabled =
+    profile.role!=="admin";
 
 
   document.getElementById("start").value =
@@ -1718,18 +2044,13 @@ function openIncidentModal(){
     .slice(0,16);
 
 
-  toggleOther();
-  togglePartial();
-
   document.getElementById("modal").style.display="flex";
-
 }
 
 
 function closeModal(){
 
   document.getElementById("modal").style.display="none";
-
 }
 
 
@@ -1740,7 +2061,6 @@ function toggleOther(){
       "hidden",
       document.getElementById("type").value!=="أخرى"
     );
-
 }
 
 
@@ -1751,15 +2071,17 @@ function togglePartial(){
       "hidden",
       document.getElementById("scope").value!=="جزئي"
     );
-
 }
 
 
 /* =========================
-   SAVE
+   SAVE INCIDENT
 ========================= */
 
 async function saveIncident(){
+
+  const selectedFacility =
+    document.getElementById("facilitySelect").value;
 
   const type =
     document.getElementById("type").value;
@@ -1780,12 +2102,30 @@ async function saveIncident(){
     document.getElementById("start").value;
 
 
+  if(!selectedFacility){
+
+    toast("⚠️ اختر المنشأة");
+
+    return;
+  }
+
+
+  if(
+    profile.role!=="admin" &&
+    selectedFacility!==profile.facility
+  ){
+
+    toast("❌ لا يمكنك تسجيل بلاغ لمنشأة أخرى");
+
+    return;
+  }
+
+
   if(type==="أخرى" && !other){
 
     toast("⚠️ اكتب نوع البلاغ");
 
     return;
-
   }
 
 
@@ -1794,7 +2134,6 @@ async function saveIncident(){
     toast("⚠️ اكتب القسم المتأثر");
 
     return;
-
   }
 
 
@@ -1803,7 +2142,6 @@ async function saveIncident(){
     toast("⚠️ اكتب اسم المبلّغ");
 
     return;
-
   }
 
 
@@ -1812,14 +2150,12 @@ async function saveIncident(){
     toast("⚠️ حدد وقت بداية البلاغ");
 
     return;
-
   }
 
 
   const payload={
 
-    facility:
-      profile.facility,
+    facility:selectedFacility,
 
     type,
 
@@ -1854,7 +2190,6 @@ async function saveIncident(){
       document.getElementById("note").value.trim() || null,
 
     status:"نشط"
-
   };
 
 
@@ -1877,7 +2212,6 @@ async function saveIncident(){
     );
 
     return;
-
   }
 
 
@@ -1885,12 +2219,31 @@ async function saveIncident(){
 
   closeModal();
 
+  clearIncidentForm();
+
   render();
 
-  toast(
-    "✅ تم حفظ البلاغ"
-  );
+  toast("✅ تم حفظ البلاغ");
+}
 
+
+/* =========================
+   CLEAR FORM
+========================= */
+
+function clearIncidentForm(){
+
+  document.getElementById("otherType").value="";
+  document.getElementById("partialDept").value="";
+  document.getElementById("reporter").value="";
+  document.getElementById("desc").value="";
+  document.getElementById("note").value="";
+
+  document.getElementById("type").value="الكهرباء";
+  document.getElementById("scope").value="كلي";
+
+  toggleOther();
+  togglePartial();
 }
 
 
@@ -1917,10 +2270,10 @@ function showDetails(id){
     `تأثير الخدمة: ${x.service_impact || "-"}\n` +
     `المصدر: ${x.source || "-"}\n` +
     `المبلّغ: ${x.reporter || "-"}\n` +
+    `وقت البداية: ${fmtDate(x.start_time)}\n` +
     `الوصف: ${x.description || "-"}\n` +
     `الملاحظات: ${x.note || "-"}`
   );
-
 }
 
 
@@ -1929,6 +2282,26 @@ function showDetails(id){
 ========================= */
 
 function openEnd(id){
+
+  const x =
+    data.incidents.find(
+      i=>String(i.id)===String(id)
+    );
+
+  if(!x)
+    return;
+
+
+  if(
+    profile.role!=="admin" &&
+    x.facility!==profile.facility
+  ){
+
+    toast("❌ لا يمكنك إغلاق بلاغ منشأة أخرى");
+
+    return;
+  }
+
 
   closingId=id;
 
@@ -1941,7 +2314,6 @@ function openEnd(id){
     .slice(0,16);
 
   document.getElementById("closeModalBox").style.display="flex";
-
 }
 
 
@@ -1950,7 +2322,6 @@ function closeEnd(){
   document.getElementById("closeModalBox").style.display="none";
 
   closingId=null;
-
 }
 
 
@@ -1970,6 +2341,17 @@ async function finishIncident(){
 
 
   if(
+    profile.role!=="admin" &&
+    x.facility!==profile.facility
+  ){
+
+    toast("❌ لا يمكنك إغلاق هذا البلاغ");
+
+    return;
+  }
+
+
+  if(
     new Date(end) <
     new Date(x.start_time)
   ){
@@ -1979,7 +2361,6 @@ async function finishIncident(){
     );
 
     return;
-
   }
 
 
@@ -2007,7 +2388,6 @@ async function finishIncident(){
     );
 
     return;
-
   }
 
 
@@ -2025,7 +2405,6 @@ async function finishIncident(){
   render();
 
   toast("✅ تم إغلاق البلاغ");
-
 }
 
 
@@ -2048,7 +2427,6 @@ function toast(t){
     },
     3500
   );
-
 }
 
 
@@ -2067,7 +2445,6 @@ function showConnectionError(message){
     </div>
 
   `;
-
 }
 
 
@@ -2076,7 +2453,6 @@ function clearConnectionError(){
   document.getElementById(
     "connectionError"
   ).innerHTML="";
-
 }
 
 
@@ -2100,10 +2476,9 @@ async function checkSession(){
   }else{
 
     document.getElementById("loginPage").style.display="flex";
+
     document.getElementById("app").style.display="none";
-
   }
-
 }
 
 
@@ -2117,7 +2492,6 @@ supabaseClient.auth.onAuthStateChange(
 
       document.getElementById("app").style.display="none";
       document.getElementById("loginPage").style.display="flex";
-
     }
 
   }
@@ -2147,6 +2521,23 @@ setInterval(
   },
   10000
 );
+
+
+/* =========================
+   ENTER LOGIN
+========================= */
+
+document
+  .getElementById("loginPassword")
+  .addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Enter")
+        login();
+
+    }
+  );
 
 
 checkSession();
