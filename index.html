@@ -17,7 +17,7 @@
   --blue:#2563eb;
   --green:#16834b;
   --orange:#d97706;
-  --red:#dc2626;
+  --red:#dc2626
 }
 
 *{box-sizing:border-box}
@@ -31,11 +31,98 @@ body{
 
 button,input,select,textarea{font:inherit}
 
+.login{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+
+.login-card{
+  width:min(420px,100%);
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 8px 30px #0000000d
+}
+
+.login-logo{
+  width:60px;
+  height:60px;
+  border-radius:16px;
+  background:#eef6ff;
+  display:grid;
+  place-items:center;
+  font-size:32px;
+  margin:0 auto 15px
+}
+
+.login h1{
+  text-align:center;
+  margin:0;
+  font-size:21px
+}
+
+.login p{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  margin:7px 0 20px
+}
+
+.login-field{
+  margin:12px 0
+}
+
+.login-field label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:6px
+}
+
+.login-field input{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  direction:ltr;
+  text-align:left
+}
+
+.login button{
+  width:100%;
+  margin-top:8px;
+  border:0;
+  border-radius:11px;
+  padding:13px;
+  background:var(--blue);
+  color:#fff;
+  font-weight:800
+}
+
+.login-error{
+  display:none;
+  background:#fef2f2;
+  color:#b91c1c;
+  border:1px solid #fecaca;
+  padding:10px;
+  border-radius:10px;
+  font-size:12px;
+  margin-bottom:10px
+}
+
+#app{
+  display:none
+}
+
 .app{
   max-width:980px;
   margin:auto;
   min-height:100vh;
-  padding-bottom:90px
+  padding-bottom:92px
 }
 
 header{
@@ -75,7 +162,32 @@ header{
   font-size:11px
 }
 
-.section{padding:15px}
+.userbox{
+  margin-right:auto;
+  text-align:left;
+  font-size:10px;
+  color:var(--muted)
+}
+
+.userbox b{
+  display:block;
+  color:var(--text);
+  margin-bottom:4px
+}
+
+.logout{
+  background:#fee2e2;
+  color:#b91c1c;
+  padding:7px 9px;
+  border-radius:8px;
+  border:0;
+  font-size:10px;
+  font-weight:800
+}
+
+.section{
+  padding:15px
+}
 
 .title{
   font-size:17px;
@@ -181,7 +293,9 @@ header{
   margin:3px 0
 }
 
-.sys b{font-size:10px}
+.sys b{
+  font-size:10px
+}
 
 .row{
   display:flex;
@@ -223,54 +337,6 @@ button{
   color:#b91c1c
 }
 
-.logout{
-  background:#fee2e2;
-  color:#b91c1c;
-  padding:8px 12px
-}
-
-.filterbar{
-  display:flex;
-  gap:7px;
-  overflow:auto;
-  padding-bottom:3px
-}
-
-.filterbar button{
-  white-space:nowrap;
-  background:#fff;
-  border:1px solid var(--line);
-  color:var(--muted)
-}
-
-.filterbar button.active{
-  background:#eaf2ff;
-  color:#1d4ed8;
-  border-color:#b9d0ff
-}
-
-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  max-width:980px;
-  margin:auto;
-  background:#fff;
-  border-top:1px solid var(--line);
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  padding:7px 10px calc(7px + env(safe-area-inset-bottom));
-  z-index:10
-}
-
-nav button{
-  background:transparent;
-  color:#6b7280
-}
-
-nav .active{color:var(--blue)}
-
 .overlay{
   display:none;
   position:fixed;
@@ -296,7 +362,9 @@ nav .active{color:var(--blue)}
   font-size:17px
 }
 
-.field{margin:9px 0}
+.field{
+  margin:9px 0
+}
 
 .field label{
   display:block;
@@ -305,8 +373,8 @@ nav .active{color:var(--blue)}
   margin-bottom:5px
 }
 
-.field input,
 .field select,
+.field input,
 .field textarea{
   width:100%;
   padding:11px;
@@ -322,9 +390,13 @@ nav .active{color:var(--blue)}
   margin-top:13px
 }
 
-.ma button{flex:1}
+.ma button{
+  flex:1
+}
 
-.hidden{display:none}
+.hidden{
+  display:none
+}
 
 .required:after{
   content:' *';
@@ -345,7 +417,7 @@ nav .active{color:var(--blue)}
   border-radius:11px;
   text-align:center;
   font-size:12px;
-  z-index:50
+  z-index:30
 }
 
 .loading{
@@ -378,160 +450,94 @@ th,td{
   white-space:nowrap
 }
 
-th{background:#f8fafc}
-
-/* LOGIN */
-
-#loginScreen{
-  position:fixed;
-  inset:0;
-  background:#f4f7fb;
-  z-index:100;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px
-}
-
-.loginBox{
-  width:min(420px,100%);
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 8px 30px #00000012
-}
-
-.loginLogo{
-  text-align:center;
-  font-size:48px;
-  margin-bottom:8px
-}
-
-.loginBox h1{
-  text-align:center;
-  margin:0;
-  font-size:21px
-}
-
-.loginBox p{
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  margin:7px 0 20px
-}
-
-.loginBox input{
-  width:100%;
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:11px;
-  margin-bottom:10px;
-  font-size:14px
-}
-
-.loginBox button{
-  width:100%;
-  padding:13px;
-  margin-top:3px
-}
-
-#loginError{
-  display:none;
-  background:#fef2f2;
-  color:#b91c1c;
-  border:1px solid #fecaca;
-  border-radius:10px;
-  padding:10px;
-  margin-bottom:10px;
-  font-size:12px;
-  text-align:center
-}
-
-.userInfo{
-  margin-right:auto;
-  display:flex;
-  align-items:center;
-  gap:7px
-}
-
-.facilityUser{
-  background:#eff6ff;
-  color:#1d4ed8;
-  padding:7px 9px;
-  border-radius:9px;
-  font-size:10px;
-  font-weight:800
+th{
+  background:#f8fafc
 }
 
 @media(max-width:600px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .grid{gap:3px}
-  .sys{font-size:8px}
-  .section{padding:13px}
-  .brand h1{font-size:18px}
-  .userInfo{display:none}
+  .stats{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .grid{
+    gap:3px
+  }
+
+  .sys{
+    font-size:8px
+  }
+
+  .section{
+    padding:13px
+  }
+
+  .brand h1{
+    font-size:18px
+  }
+
+  .userbox{
+    display:none
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     شاشة تسجيل الدخول
-========================= -->
+<!-- LOGIN -->
 
-<div id="loginScreen">
+<div id="loginPage" class="login">
 
-  <div class="loginBox">
+  <div class="login-card">
 
-    <div class="loginLogo">🏥</div>
+    <div class="login-logo">🏥</div>
 
     <h1>جاهزية المنشآت الصحية</h1>
 
     <p>
-      تسجيل الدخول للمنشأة
+      تسجيل الدخول إلى نظام متابعة جاهزية المنشآت
     </p>
 
-    <div id="loginError"></div>
+    <div id="loginError" class="login-error"></div>
 
-    <input
-      id="loginEmail"
-      type="email"
-      placeholder="البريد الإلكتروني"
-      autocomplete="email">
+    <div class="login-field">
 
-    <input
-      id="loginPassword"
-      type="password"
-      placeholder="كلمة المرور"
-      autocomplete="current-password">
+      <label>البريد الإلكتروني</label>
 
-    <button
-      class="primary"
-      onclick="login()">
+      <input
+        id="loginEmail"
+        type="email"
+        placeholder="name@example.com"
+        autocomplete="username">
+
+    </div>
+
+    <div class="login-field">
+
+      <label>كلمة المرور</label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        placeholder="كلمة المرور"
+        autocomplete="current-password">
+
+    </div>
+
+    <button onclick="login()">
       تسجيل الدخول
     </button>
-
-    <div
-      id="loginLoading"
-      class="loading hidden">
-      جاري تسجيل الدخول...
-    </div>
 
   </div>
 
 </div>
 
 
-<!-- =========================
-     التطبيق
-========================= -->
+<!-- APP -->
 
-<div
-  class="app"
-  id="app"
-  style="display:none">
+<div id="app">
+
+<div class="app">
 
 <header>
 
@@ -540,26 +546,30 @@ th{background:#f8fafc}
     <div class="logo">🏥</div>
 
     <div class="brand">
+
       <h1>جاهزية المنشآت الصحية</h1>
+
       <p>
         مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي
       </p>
-    </div>
-
-    <div class="userInfo">
-
-      <span
-        id="facilityBadge"
-        class="facilityUser">
-      </span>
-
-      <button
-        class="logout"
-        onclick="logout()">
-        خروج
-      </button>
 
     </div>
+
+    <div class="userbox">
+
+      <b id="userName"></b>
+
+      <span id="userRole"></span>
+
+    </div>
+
+    <button
+      class="logout"
+      onclick="logout()">
+
+      خروج
+
+    </button>
 
   </div>
 
@@ -575,20 +585,18 @@ th{background:#f8fafc}
     لوحة المتابعة
   </div>
 
-  <div class="subline">
-    متابعة جاهزية المنشأة المرتبطة بالحساب
-  </div>
+  <div class="subline" id="dashboardSubtitle"></div>
 
   <div class="stats">
 
     <div class="stat">
-      <span>المنشأة</span>
-      <b id="total">1</b>
+      <span>إجمالي المنشآت</span>
+      <b id="total">0</b>
     </div>
 
     <div class="stat">
       <span>جاهزة</span>
-      <b class="green" id="normal">1</b>
+      <b class="green" id="normal">0</b>
     </div>
 
     <div class="stat">
@@ -609,15 +617,18 @@ th{background:#f8fafc}
 <div class="section">
 
   <div class="title">
+
     🚨 البلاغات النشطة
+
     <span
       id="openCount"
       style="color:#6b7280;font-size:11px">
     </span>
+
   </div>
 
   <div class="subline">
-    البلاغات المفتوحة في منشأتك.
+    البلاغات المفتوحة تظهر أولًا لمتابعة الحالة وإغلاقها.
   </div>
 
   <div id="openIncidents">
@@ -630,7 +641,9 @@ th{background:#f8fafc}
     class="primary"
     style="width:100%"
     onclick="openIncidentModal()">
+
     ＋ تسجيل بلاغ جديد
+
   </button>
 
 </div>
@@ -639,7 +652,7 @@ th{background:#f8fafc}
 <div class="section">
 
   <div class="title">
-    المنشأة
+    المنشآت
   </div>
 
   <div id="facilities"></div>
@@ -662,12 +675,14 @@ th{background:#f8fafc}
       <thead>
 
         <tr>
+
           <th>المنشأة</th>
           <th>نوع البلاغ</th>
           <th>نطاق التأثير</th>
           <th>البداية</th>
           <th>النهاية</th>
           <th>المدة</th>
+
         </tr>
 
       </thead>
@@ -689,32 +704,12 @@ th{background:#f8fafc}
 </div>
 
 
-<nav>
-
-  <button
-    class="active"
-    onclick="scrollToTop()">
-    🏠<br>الرئيسية
-  </button>
-
-  <button
-    onclick="openIncidentModal()">
-    🚨<br>بلاغ جديد
-  </button>
-
-  <button
-    onclick="document.getElementById('history').scrollIntoView({behavior:'smooth'})">
-    📋<br>السجل
-  </button>
-
-</nav>
+</div>
 
 </div>
 
 
-<!-- =========================
-     تسجيل بلاغ
-========================= -->
+<!-- NEW INCIDENT -->
 
 <div
   class="overlay"
@@ -722,15 +717,20 @@ th{background:#f8fafc}
 
   <div class="modal">
 
-    <h2>🚨 تسجيل بلاغ جديد</h2>
+    <h2>
+      🚨 تسجيل بلاغ جديد
+    </h2>
 
     <div class="field">
 
-      <label>المنشأة</label>
+      <label class="required">
+        المنشأة
+      </label>
 
       <input
-        id="facilityLocked"
-        readonly>
+        id="facilityDisplay"
+        readonly
+        style="background:#f8fafc">
 
     </div>
 
@@ -887,19 +887,22 @@ th{background:#f8fafc}
 
     <div class="field">
 
-      <label>الوصف</label>
+      <label>
+        الوصف
+      </label>
 
       <textarea
         id="desc"
-        rows="2"
-        placeholder="وصف مختصر للحالة"></textarea>
+        rows="2"></textarea>
 
     </div>
 
 
     <div class="field">
 
-      <label>الملاحظات</label>
+      <label>
+        الملاحظات
+      </label>
 
       <textarea
         id="note"
@@ -913,11 +916,16 @@ th{background:#f8fafc}
       <button
         class="primary"
         onclick="saveIncident()">
+
         حفظ البلاغ
+
       </button>
 
-      <button onclick="closeModal()">
+      <button
+        onclick="closeModal()">
+
         إلغاء
+
       </button>
 
     </div>
@@ -927,9 +935,7 @@ th{background:#f8fafc}
 </div>
 
 
-<!-- =========================
-     إغلاق البلاغ
-========================= -->
+<!-- CLOSE -->
 
 <div
   class="overlay"
@@ -937,7 +943,9 @@ th{background:#f8fafc}
 
   <div class="modal">
 
-    <h2>✅ إنهاء البلاغ</h2>
+    <h2>
+      ✅ إنهاء البلاغ
+    </h2>
 
     <div class="field">
 
@@ -956,11 +964,16 @@ th{background:#f8fafc}
       <button
         class="primary"
         onclick="finishIncident()">
+
         إنهاء وحساب المدة
+
       </button>
 
-      <button onclick="closeEnd()">
+      <button
+        onclick="closeEnd()">
+
         إلغاء
+
       </button>
 
     </div>
@@ -978,39 +991,239 @@ th{background:#f8fafc}
 
 <script>
 
-/* ==========================================
-   SUPABASE
-========================================== */
-
 const SUPABASE_URL =
-"https://fecfgkluloyxfpqmazxt.supabase.co";
+  "https://fecfgkluloyxfpqmazxt.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_B5vBcwJ2yGXH41v_njovuA_CfIY9Egh";
+  "sb_publishable_B5vBcwJ2yGXH41v_njovuA_CfIY9Egh";
 
 const supabaseClient =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* ==========================================
-   بيانات المستخدم
-========================================== */
+const allFacilities =
+  Array.from(
+    {length:21},
+    (_,i)=>`شفا ${i+1}`
+  );
+
 
 let currentUser = null;
+let profile = null;
 
-let userFacility = null;
-
-let incidents = [];
+let data = {
+  incidents:[]
+};
 
 let closingId = null;
 
 
-/* ==========================================
-   الأدوات
-========================================== */
+/* =========================
+   LOGIN
+========================= */
+
+async function login(){
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+  const errorBox =
+    document.getElementById("loginError");
+
+  errorBox.style.display="none";
+
+  if(!email || !password){
+
+    errorBox.textContent =
+      "⚠️ أدخل البريد الإلكتروني وكلمة المرور";
+
+    errorBox.style.display="block";
+
+    return;
+  }
+
+  const {
+    data:authData,
+    error
+  } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+
+    errorBox.textContent =
+      "❌ بيانات الدخول غير صحيحة";
+
+    errorBox.style.display="block";
+
+    return;
+  }
+
+  currentUser =
+    authData.user;
+
+  await startApp();
+
+}
+
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  currentUser=null;
+  profile=null;
+
+  document.getElementById("app").style.display="none";
+  document.getElementById("loginPage").style.display="flex";
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+async function loadProfile(){
+
+  if(!currentUser)
+    return false;
+
+  const {
+    data:row,
+    error
+  } =
+    await supabaseClient
+      .from("facility_users")
+      .select("user_id,facility,role")
+      .eq("user_id",currentUser.id)
+      .single();
+
+  if(error || !row){
+
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("loginError").textContent =
+      "هذا الحساب غير مرتبط بمنشأة في النظام";
+
+    document.getElementById("loginError").style.display="block";
+
+    document.getElementById("app").style.display="none";
+    document.getElementById("loginPage").style.display="flex";
+
+    return false;
+  }
+
+  profile=row;
+
+  return true;
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+async function startApp(){
+
+  const ok =
+    await loadProfile();
+
+  if(!ok)
+    return;
+
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("app").style.display="block";
+
+  document.getElementById("userName").textContent =
+    currentUser.email;
+
+  document.getElementById("userRole").textContent =
+    profile.role==="admin"
+      ? "الإدارة المركزية"
+      : profile.facility;
+
+  document.getElementById("dashboardSubtitle").textContent =
+    profile.role==="admin"
+      ? "لوحة الإدارة المركزية • جميع المنشآت"
+      : `لوحة متابعة ${profile.facility}`;
+
+  await loadData();
+
+  render();
+
+}
+
+
+/* =========================
+   FACILITIES
+========================= */
+
+function visibleFacilities(){
+
+  if(profile && profile.role==="admin")
+    return allFacilities;
+
+  return [profile.facility];
+
+}
+
+
+/* =========================
+   DATA
+========================= */
+
+async function loadData(){
+
+  const {
+    data:rows,
+    error
+  } =
+    await supabaseClient
+      .from("incidents")
+      .select("*")
+      .order(
+        "start_time",
+        {ascending:true}
+      );
+
+  if(error){
+
+    showConnectionError(
+      "تعذر تحميل البلاغات: " +
+      error.message
+    );
+
+    return false;
+
+  }
+
+  data.incidents=rows || [];
+
+  clearConnectionError();
+
+  return true;
+
+}
+
+
+/* =========================
+   HELPERS
+========================= */
 
 function fmtDate(x){
 
@@ -1035,23 +1248,17 @@ function dur(a,b){
     return "00:00:00";
 
   let ms =
-    new Date(b) -
-    new Date(a);
+    new Date(b)-new Date(a);
 
-  if(ms < 0)
-    ms=0;
+  if(ms<0)ms=0;
 
-  let s =
-    Math.floor(ms/1000);
+  let s=Math.floor(ms/1000);
 
-  let h =
-    Math.floor(s/3600);
+  let h=Math.floor(s/3600);
 
-  let m =
-    Math.floor((s%3600)/60);
+  let m=Math.floor((s%3600)/60);
 
-  let z =
-    s%60;
+  let z=s%60;
 
   return [h,m,z]
     .map(
@@ -1075,13 +1282,11 @@ function elapsed(a){
 function icon(s){
 
   return {
-
     "الكهرباء":"⚡",
     "الطاقة الاحتياطية":"🔋",
     "المياه":"💧",
     "التكييف":"❄️",
     "النظام الإلكتروني":"💻"
-
   }[s] || "⚙️";
 
 }
@@ -1096,10 +1301,12 @@ function currentType(x){
 }
 
 
-function state(){
+function state(f){
 
-  return incidents.some(
-    x=>!x.end_time
+  return data.incidents.some(
+    x =>
+      x.facility===f &&
+      !x.end_time
   )
   ? "تحتاج متابعة"
   : "طبيعي";
@@ -1107,498 +1314,40 @@ function state(){
 }
 
 
-/* ==========================================
-   تسجيل الدخول
-========================================== */
-
-async function login(){
-
-  const email =
-    document
-      .getElementById("loginEmail")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("loginPassword")
-      .value;
-
-  const errorBox =
-    document.getElementById(
-      "loginError"
-    );
-
-  const loading =
-    document.getElementById(
-      "loginLoading"
-    );
-
-  errorBox.style.display="none";
-
-  if(!email || !password){
-
-    errorBox.textContent =
-      "⚠️ أدخل البريد الإلكتروني وكلمة المرور";
-
-    errorBox.style.display="block";
-
-    return;
-  }
-
-  loading.classList.remove("hidden");
-
-  try{
-
-    const {
-      data,
-      error
-    } =
-    await supabaseClient.auth.signInWithPassword({
-      email:email,
-      password:password
-    });
-
-    if(error){
-
-      throw error;
-
-    }
-
-    if(!data.user){
-
-      throw new Error(
-        "تعذر الحصول على بيانات المستخدم"
-      );
-
-    }
-
-    currentUser =
-      data.user;
-
-    const linked =
-      await getUserFacility(
-        currentUser.id
-      );
-
-    if(!linked){
-
-      await supabaseClient.auth.signOut();
-
-      throw new Error(
-        "هذا الحساب غير مرتبط بمنشأة في النظام"
-      );
-
-    }
-
-    userFacility =
-      linked.facility;
-
-    document.getElementById(
-      "facilityBadge"
-    ).textContent =
-      userFacility;
-
-    document.getElementById(
-      "loginScreen"
-    ).style.display="none";
-
-    document.getElementById(
-      "app"
-    ).style.display="block";
-
-    await loadData();
-
-    render();
-
-  }catch(error){
-
-    console.error(error);
-
-    errorBox.textContent =
-      "❌ " +
-      error.message;
-
-    errorBox.style.display="block";
-
-  }finally{
-
-    loading.classList.add("hidden");
-
-  }
-
-}
-
-
-/* ==========================================
-   جلب المنشأة المرتبطة بالحساب
-========================================== */
-
-async function getUserFacility(userId){
-
-  const {
-    data,
-    error
-  } =
-  await supabaseClient
-    .from("facility_users")
-    .select("facility")
-    .eq("user_id",userId)
-    .maybeSingle();
-
-  if(error){
-
-    console.error(
-      "FACILITY LOOKUP ERROR:",
-      error
-    );
-
-    throw error;
-
-  }
-
-  return data;
-
-}
-
-
-/* ==========================================
-   التحقق من الجلسة
-========================================== */
-
-async function checkSession(){
-
-  const {
-    data,
-    error
-  } =
-  await supabaseClient.auth.getSession();
-
-  if(error){
-
-    console.error(error);
-
-    return;
-
-  }
-
-  if(
-    data &&
-    data.session &&
-    data.session.user
-  ){
-
-    currentUser =
-      data.session.user;
-
-    try{
-
-      const linked =
-        await getUserFacility(
-          currentUser.id
-        );
-
-      if(linked){
-
-        userFacility =
-          linked.facility;
-
-        document.getElementById(
-          "facilityBadge"
-        ).textContent =
-          userFacility;
-
-        document.getElementById(
-          "loginScreen"
-        ).style.display="none";
-
-        document.getElementById(
-          "app"
-        ).style.display="block";
-
-        await loadData();
-
-        render();
-
-      }else{
-
-        await supabaseClient.auth.signOut();
-
-      }
-
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  }
-
-}
-
-
-/* ==========================================
-   تسجيل الخروج
-========================================== */
-
-async function logout(){
-
-  await supabaseClient.auth.signOut();
-
-  currentUser=null;
-
-  userFacility=null;
-
-  incidents=[];
-
-  document.getElementById(
-    "app"
-  ).style.display="none";
-
-  document.getElementById(
-    "loginScreen"
-  ).style.display="flex";
-
-  document.getElementById(
-    "loginPassword"
-  ).value="";
-
-}
-
-
-/* ==========================================
-   تحميل البلاغات
-========================================== */
-
-async function loadData(){
-
-  if(!userFacility)
-    return false;
-
-  try{
-
-    const {
-      data:rows,
-      error
-    } =
-    await supabaseClient
-      .from("incidents")
-      .select("*")
-      .eq(
-        "facility",
-        userFacility
-      )
-      .order(
-        "start_time",
-        {ascending:true}
-      );
-
-    if(error){
-
-      showConnectionError(
-        "تعذر تحميل البلاغات: " +
-        error.message
-      );
-
-      return false;
-
-    }
-
-    incidents =
-      rows || [];
-
-    clearConnectionError();
-
-    return true;
-
-  }catch(error){
-
-    console.error(error);
-
-    showConnectionError(
-      "حدث خطأ في الاتصال بقاعدة البيانات"
-    );
-
-    return false;
-
-  }
-
-}
-
-
-/* ==========================================
-   عرض المنشأة
-========================================== */
-
-function renderFacilities(){
-
-  const el =
-    document.getElementById(
-      "facilities"
-    );
-
-  el.innerHTML="";
-
-  const open =
-    incidents.filter(
-      x=>!x.end_time
-    );
-
-  const systems=[
-    "الكهرباء",
-    "الطاقة الاحتياطية",
-    "المياه",
-    "التكييف",
-    "النظام الإلكتروني"
-  ];
-
-  const cards =
-    systems.map(s=>{
-
-      const x =
-        open.find(
-          i=>currentType(i)===s
-        );
-
-      return `
-
-        <div class="sys">
-
-          <i>${icon(s)}</i>
-
-          <span>${s}</span>
-
-          <b class="${x?'red':'green'}">
-
-            ${
-              x
-              ? "نشط"
-              : (
-                s==="الطاقة الاحتياطية"
-                ? "جاهز"
-                : "طبيعي"
-              )
-            }
-
-          </b>
-
-        </div>
-
-      `;
-
-    }).join("");
-
-
-  const last =
-    open.length
-    ? open[0]
-    : null;
-
-
-  el.innerHTML = `
-
-    <div class="card">
-
-      <div class="fac-head">
-
-        <div class="name">
-          🏥 ${userFacility}
-        </div>
-
-        <span class="badge ${
-          last ? "o" : ""
-        }">
-
-          ${
-            last
-            ? "🟠 تحتاج متابعة"
-            : "🟢 جاهزة"
-          }
-
-        </span>
-
-      </div>
-
-      <div class="grid">
-        ${cards}
-      </div>
-
-      ${
-        last
-
-        ?
-
-        `
-
-        <div class="row">
-
-          <span>
-            🚨 ${currentType(last)}
-          </span>
-
-          <span>
-            ⏱️ ${elapsed(last.start_time)}
-          </span>
-
-        </div>
-
-        <div class="actions">
-
-          <button
-            class="secondary"
-            onclick="showDetails('${last.id}')">
-
-            فتح التفاصيل
-
-          </button>
-
-          <button
-            class="danger"
-            onclick="openEnd('${last.id}')">
-
-            إنهاء البلاغ
-
-          </button>
-
-        </div>
-
-        `
-
-        :
-
-        `
-
-        <div class="row">
-
-          <span>
-            📱 الحالة الحالية
-          </span>
-
-          <span>
-            لا توجد بلاغات نشطة
-          </span>
-
-        </div>
-
-        `
-
-      }
-
-    </div>
-
-  `;
-
-}
-
-
-/* ==========================================
-   عرض البيانات
-========================================== */
+/* =========================
+   RENDER
+========================= */
 
 function render(){
 
+  const facilities =
+    visibleFacilities();
+
+  let normal=0;
+  let follow=0;
+
+  facilities.forEach(f=>{
+
+    if(state(f)==="طبيعي")
+      normal++;
+    else
+      follow++;
+
+  });
+
+
+  document.getElementById("total").textContent =
+    facilities.length;
+
+  document.getElementById("normal").textContent =
+    normal;
+
+  document.getElementById("follow").textContent =
+    follow;
+
+
   const open =
-    incidents
+    data.incidents
       .filter(x=>!x.end_time)
       .sort(
         (a,b)=>
@@ -1607,39 +1356,15 @@ function render(){
       );
 
 
-  const normal =
-    open.length===0 ? 1 : 0;
+  document.getElementById("openTotal").textContent =
+    open.length;
 
-  const follow =
-    open.length>0 ? 1 : 0;
-
-
-  document.getElementById(
-    "total"
-  ).textContent="1";
-
-  document.getElementById(
-    "normal"
-  ).textContent=normal;
-
-  document.getElementById(
-    "follow"
-  ).textContent=follow;
-
-  document.getElementById(
-    "openTotal"
-  ).textContent=open.length;
-
-  document.getElementById(
-    "openCount"
-  ).textContent=
+  document.getElementById("openCount").textContent =
     `(${open.length})`;
 
 
   const openEl =
-    document.getElementById(
-      "openIncidents"
-    );
+    document.getElementById("openIncidents");
 
 
   if(open.length){
@@ -1685,16 +1410,12 @@ function render(){
           <div class="row">
 
             <span>
-
-              النطاق:
-              ${x.scope}
-
+              النطاق: ${x.scope}
               ${
                 x.scope==="جزئي"
                 ? ` • ${x.department || "-"}`
                 : ""
               }
-
             </span>
 
             <span>
@@ -1719,7 +1440,7 @@ function render(){
 
   }else{
 
-    openEl.innerHTML = `
+    openEl.innerHTML=`
 
       <div
         class="card"
@@ -1734,16 +1455,200 @@ function render(){
   }
 
 
+  renderFacilities();
+
+  renderHistory();
+
+}
+
+
+/* =========================
+   FACILITIES
+========================= */
+
+function renderFacilities(){
+
+  const el =
+    document.getElementById("facilities");
+
+  el.innerHTML="";
+
+  visibleFacilities().forEach(f=>{
+
+    const open =
+      data.incidents.filter(
+        x =>
+          x.facility===f &&
+          !x.end_time
+      );
+
+    const st=state(f);
+
+    const systems=[
+      "الكهرباء",
+      "الطاقة الاحتياطية",
+      "المياه",
+      "التكييف",
+      "النظام الإلكتروني"
+    ];
+
+    const cards =
+      systems.map(s=>{
+
+        const x =
+          open.find(
+            i=>currentType(i)===s
+          );
+
+        return `
+
+          <div class="sys">
+
+            <i>${icon(s)}</i>
+
+            <span>${s}</span>
+
+            <b class="${x?'red':'green'}">
+
+              ${
+                x
+                ? "نشط"
+                : (
+                    s==="الطاقة الاحتياطية"
+                    ? "جاهز"
+                    : "طبيعي"
+                  )
+              }
+
+            </b>
+
+          </div>
+
+        `;
+
+      }).join("");
+
+
+    const last =
+      open.length
+      ? open[0]
+      : null;
+
+
+    el.innerHTML += `
+
+      <div class="card">
+
+        <div class="fac-head">
+
+          <div class="name">
+            ${f}
+          </div>
+
+          <span class="badge ${
+            st==="تحتاج متابعة" ? "o" : ""
+          }">
+
+            ${
+              st==="طبيعي"
+              ? "🟢 جاهزة"
+              : "🟠 تحتاج متابعة"
+            }
+
+          </span>
+
+        </div>
+
+
+        <div class="grid">
+          ${cards}
+        </div>
+
+
+        ${
+          last
+
+          ?
+
+          `
+
+          <div class="row">
+
+            <span>
+              🚨 ${currentType(last)}
+            </span>
+
+            <span>
+              ⏱️ ${elapsed(last.start_time)}
+            </span>
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              class="secondary"
+              onclick="showDetails('${last.id}')">
+
+              فتح التفاصيل
+
+            </button>
+
+            <button
+              class="danger"
+              onclick="openEnd('${last.id}')">
+
+              إنهاء البلاغ
+
+            </button>
+
+          </div>
+
+          `
+
+          :
+
+          `
+
+          <div class="row">
+
+            <span>
+              📱 الحالة
+            </span>
+
+            <span>
+              لا توجد بلاغات نشطة
+            </span>
+
+          </div>
+
+          `
+        }
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function renderHistory(){
+
   const history =
-    incidents
+    data.incidents
       .filter(x=>x.end_time)
       .slice()
       .reverse();
 
 
-  document.getElementById(
-    "history"
-  ).innerHTML =
+  document.getElementById("history").innerHTML =
 
     history.length
 
@@ -1753,13 +1658,9 @@ function render(){
 
       <tr>
 
-        <td>
-          ${x.facility}
-        </td>
+        <td>${x.facility}</td>
 
-        <td>
-          ${currentType(x)}
-        </td>
+        <td>${currentType(x)}</td>
 
         <td>
 
@@ -1773,19 +1674,12 @@ function render(){
 
         </td>
 
-        <td>
-          ${fmtDate(x.start_time)}
-        </td>
+        <td>${fmtDate(x.start_time)}</td>
+
+        <td>${fmtDate(x.end_time)}</td>
 
         <td>
-          ${fmtDate(x.end_time)}
-        </td>
-
-        <td>
-          ${dur(
-            x.start_time,
-            x.end_time
-          )}
+          ${dur(x.start_time,x.end_time)}
         </td>
 
       </tr>
@@ -1802,39 +1696,20 @@ function render(){
       </tr>
     `;
 
-
-  renderFacilities();
-
 }
 
 
-/* ==========================================
-   تسجيل بلاغ
-========================================== */
+/* =========================
+   NEW INCIDENT
+========================= */
 
 function openIncidentModal(){
 
-  if(!userFacility){
-
-    toast(
-      "❌ لا توجد منشأة مرتبطة بالحساب"
-    );
-
-    return;
-
-  }
+  document.getElementById("facilityDisplay").value =
+    profile.facility;
 
 
-  document.getElementById(
-    "facilityLocked"
-  ).value =
-    userFacility;
-
-
-  document.getElementById(
-    "start"
-  ).value =
-
+  document.getElementById("start").value =
     new Date(
       Date.now() -
       new Date().getTimezoneOffset()*60000
@@ -1846,102 +1721,63 @@ function openIncidentModal(){
   toggleOther();
   togglePartial();
 
-
-  document.getElementById(
-    "modal"
-  ).style.display="flex";
+  document.getElementById("modal").style.display="flex";
 
 }
 
 
 function closeModal(){
 
-  document.getElementById(
-    "modal"
-  ).style.display="none";
+  document.getElementById("modal").style.display="none";
 
 }
 
 
 function toggleOther(){
 
-  document.getElementById(
-    "otherWrap"
-  ).classList.toggle(
-    "hidden",
-    document.getElementById(
-      "type"
-    ).value!=="أخرى"
-  );
+  document.getElementById("otherWrap")
+    .classList.toggle(
+      "hidden",
+      document.getElementById("type").value!=="أخرى"
+    );
 
 }
 
 
 function togglePartial(){
 
-  document.getElementById(
-    "partialWrap"
-  ).classList.toggle(
-    "hidden",
-    document.getElementById(
-      "scope"
-    ).value!=="جزئي"
-  );
+  document.getElementById("partialWrap")
+    .classList.toggle(
+      "hidden",
+      document.getElementById("scope").value!=="جزئي"
+    );
 
 }
 
 
-/* ==========================================
-   حفظ البلاغ
-========================================== */
+/* =========================
+   SAVE
+========================= */
 
 async function saveIncident(){
 
-  if(!userFacility){
-
-    toast(
-      "❌ الحساب غير مرتبط بمنشأة"
-    );
-
-    return;
-
-  }
-
-
   const type =
-    document.getElementById(
-      "type"
-    ).value;
-
+    document.getElementById("type").value;
 
   const other =
-    document.getElementById(
-      "otherType"
-    ).value.trim();
-
+    document.getElementById("otherType").value.trim();
 
   const scope =
-    document.getElementById(
-      "scope"
-    ).value;
-
+    document.getElementById("scope").value;
 
   const dept =
-    document.getElementById(
-      "partialDept"
-    ).value.trim();
-
+    document.getElementById("partialDept").value.trim();
 
   const reporter =
-    document.getElementById(
-      "reporter"
-    ).value.trim();
-
+    document.getElementById("reporter").value.trim();
 
   const start =
-    document.getElementById(
-      "start"
-    ).value;
+    document.getElementById("start").value;
 
 
   if(type==="أخرى" && !other){
@@ -1982,33 +1818,29 @@ async function saveIncident(){
 
   const payload={
 
-    facility:userFacility,
+    facility:
+      profile.facility,
 
-    type:type,
+    type,
 
-    other_type:other || null,
+    other_type:
+      other || null,
 
     power:
-      document.getElementById(
-        "power"
-      ).value,
+      document.getElementById("power").value,
 
-    scope:scope,
+    scope,
 
     department:
       dept || null,
 
     service_impact:
-      document.getElementById(
-        "serviceImpact"
-      ).value,
+      document.getElementById("serviceImpact").value,
 
     source:
-      document.getElementById(
-        "src"
-      ).value,
+      document.getElementById("src").value,
 
-    reporter:reporter,
+    reporter,
 
     start_time:
       new Date(start).toISOString(),
@@ -2016,26 +1848,20 @@ async function saveIncident(){
     end_time:null,
 
     description:
-      document.getElementById(
-        "desc"
-      ).value.trim() || null,
+      document.getElementById("desc").value.trim() || null,
 
     note:
-      document.getElementById(
-        "note"
-      ).value.trim() || null,
+      document.getElementById("note").value.trim() || null,
 
     status:"نشط"
 
   };
 
 
-  try{
-
-    const {
-      data:inserted,
-      error
-    } =
+  const {
+    data:inserted,
+    error
+  } =
     await supabaseClient
       .from("incidents")
       .insert([payload])
@@ -2043,113 +1869,70 @@ async function saveIncident(){
       .single();
 
 
-    if(error){
-
-      toast(
-        "❌ لم يتم حفظ البلاغ: " +
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    if(inserted){
-
-      incidents.push(
-        inserted
-      );
-
-    }
-
-
-    closeModal();
-
-    render();
+  if(error){
 
     toast(
-      "✅ تم حفظ البلاغ في قاعدة البيانات"
+      "❌ لم يتم حفظ البلاغ: " +
+      error.message
     );
 
-
-  }catch(error){
-
-    toast(
-      "❌ " + error.message
-    );
+    return;
 
   }
+
+
+  data.incidents.push(inserted);
+
+  closeModal();
+
+  render();
+
+  toast(
+    "✅ تم حفظ البلاغ"
+  );
 
 }
 
 
-/* ==========================================
-   تفاصيل
-========================================== */
+/* =========================
+   DETAILS
+========================= */
 
 function showDetails(id){
 
   const x =
-    incidents.find(
+    data.incidents.find(
       i=>String(i.id)===String(id)
     );
-
 
   if(!x)
     return;
 
 
   alert(
-
     `المنشأة: ${x.facility}\n` +
-
     `نوع البلاغ: ${currentType(x)}\n` +
-
     `النطاق: ${x.scope}\n` +
-
-    `القسم: ${
-      x.department || "كامل المنشأة"
-    }\n` +
-
-    `تأثير الخدمة: ${
-      x.service_impact || "-"
-    }\n` +
-
-    `المصدر: ${
-      x.source || "-"
-    }\n` +
-
-    `المبلّغ: ${
-      x.reporter || "-"
-    }\n` +
-
-    `الوصف: ${
-      x.description || "-"
-    }\n` +
-
-    `الملاحظات: ${
-      x.note || "-"
-    }`
-
+    `القسم: ${x.department || "كامل المنشأة"}\n` +
+    `تأثير الخدمة: ${x.service_impact || "-"}\n` +
+    `المصدر: ${x.source || "-"}\n` +
+    `المبلّغ: ${x.reporter || "-"}\n` +
+    `الوصف: ${x.description || "-"}\n` +
+    `الملاحظات: ${x.note || "-"}`
   );
 
 }
 
 
-/* ==========================================
-   إغلاق البلاغ
-========================================== */
+/* =========================
+   CLOSE INCIDENT
+========================= */
 
 function openEnd(id){
 
   closingId=id;
 
-
-  document.getElementById(
-    "end"
-  ).value =
-
+  document.getElementById("end").value =
     new Date(
       Date.now() -
       new Date().getTimezoneOffset()*60000
@@ -2157,45 +1940,29 @@ function openEnd(id){
     .toISOString()
     .slice(0,16);
 
-
-  document.getElementById(
-    "closeModalBox"
-  ).style.display="flex";
+  document.getElementById("closeModalBox").style.display="flex";
 
 }
 
 
 function closeEnd(){
 
-  document.getElementById(
-    "closeModalBox"
-  ).style.display="none";
+  document.getElementById("closeModalBox").style.display="none";
 
   closingId=null;
 
 }
 
 
-/* ==========================================
-   تحديث البلاغ
-========================================== */
-
 async function finishIncident(){
 
-  if(!closingId)
-    return;
-
-
   const x =
-    incidents.find(
+    data.incidents.find(
       i=>String(i.id)===String(closingId)
     );
 
-
   const end =
-    document.getElementById(
-      "end"
-    ).value;
+    document.getElementById("end").value;
 
 
   if(!x || !end)
@@ -2216,89 +1983,60 @@ async function finishIncident(){
   }
 
 
-  try{
-
-    const {
-      data:updated,
-      error
-    } =
+  const {
+    data:updated,
+    error
+  } =
     await supabaseClient
       .from("incidents")
       .update({
-
         end_time:
           new Date(end).toISOString(),
-
         status:"مغلق"
-
       })
-      .eq(
-        "id",
-        closingId
-      )
-      .eq(
-        "facility",
-        userFacility
-      )
+      .eq("id",closingId)
       .select()
       .single();
 
 
-    if(error){
-
-      toast(
-        "❌ لم يتم إغلاق البلاغ: " +
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    const index =
-      incidents.findIndex(
-        i=>String(i.id)===String(closingId)
-      );
-
-
-    if(index!==-1){
-
-      incidents[index]=updated;
-
-    }
-
-
-    closeEnd();
-
-    render();
+  if(error){
 
     toast(
-      "✅ تم إغلاق البلاغ"
+      "❌ لم يتم إغلاق البلاغ: " +
+      error.message
     );
 
-
-  }catch(error){
-
-    toast(
-      "❌ " + error.message
-    );
+    return;
 
   }
+
+
+  const index =
+    data.incidents.findIndex(
+      i=>String(i.id)===String(closingId)
+    );
+
+  if(index!==-1)
+    data.incidents[index]=updated;
+
+
+  closeEnd();
+
+  render();
+
+  toast("✅ تم إغلاق البلاغ");
 
 }
 
 
-/* ==========================================
-   الرسائل
-========================================== */
+/* =========================
+   MESSAGES
+========================= */
 
 function toast(t){
 
   const e =
-    document.getElementById(
-      "toast"
-    );
+    document.getElementById("toast");
 
   e.textContent=t;
 
@@ -2323,9 +2061,7 @@ function showConnectionError(message){
     <div class="section">
 
       <div class="errorbox">
-
         ⚠️ ${message}
-
       </div>
 
     </div>
@@ -2344,26 +2080,60 @@ function clearConnectionError(){
 }
 
 
-function scrollToTop(){
+/* =========================
+   SESSION
+========================= */
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+async function checkSession(){
+
+  const {
+    data
+  } =
+    await supabaseClient.auth.getSession();
+
+  if(data.session){
+
+    currentUser=data.session.user;
+
+    await startApp();
+
+  }else{
+
+    document.getElementById("loginPage").style.display="flex";
+    document.getElementById("app").style.display="none";
+
+  }
 
 }
 
 
-/* ==========================================
-   تحديث تلقائي
-========================================== */
+supabaseClient.auth.onAuthStateChange(
+  async (event,session)=>{
+
+    if(event==="SIGNED_OUT"){
+
+      currentUser=null;
+      profile=null;
+
+      document.getElementById("app").style.display="none";
+      document.getElementById("loginPage").style.display="flex";
+
+    }
+
+  }
+);
+
+
+/* =========================
+   REFRESH
+========================= */
 
 setInterval(
   async ()=>{
 
     if(
       currentUser &&
-      userFacility
+      profile
     ){
 
       const success =
@@ -2378,10 +2148,6 @@ setInterval(
   10000
 );
 
-
-/* ==========================================
-   بدء النظام
-========================================== */
 
 checkSession();
 
