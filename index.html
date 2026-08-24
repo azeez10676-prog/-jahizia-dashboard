@@ -18,21 +18,48 @@
   --green:#16834b;
   --orange:#d97706;
   --red:#dc2626;
-  --purple:#7c3aed
+  --purple:#7c3aed;
+  --shadow:#0000000d;
 }
 
 *{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
+  transition:.25s;
 }
 
 button,input,select,textarea{font:inherit}
-
 button{cursor:pointer}
+
+body.dark{
+  --bg:#0f172a;
+  --card:#172033;
+  --text:#f1f5f9;
+  --muted:#94a3b8;
+  --line:#334155;
+  --shadow:#00000033;
+}
+
+body.dark .field select,
+body.dark .field input,
+body.dark .field textarea,
+body.dark .filter-grid select,
+body.dark .filter-grid input,
+body.dark .login-field input{
+  background:#0f172a;
+  color:#f1f5f9;
+}
+
+body.dark th{background:#0f172a}
+body.dark .login-card{background:#172033}
+
+/* LOGIN */
 
 .login{
   min-height:100vh;
@@ -43,36 +70,36 @@ button{cursor:pointer}
 }
 
 .login-card{
-  width:min(420px,100%);
-  background:#fff;
+  width:min(430px,100%);
+  background:var(--card);
   border:1px solid var(--line);
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 8px 30px #0000000d
+  border-radius:22px;
+  padding:27px;
+  box-shadow:0 12px 40px var(--shadow)
 }
 
 .login-logo{
-  width:60px;
-  height:60px;
-  border-radius:16px;
+  width:64px;
+  height:64px;
+  border-radius:17px;
   background:#eef6ff;
   display:grid;
   place-items:center;
-  font-size:32px;
+  font-size:33px;
   margin:0 auto 15px
 }
 
 .login h1{
   text-align:center;
   margin:0;
-  font-size:21px
+  font-size:22px
 }
 
 .login p{
   text-align:center;
   color:var(--muted);
   font-size:12px;
-  margin:7px 0 20px
+  margin:7px 0 21px
 }
 
 .login-field{margin:12px 0}
@@ -86,7 +113,7 @@ button{cursor:pointer}
 
 .login-field input{
   width:100%;
-  padding:12px;
+  padding:13px;
   border:1px solid var(--line);
   border-radius:11px;
   direction:ltr;
@@ -115,19 +142,21 @@ button{cursor:pointer}
   margin-bottom:10px
 }
 
+/* APP */
+
 #app{display:none}
 
 .app{
-  max-width:1100px;
+  max-width:1150px;
   margin:auto;
   min-height:100vh;
   padding-bottom:92px
 }
 
 header{
-  background:#fff;
+  background:var(--card);
   border-bottom:1px solid var(--line);
-  padding:15px 16px;
+  padding:14px 16px;
   position:sticky;
   top:0;
   z-index:5
@@ -136,18 +165,18 @@ header{
 .head{
   display:flex;
   align-items:center;
-  gap:12px
+  gap:10px
 }
 
 .logo{
   width:46px;
   height:46px;
   border-radius:12px;
-  background:#fff;
+  background:var(--card);
   border:1px solid var(--line);
   display:grid;
   place-items:center;
-  font-size:26px
+  font-size:25px
 }
 
 .brand h1{
@@ -183,10 +212,31 @@ header{
   font-weight:800
 }
 
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:6px
+}
+
+.theme-btn{
+  background:#f1f5f9;
+  color:#334155;
+  padding:8px 10px;
+  border-radius:9px;
+  border:0;
+  font-size:11px;
+  font-weight:800
+}
+
+body.dark .theme-btn{
+  background:#263449;
+  color:#e2e8f0
+}
+
 .logout{
   background:#fee2e2;
   color:#b91c1c;
-  padding:7px 9px;
+  padding:8px 10px;
   border-radius:8px;
   border:0;
   font-size:10px;
@@ -208,6 +258,8 @@ header{
   margin-bottom:11px
 }
 
+/* STATS */
+
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -215,10 +267,10 @@ header{
 }
 
 .stat{
-  background:#fff;
+  background:var(--card);
   border:1px solid var(--line);
   border-radius:15px;
-  padding:12px;
+  padding:13px;
   text-align:center
 }
 
@@ -238,13 +290,15 @@ header{
 .red{color:var(--red)}
 .purple{color:var(--purple)}
 
+/* CARDS */
+
 .card{
-  background:#fff;
+  background:var(--card);
   border:1px solid var(--line);
   border-radius:16px;
   padding:14px;
   margin-bottom:10px;
-  box-shadow:0 2px 9px #00000008
+  box-shadow:0 2px 9px var(--shadow)
 }
 
 .fac-head{
@@ -337,11 +391,28 @@ button{
 .neutral{background:#f1f5f9;color:#334155}
 .admin-button{background:#ede9fe;color:#6d28d9}
 
+body.dark .secondary{
+  background:#1e3a8a;
+  color:#dbeafe
+}
+
+body.dark .neutral{
+  background:#263449;
+  color:#e2e8f0
+}
+
+body.dark .danger{
+  background:#451a1a;
+  color:#fecaca
+}
+
+/* MODALS */
+
 .overlay{
   display:none;
   position:fixed;
   inset:0;
-  background:#0007;
+  background:#0009;
   z-index:20;
   align-items:center;
   justify-content:center;
@@ -349,12 +420,13 @@ button{
 }
 
 .modal{
-  width:min(560px,100%);
+  width:min(600px,100%);
   max-height:92vh;
   overflow:auto;
-  background:#fff;
+  background:var(--card);
   border-radius:18px;
-  padding:18px
+  padding:18px;
+  color:var(--text)
 }
 
 .modal h2{
@@ -379,7 +451,8 @@ button{
   border:1px solid var(--line);
   border-radius:10px;
   font-size:13px;
-  background:#fff
+  background:var(--card);
+  color:var(--text)
 }
 
 .ma{
@@ -397,21 +470,24 @@ button{
   color:var(--red)
 }
 
+/* TOAST */
+
 .toast{
   display:none;
   position:fixed;
   top:80px;
   left:16px;
   right:16px;
-  max-width:600px;
+  max-width:650px;
   margin:auto;
   background:#172033;
   color:#fff;
-  padding:12px;
+  padding:13px;
   border-radius:11px;
   text-align:center;
   font-size:12px;
-  z-index:30
+  z-index:30;
+  box-shadow:0 10px 30px #0005
 }
 
 .loading{
@@ -431,15 +507,7 @@ button{
   margin-bottom:10px
 }
 
-.successbox{
-  background:#ecfdf3;
-  color:#166534;
-  border:1px solid #bbf7d0;
-  border-radius:12px;
-  padding:12px;
-  font-size:12px;
-  margin-bottom:10px
-}
+/* REPORTS */
 
 .filter-grid{
   display:grid;
@@ -453,7 +521,8 @@ button{
   padding:10px;
   border:1px solid var(--line);
   border-radius:10px;
-  background:#fff;
+  background:var(--card);
+  color:var(--text);
   font-size:12px
 }
 
@@ -464,7 +533,7 @@ button{
 }
 
 .report-card{
-  background:#fff;
+  background:var(--card);
   border:1px solid var(--line);
   border-radius:14px;
   padding:12px;
@@ -481,6 +550,52 @@ button{
   display:block;
   font-size:20px;
   margin-top:5px
+}
+
+.report-header{
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:#fff;
+  border-radius:16px;
+  padding:17px;
+  margin-bottom:10px
+}
+
+.report-header h2{
+  margin:0 0 8px;
+  font-size:18px
+}
+
+.report-header p{
+  margin:4px 0;
+  font-size:11px;
+  opacity:.9
+}
+
+.report-mini-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:12px
+}
+
+.report-mini{
+  background:#ffffff1c;
+  border:1px solid #ffffff33;
+  border-radius:10px;
+  padding:9px;
+  text-align:center
+}
+
+.report-mini span{
+  display:block;
+  font-size:9px;
+  opacity:.8
+}
+
+.report-mini b{
+  display:block;
+  font-size:17px;
+  margin-top:3px
 }
 
 .table-wrap{
@@ -508,13 +623,72 @@ th{background:#f8fafc}
   padding:20px
 }
 
+.delete-btn{
+  background:#fee2e2;
+  color:#b91c1c;
+  padding:6px 8px;
+  font-size:10px;
+  border-radius:8px
+}
+
+/* NEW REPORT DETAILS */
+
+.report-breakdown{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px
+}
+
+.breakdown-box{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:13px
+}
+
+.breakdown-box h3{
+  margin:0 0 10px;
+  font-size:13px
+}
+
+.breakdown-row{
+  display:flex;
+  justify-content:space-between;
+  padding:7px 0;
+  border-bottom:1px solid var(--line);
+  font-size:11px
+}
+
+.breakdown-row:last-child{border-bottom:0}
+
+.report-print{
+  background:#f8fafc;
+  color:#334155
+}
+
+body.dark .report-print{
+  background:#263449;
+  color:#e2e8f0
+}
+
+/* RESPONSIVE */
+
 @media(max-width:700px){
+
   .stats,
   .report-cards{
     grid-template-columns:repeat(2,1fr)
   }
 
   .filter-grid{
+    grid-template-columns:1fr
+  }
+
+  .report-mini-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .report-breakdown{
     grid-template-columns:1fr
   }
 
@@ -527,11 +701,17 @@ th{background:#f8fafc}
   .brand h1{font-size:18px}
 
   .userbox{display:none}
+
+  .theme-btn{
+    padding:7px 8px
+  }
 }
 </style>
 </head>
 
 <body>
+
+<!-- LOGIN -->
 
 <div id="loginPage" class="login">
 
@@ -566,9 +746,10 @@ th{background:#f8fafc}
     <button onclick="login()">تسجيل الدخول</button>
 
   </div>
-
 </div>
 
+
+<!-- APP -->
 
 <div id="app">
 
@@ -590,7 +771,22 @@ th{background:#f8fafc}
       <span id="userRole"></span>
     </div>
 
-    <button class="logout" onclick="logout()">خروج</button>
+    <div class="header-actions">
+
+      <button
+        class="theme-btn"
+        onclick="toggleTheme()"
+        id="themeButton">
+        🌙 ليلي
+      </button>
+
+      <button
+        class="logout"
+        onclick="logout()">
+        خروج
+      </button>
+
+    </div>
 
   </div>
 
@@ -599,6 +795,8 @@ th{background:#f8fafc}
 
 <div id="connectionError"></div>
 
+
+<!-- DASHBOARD -->
 
 <div class="section">
 
@@ -633,6 +831,8 @@ th{background:#f8fafc}
 </div>
 
 
+<!-- ACTIVE -->
+
 <div class="section">
 
   <div class="title">
@@ -658,6 +858,8 @@ th{background:#f8fafc}
 </div>
 
 
+<!-- FACILITIES -->
+
 <div class="section">
 
   <div class="title">المنشآت</div>
@@ -666,6 +868,8 @@ th{background:#f8fafc}
 
 </div>
 
+
+<!-- HISTORY -->
 
 <div class="section">
 
@@ -688,6 +892,7 @@ th{background:#f8fafc}
           <th>البداية</th>
           <th>النهاية</th>
           <th>المدة</th>
+          <th id="historyActionHeader"></th>
         </tr>
 
       </thead>
@@ -695,7 +900,7 @@ th{background:#f8fafc}
       <tbody id="history">
 
         <tr>
-          <td colspan="6" class="empty">
+          <td colspan="7" class="empty">
             جاري التحميل...
           </td>
         </tr>
@@ -709,13 +914,11 @@ th{background:#f8fafc}
 </div>
 
 
+<!-- REPORTS SUMMARY -->
+
 <div class="section">
 
-  <div class="title">📊 التقارير والإحصائيات</div>
-
-  <div class="subline">
-    ملخص البلاغات حسب المنشأة ونوع البلاغ.
-  </div>
+  <div class="title">📊 الإحصائيات</div>
 
   <div class="report-cards">
 
@@ -744,69 +947,117 @@ th{background:#f8fafc}
 </div>
 
 
-<div class="section">
+<!-- CENTRAL REPORTS ONLY -->
 
-  <div class="title">📈 تقرير المنشآت</div>
+<div
+  class="section"
+  id="centralReports">
+
+  <div class="title">📈 التقارير المركزية</div>
+
+  <div class="subline">
+    إنشاء تقارير احترافية حسب المنشأة ونوع البلاغ والفترة الزمنية.
+  </div>
 
   <div class="card">
 
     <div class="filter-grid">
 
-      <select id="reportFacility">
-        <option value="">جميع المنشآت</option>
-      </select>
+      <div>
+        <label style="font-size:10px;color:var(--muted)">
+          المنشأة
+        </label>
 
-      <select id="reportType">
-        <option value="">جميع أنواع البلاغات</option>
-        <option>الكهرباء</option>
-        <option>المياه</option>
-        <option>التكييف</option>
-        <option>النظام الإلكتروني</option>
-        <option>الطاقة الاحتياطية</option>
-        <option>أخرى</option>
-      </select>
+        <select id="reportFacility">
+          <option value="">جميع المنشآت</option>
+        </select>
+      </div>
 
-      <select id="reportStatus">
-        <option value="">كل الحالات</option>
-        <option value="open">نشط</option>
-        <option value="closed">مغلق</option>
-      </select>
+      <div>
+        <label style="font-size:10px;color:var(--muted)">
+          نوع البلاغ
+        </label>
+
+        <select id="reportType">
+          <option value="">جميع البلاغات</option>
+          <option>الكهرباء</option>
+          <option>المياه</option>
+          <option>التكييف</option>
+          <option>النظام الإلكتروني</option>
+          <option>اختبار مولدات</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="font-size:10px;color:var(--muted)">
+          الفترة
+        </label>
+
+        <select
+          id="reportPeriod"
+          onchange="toggleCustomPeriod()">
+
+          <option value="day">يومي</option>
+          <option value="week">أسبوعي</option>
+          <option value="month">شهري</option>
+          <option value="custom">فترة مخصصة</option>
+
+        </select>
+      </div>
 
     </div>
 
-    <button
-      class="secondary"
-      style="width:100%;margin-top:9px"
-      onclick="applyReport()">
-      🔎 تطبيق التقرير
-    </button>
+
+    <div
+      id="customDates"
+      class="filter-grid hidden"
+      style="margin-top:9px">
+
+      <div>
+        <label style="font-size:10px;color:var(--muted)">
+          من
+        </label>
+
+        <input
+          id="reportFrom"
+          type="date">
+      </div>
+
+      <div>
+        <label style="font-size:10px;color:var(--muted)">
+          إلى
+        </label>
+
+        <input
+          id="reportTo"
+          type="date">
+      </div>
+
+    </div>
+
+
+    <div
+      class="ma"
+      style="margin-top:10px">
+
+      <button
+        class="primary"
+        onclick="generateReport()">
+        📊 إنشاء التقرير
+      </button>
+
+      <button
+        class="report-print"
+        onclick="printReport()">
+        🖨️ طباعة
+      </button>
+
+    </div>
 
   </div>
 
 
-  <div class="card table-wrap">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>المنشأة</th>
-          <th>نوع البلاغ</th>
-          <th>الحالة</th>
-          <th>النطاق</th>
-          <th>البداية</th>
-          <th>النهاية</th>
-          <th>المدة</th>
-        </tr>
-
-      </thead>
-
-      <tbody id="reportsTable"></tbody>
-
-    </table>
-
-  </div>
+  <div id="generatedReport"></div>
 
 </div>
 
@@ -815,13 +1066,14 @@ th{background:#f8fafc}
 </div>
 
 
-<!-- NEW INCIDENT -->
+<!-- NEW INCIDENT MODAL -->
 
 <div class="overlay" id="modal">
 
   <div class="modal">
 
     <h2>🚨 تسجيل بلاغ جديد</h2>
+
 
     <div class="field">
 
@@ -836,40 +1088,70 @@ th{background:#f8fafc}
 
       <label class="required">نوع البلاغ</label>
 
-      <select id="type" onchange="toggleOther()">
+      <select
+        id="type"
+        onchange="handleTypeChange()">
 
         <option>الكهرباء</option>
         <option>المياه</option>
         <option>التكييف</option>
         <option>النظام الإلكتروني</option>
-        <option>الطاقة الاحتياطية</option>
-        <option>أخرى</option>
+        <option>اختبار مولدات</option>
 
       </select>
 
     </div>
 
 
-    <div class="field hidden" id="otherWrap">
+    <!-- ELECTRICITY -->
 
-      <label class="required">نوع البلاغ - أخرى</label>
+    <div
+      class="field hidden"
+      id="powerWrap">
 
-      <input id="otherType" placeholder="اكتب نوع البلاغ">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>مصدر الكهرباء</label>
+      <label class="required">مصدر الكهرباء</label>
 
       <select id="power">
 
         <option>داخلي</option>
         <option>خارجي</option>
-        <option>لا ينطبق</option>
 
       </select>
+
+    </div>
+
+
+    <!-- GENERATOR -->
+
+    <div
+      class="field hidden"
+      id="generatorWrap">
+
+      <label class="required">حالة المولد</label>
+
+      <select id="generatorStatus">
+
+        <option>يعمل</option>
+        <option>لا يعمل</option>
+
+      </select>
+
+    </div>
+
+
+    <!-- ELECTRONIC SYSTEM -->
+
+    <div
+      class="field hidden"
+      id="electronicWrap">
+
+      <label class="required">
+        النظام الإلكتروني المتأثر
+      </label>
+
+      <input
+        id="electronicSystem"
+        placeholder="اكتب اسم النظام الإلكتروني المتأثر">
 
     </div>
 
@@ -878,7 +1160,9 @@ th{background:#f8fafc}
 
       <label class="required">نطاق التأثير</label>
 
-      <select id="scope" onchange="togglePartial()">
+      <select
+        id="scope"
+        onchange="togglePartial()">
 
         <option>كلي</option>
         <option>جزئي</option>
@@ -888,7 +1172,9 @@ th{background:#f8fafc}
     </div>
 
 
-    <div class="field hidden" id="partialWrap">
+    <div
+      class="field hidden"
+      id="partialWrap">
 
       <label class="required">القسم المتأثر</label>
 
@@ -917,6 +1203,24 @@ th{background:#f8fafc}
     </div>
 
 
+    <!-- INPATIENTS -->
+
+    <div class="field">
+
+      <label class="required">
+        إجمالي عدد المنومين في المنشأة
+      </label>
+
+      <input
+        id="inpatientCount"
+        type="number"
+        min="0"
+        step="1"
+        placeholder="مثال: 120">
+
+    </div>
+
+
     <div class="field">
 
       <label class="required">مصدر البلاغ</label>
@@ -938,7 +1242,9 @@ th{background:#f8fafc}
 
       <label class="required">اسم المبلّغ</label>
 
-      <input id="reporter" placeholder="اسم المبلّغ">
+      <input
+        id="reporter"
+        placeholder="اسم المبلّغ">
 
     </div>
 
@@ -947,7 +1253,9 @@ th{background:#f8fafc}
 
       <label class="required">وقت بداية البلاغ</label>
 
-      <input id="start" type="datetime-local">
+      <input
+        id="start"
+        type="datetime-local">
 
     </div>
 
@@ -956,7 +1264,10 @@ th{background:#f8fafc}
 
       <label>الوصف</label>
 
-      <textarea id="desc" rows="2"></textarea>
+      <textarea
+        id="desc"
+        rows="2"
+        placeholder="وصف مختصر للبلاغ"></textarea>
 
     </div>
 
@@ -965,14 +1276,19 @@ th{background:#f8fafc}
 
       <label>الملاحظات</label>
 
-      <textarea id="note" rows="2"></textarea>
+      <textarea
+        id="note"
+        rows="2"
+        placeholder="أي ملاحظات إضافية"></textarea>
 
     </div>
 
 
     <div class="ma">
 
-      <button class="primary" onclick="saveIncident()">
+      <button
+        class="primary"
+        onclick="saveIncident()">
         حفظ البلاغ
       </button>
 
@@ -999,13 +1315,17 @@ th{background:#f8fafc}
 
       <label>وقت عودة الخدمة</label>
 
-      <input id="end" type="datetime-local">
+      <input
+        id="end"
+        type="datetime-local">
 
     </div>
 
     <div class="ma">
 
-      <button class="primary" onclick="finishIncident()">
+      <button
+        class="primary"
+        onclick="finishIncident()">
         إنهاء وحساب المدة
       </button>
 
@@ -1020,14 +1340,39 @@ th{background:#f8fafc}
 </div>
 
 
+<!-- DETAILS -->
+
+<div class="overlay" id="detailsModal">
+
+  <div class="modal">
+
+    <h2>📋 تفاصيل البلاغ</h2>
+
+    <div id="detailsContent"></div>
+
+    <div class="ma">
+
+      <button
+        class="neutral"
+        onclick="closeDetails()">
+        إغلاق
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <div class="toast" id="toast"></div>
 
 
 <script>
 
-/* =========================
+/* =====================================================
    SUPABASE
-========================= */
+===================================================== */
 
 const SUPABASE_URL =
   "https://fecfgkluloyxfpqmazxt.supabase.co";
@@ -1042,9 +1387,9 @@ const supabaseClient =
   );
 
 
-/* =========================
+/* =====================================================
    GLOBAL
-========================= */
+===================================================== */
 
 const allFacilities =
   Array.from(
@@ -1061,15 +1406,207 @@ let data={
 
 let closingId=null;
 
+let firstDataLoad=true;
+let knownIncidentIds=new Set();
 
-/* =========================
+let audioContext=null;
+let audioUnlocked=false;
+
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function applySavedTheme(){
+
+  const saved =
+    localStorage.getItem("jahizia_theme");
+
+  if(saved==="dark"){
+
+    document.body.classList.add("dark");
+
+  }else{
+
+    document.body.classList.remove("dark");
+
+  }
+
+  updateThemeButton();
+}
+
+
+function toggleTheme(){
+
+  document.body.classList.toggle("dark");
+
+  const mode =
+    document.body.classList.contains("dark")
+      ? "dark"
+      : "light";
+
+  localStorage.setItem(
+    "jahizia_theme",
+    mode
+  );
+
+  updateThemeButton();
+}
+
+
+function updateThemeButton(){
+
+  const button =
+    document.getElementById("themeButton");
+
+  if(!button)
+    return;
+
+  if(document.body.classList.contains("dark")){
+
+    button.textContent="☀️ نهاري";
+
+  }else{
+
+    button.textContent="🌙 ليلي";
+
+  }
+}
+
+
+/* =====================================================
+   AUDIO
+===================================================== */
+
+function unlockAudio(){
+
+  try{
+
+    if(!audioContext){
+
+      audioContext =
+        new (
+          window.AudioContext ||
+          window.webkitAudioContext
+        )();
+
+    }
+
+    if(audioContext.state==="suspended")
+      audioContext.resume();
+
+    audioUnlocked=true;
+
+  }catch(e){
+
+    console.log("Audio unavailable",e);
+
+  }
+}
+
+
+function playNotificationSound(){
+
+  if(!profile || profile.role!=="admin")
+    return;
+
+  if(!audioUnlocked)
+    return;
+
+  try{
+
+    const ctx=audioContext;
+
+    const now=ctx.currentTime;
+
+    const osc1=ctx.createOscillator();
+    const gain1=ctx.createGain();
+
+    osc1.type="sine";
+    osc1.frequency.setValueAtTime(
+      880,
+      now
+    );
+
+    osc1.frequency.setValueAtTime(
+      660,
+      now+.16
+    );
+
+    gain1.gain.setValueAtTime(
+      .0001,
+      now
+    );
+
+    gain1.gain.exponentialRampToValueAtTime(
+      .18,
+      now+.02
+    );
+
+    gain1.gain.exponentialRampToValueAtTime(
+      .0001,
+      now+.45
+    );
+
+    osc1.connect(gain1);
+    gain1.connect(ctx.destination);
+
+    osc1.start(now);
+    osc1.stop(now+.5);
+
+
+    const osc2=ctx.createOscillator();
+    const gain2=ctx.createGain();
+
+    osc2.type="sine";
+
+    osc2.frequency.setValueAtTime(
+      988,
+      now+.22
+    );
+
+    gain2.gain.setValueAtTime(
+      .0001,
+      now+.22
+    );
+
+    gain2.gain.exponentialRampToValueAtTime(
+      .15,
+      now+.25
+    );
+
+    gain2.gain.exponentialRampToValueAtTime(
+      .0001,
+      now+.65
+    );
+
+    osc2.connect(gain2);
+    gain2.connect(ctx.destination);
+
+    osc2.start(now+.22);
+    osc2.stop(now+.7);
+
+  }catch(e){
+
+    console.log("Notification sound error",e);
+
+  }
+}
+
+
+/* =====================================================
    LOGIN
-========================= */
+===================================================== */
 
 async function login(){
 
+  unlockAudio();
+
   const email =
-    document.getElementById("loginEmail").value.trim();
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
 
   const password =
     document.getElementById("loginPassword").value;
@@ -1085,8 +1622,10 @@ async function login(){
       "⚠️ أدخل البريد الإلكتروني وكلمة المرور";
 
     errorBox.style.display="block";
+
     return;
   }
+
 
   const {
     data:authData,
@@ -1097,14 +1636,17 @@ async function login(){
       password
     });
 
+
   if(error){
 
     errorBox.textContent =
       "❌ بيانات الدخول غير صحيحة";
 
     errorBox.style.display="block";
+
     return;
   }
+
 
   currentUser=authData.user;
 
@@ -1120,18 +1662,20 @@ async function logout(){
   profile=null;
 
   document.getElementById("app").style.display="none";
+
   document.getElementById("loginPage").style.display="flex";
 }
 
 
-/* =========================
+/* =====================================================
    PROFILE
-========================= */
+===================================================== */
 
 async function loadProfile(){
 
   if(!currentUser)
     return false;
+
 
   const {
     data:row,
@@ -1142,6 +1686,7 @@ async function loadProfile(){
       .select("user_id,facility,role")
       .eq("user_id",currentUser.id)
       .single();
+
 
   if(error || !row){
 
@@ -1156,10 +1701,12 @@ async function loadProfile(){
     errorBox.style.display="block";
 
     document.getElementById("app").style.display="none";
+
     document.getElementById("loginPage").style.display="flex";
 
     return false;
   }
+
 
   profile=row;
 
@@ -1167,22 +1714,28 @@ async function loadProfile(){
 }
 
 
-/* =========================
-   START
-========================= */
+/* =====================================================
+   START APP
+===================================================== */
 
 async function startApp(){
+
+  unlockAudio();
 
   const ok=await loadProfile();
 
   if(!ok)
     return;
 
+
   document.getElementById("loginPage").style.display="none";
+
   document.getElementById("app").style.display="block";
+
 
   document.getElementById("userName").textContent =
     currentUser.email;
+
 
   if(profile.role==="admin"){
 
@@ -1196,10 +1749,18 @@ async function startApp(){
 
   }
 
+
   document.getElementById("dashboardSubtitle").textContent =
     profile.role==="admin"
       ? "لوحة الإدارة المركزية • جميع المنشآت"
       : `لوحة متابعة ${profile.facility}`;
+
+
+  document.getElementById("centralReports").style.display =
+    profile.role==="admin"
+      ? "block"
+      : "none";
+
 
   setupFacilityFilters();
 
@@ -1209,22 +1770,24 @@ async function startApp(){
 }
 
 
-/* =========================
+/* =====================================================
    VISIBLE FACILITIES
-========================= */
+===================================================== */
 
 function visibleFacilities(){
 
   if(profile && profile.role==="admin")
     return allFacilities;
 
-  return [profile.facility];
+  return profile
+    ? [profile.facility]
+    : [];
 }
 
 
-/* =========================
+/* =====================================================
    DATA
-========================= */
+===================================================== */
 
 async function loadData(){
 
@@ -1240,6 +1803,7 @@ async function loadData(){
         {ascending:true}
       );
 
+
   if(error){
 
     showConnectionError(
@@ -1250,7 +1814,58 @@ async function loadData(){
     return false;
   }
 
-  data.incidents=rows || [];
+
+  const newRows=rows || [];
+
+
+  if(
+    profile &&
+    profile.role==="admin" &&
+    !firstDataLoad
+  ){
+
+    const oldIds=knownIncidentIds;
+
+    const newIncidents =
+      newRows.filter(
+        x=>!oldIds.has(String(x.id))
+      );
+
+
+    if(newIncidents.length){
+
+      const relevant =
+        newIncidents.filter(
+          x=>allFacilities.includes(x.facility)
+        );
+
+
+      if(relevant.length){
+
+        playNotificationSound();
+
+        const first=relevant[0];
+
+        toast(
+          `🚨 بلاغ جديد • ${first.facility} • ${currentType(first)}`
+        );
+      }
+    }
+  }
+
+
+  data.incidents=newRows;
+
+
+  knownIncidentIds =
+    new Set(
+      newRows.map(
+        x=>String(x.id)
+      )
+    );
+
+
+  firstDataLoad=false;
 
   clearConnectionError();
 
@@ -1258,9 +1873,9 @@ async function loadData(){
 }
 
 
-/* =========================
+/* =====================================================
    HELPERS
-========================= */
+===================================================== */
 
 function fmtDate(x){
 
@@ -1285,25 +1900,39 @@ function dur(a,b){
   if(!a || !b)
     return "00:00:00";
 
-  let ms=
+
+  let ms =
     new Date(b)-new Date(a);
+
 
   if(ms<0)
     ms=0;
 
-  let s=Math.floor(ms/1000);
 
-  let h=Math.floor(s/3600);
+  let s =
+    Math.floor(ms/1000);
 
-  let m=Math.floor((s%3600)/60);
+
+  let h =
+    Math.floor(s/3600);
+
+
+  let m =
+    Math.floor(
+      (s%3600)/60
+    );
+
 
   let z=s%60;
 
-  return [h,m,z]
-    .map(
-      x=>String(x).padStart(2,"0")
-    )
-    .join(":");
+
+  return [
+    h,m,z
+  ]
+  .map(
+    x=>String(x).padStart(2,"0")
+  )
+  .join(":");
 }
 
 
@@ -1320,7 +1949,7 @@ function icon(s){
 
   return {
     "الكهرباء":"⚡",
-    "الطاقة الاحتياطية":"🔋",
+    "اختبار مولدات":"🔋",
     "المياه":"💧",
     "التكييف":"❄️",
     "النظام الإلكتروني":"💻"
@@ -1330,9 +1959,7 @@ function icon(s){
 
 function currentType(x){
 
-  return x.type==="أخرى"
-    ? (x.other_type || "أخرى")
-    : x.type;
+  return x.type || "-";
 }
 
 
@@ -1348,9 +1975,9 @@ function state(f){
 }
 
 
-/* =========================
+/* =====================================================
    RENDER
-========================= */
+===================================================== */
 
 function render(){
 
@@ -1358,6 +1985,7 @@ function render(){
 
   let normal=0;
   let follow=0;
+
 
   facilities.forEach(f=>{
 
@@ -1367,6 +1995,7 @@ function render(){
       follow++;
 
   });
+
 
   document.getElementById("total").textContent =
     facilities.length;
@@ -1414,10 +2043,10 @@ function render(){
 
             <div class="name">
 
-              🟠 ${x.facility}
+              🟠 ${escapeHtml(x.facility)}
               —
               ${icon(currentType(x))}
-              ${currentType(x)}
+              ${escapeHtml(currentType(x))}
 
             </div>
 
@@ -1431,9 +2060,9 @@ function render(){
           <div class="row">
 
             <span>
-              ${x.source || "-"}
+              ${escapeHtml(x.source || "-")}
               •
-              ${x.reporter || "-"}
+              ${escapeHtml(x.reporter || "-")}
             </span>
 
             <span>
@@ -1446,10 +2075,10 @@ function render(){
           <div class="row">
 
             <span>
-              النطاق: ${x.scope}
+              النطاق: ${escapeHtml(x.scope || "-")}
               ${
                 x.scope==="جزئي"
-                ? ` • ${x.department || "-"}`
+                ? ` • ${escapeHtml(x.department || "-")}`
                 : ""
               }
             </span>
@@ -1461,14 +2090,21 @@ function render(){
           </div>
 
 
-          <button
-            class="danger"
-            style="width:100%;margin-top:9px"
-            onclick="openEnd('${x.id}')">
+          <div class="actions">
 
-            إنهاء البلاغ
+            <button
+              class="secondary"
+              onclick="showDetails('${x.id}')">
+              فتح التفاصيل
+            </button>
 
-          </button>
+            <button
+              class="danger"
+              onclick="openEnd('${x.id}')">
+              إنهاء البلاغ
+            </button>
+
+          </div>
 
         </div>
 
@@ -1496,13 +2132,14 @@ function render(){
 
   renderSummaryReports();
 
-  renderReportTable();
+  if(profile && profile.role==="admin")
+    renderReportTableIfGenerated();
 }
 
 
-/* =========================
+/* =====================================================
    FACILITIES
-========================= */
+===================================================== */
 
 function renderFacilities(){
 
@@ -1510,6 +2147,7 @@ function renderFacilities(){
     document.getElementById("facilities");
 
   el.innerHTML="";
+
 
   visibleFacilities().forEach(f=>{
 
@@ -1520,15 +2158,18 @@ function renderFacilities(){
           !x.end_time
       );
 
+
     const st=state(f);
+
 
     const systems=[
       "الكهرباء",
-      "الطاقة الاحتياطية",
+      "اختبار مولدات",
       "المياه",
       "التكييف",
       "النظام الإلكتروني"
     ];
+
 
     const cards =
       systems.map(s=>{
@@ -1537,6 +2178,7 @@ function renderFacilities(){
           open.find(
             i=>currentType(i)===s
           );
+
 
         return `
 
@@ -1551,11 +2193,7 @@ function renderFacilities(){
               ${
                 x
                 ? "نشط"
-                : (
-                    s==="الطاقة الاحتياطية"
-                    ? "جاهز"
-                    : "طبيعي"
-                  )
+                : "طبيعي"
               }
 
             </b>
@@ -1580,7 +2218,7 @@ function renderFacilities(){
         <div class="fac-head">
 
           <div class="name">
-            ${f}
+            ${escapeHtml(f)}
           </div>
 
           <span class="badge ${
@@ -1613,7 +2251,7 @@ function renderFacilities(){
           <div class="row">
 
             <span>
-              🚨 ${currentType(last)}
+              🚨 ${escapeHtml(currentType(last))}
             </span>
 
             <span>
@@ -1628,17 +2266,13 @@ function renderFacilities(){
             <button
               class="secondary"
               onclick="showDetails('${last.id}')">
-
               فتح التفاصيل
-
             </button>
 
             <button
               class="danger"
               onclick="openEnd('${last.id}')">
-
               إنهاء البلاغ
-
             </button>
 
           </div>
@@ -1673,13 +2307,14 @@ function renderFacilities(){
 }
 
 
-/* =========================
+/* =====================================================
    HISTORY
-========================= */
+===================================================== */
 
 function renderHistory(){
 
   const facilities=visibleFacilities();
+
 
   const history =
     data.incidents
@@ -1692,6 +2327,18 @@ function renderHistory(){
       .reverse();
 
 
+  const admin =
+    profile &&
+    profile.role==="admin";
+
+
+  document.getElementById("historyActionHeader").textContent =
+    admin ? "الإجراء" : "";
+
+
+  const colspan=admin ? 7 : 6;
+
+
   document.getElementById("history").innerHTML =
 
     history.length
@@ -1702,17 +2349,17 @@ function renderHistory(){
 
       <tr>
 
-        <td>${x.facility}</td>
+        <td>${escapeHtml(x.facility)}</td>
 
-        <td>${currentType(x)}</td>
+        <td>${escapeHtml(currentType(x))}</td>
 
         <td>
 
-          ${x.scope}
+          ${escapeHtml(x.scope || "-")}
 
           ${
             x.scope==="جزئي"
-            ? ` — ${x.department || "-"}`
+            ? ` — ${escapeHtml(x.department || "-")}`
             : ""
           }
 
@@ -1722,9 +2369,28 @@ function renderHistory(){
 
         <td>${fmtDate(x.end_time)}</td>
 
-        <td>
-          ${dur(x.start_time,x.end_time)}
-        </td>
+        <td>${dur(x.start_time,x.end_time)}</td>
+
+        ${
+          admin
+
+          ?
+
+          `<td>
+
+            <button
+              class="delete-btn"
+              onclick="deleteIncident('${x.id}')">
+              🗑️ حذف
+            </button>
+
+          </td>`
+
+          :
+
+          ""
+
+        }
 
       </tr>
 
@@ -1734,7 +2400,7 @@ function renderHistory(){
 
     `
       <tr>
-        <td colspan="6" class="empty">
+        <td colspan="${colspan}" class="empty">
           لا يوجد سجل
         </td>
       </tr>
@@ -1742,30 +2408,35 @@ function renderHistory(){
 }
 
 
-/* =========================
-   REPORT SUMMARY
-========================= */
+/* =====================================================
+   SUMMARY
+===================================================== */
 
 function renderSummaryReports(){
 
   const facilities=visibleFacilities();
+
 
   const incidents =
     data.incidents.filter(
       x=>facilities.includes(x.facility)
     );
 
+
   const total=incidents.length;
+
 
   const closed =
     incidents.filter(
       x=>!!x.end_time
     ).length;
 
+
   const electricity =
     incidents.filter(
       x=>currentType(x)==="الكهرباء"
     ).length;
+
 
   const durations =
     incidents
@@ -1778,7 +2449,9 @@ function renderSummaryReports(){
           new Date(x.start_time)
       );
 
+
   let average=0;
+
 
   if(durations.length){
 
@@ -1788,7 +2461,9 @@ function renderSummaryReports(){
         0
       ) /
       durations.length;
+
   }
+
 
   document.getElementById("reportTotal").textContent =
     total;
@@ -1809,6 +2484,7 @@ function formatMilliseconds(ms){
   if(!ms || ms<0)
     return "00:00:00";
 
+
   let seconds=Math.floor(ms/1000);
 
   let hours=Math.floor(seconds/3600);
@@ -1818,6 +2494,7 @@ function formatMilliseconds(ms){
   );
 
   let secondsOnly=seconds%60;
+
 
   return [
     hours,
@@ -1831,19 +2508,24 @@ function formatMilliseconds(ms){
 }
 
 
-/* =========================
+/* =====================================================
    REPORT FILTERS
-========================= */
+===================================================== */
 
 function setupFacilityFilters(){
 
   const select =
     document.getElementById("reportFacility");
 
+  if(!select)
+    return;
+
+
   select.innerHTML =
     '<option value="">جميع المنشآت</option>';
 
-  visibleFacilities().forEach(f=>{
+
+  allFacilities.forEach(f=>{
 
     const option =
       document.createElement("option");
@@ -1854,25 +2536,159 @@ function setupFacilityFilters(){
     select.appendChild(option);
 
   });
-
 }
 
 
-function applyReport(){
+function toggleCustomPeriod(){
 
-  renderReportTable();
+  const period =
+    document.getElementById("reportPeriod").value;
 
-  toast("✅ تم تحديث التقرير");
+  document
+    .getElementById("customDates")
+    .classList.toggle(
+      "hidden",
+      period!=="custom"
+    );
 }
 
 
-function renderReportTable(){
+/* =====================================================
+   REPORT GENERATION
+===================================================== */
 
-  const table =
-    document.getElementById("reportsTable");
+let generatedReportRows=[];
 
-  if(!table)
+
+function getReportDateRange(){
+
+  const period =
+    document.getElementById("reportPeriod").value;
+
+
+  const now=new Date();
+
+  let from=new Date(now);
+  let to=new Date(now);
+
+
+  if(period==="day"){
+
+    from.setHours(0,0,0,0);
+
+    to.setHours(23,59,59,999);
+
+  }
+
+
+  if(period==="week"){
+
+    const day=now.getDay();
+
+    const diff =
+      day===0 ? 6 : day-1;
+
+    from.setDate(
+      now.getDate()-diff
+    );
+
+    from.setHours(0,0,0,0);
+
+    to.setTime(
+      now.getTime()
+    );
+
+  }
+
+
+  if(period==="month"){
+
+    from =
+      new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        1,
+        0,0,0,0
+      );
+
+    to =
+      new Date(now);
+
+  }
+
+
+  if(period==="custom"){
+
+    const fromValue =
+      document.getElementById("reportFrom").value;
+
+    const toValue =
+      document.getElementById("reportTo").value;
+
+
+    if(!fromValue || !toValue){
+
+      toast("⚠️ حدد تاريخ البداية والنهاية");
+
+      return null;
+    }
+
+
+    from =
+      new Date(
+        fromValue+"T00:00:00"
+      );
+
+    to =
+      new Date(
+        toValue+"T23:59:59.999"
+      );
+
+
+    if(to<from){
+
+      toast("⚠️ تاريخ النهاية يجب أن يكون بعد البداية");
+
+      return null;
+    }
+
+  }
+
+
+  return {from,to};
+}
+
+
+function periodLabel(){
+
+  const period =
+    document.getElementById("reportPeriod").value;
+
+
+  return {
+    day:"يومي",
+    week:"أسبوعي",
+    month:"شهري",
+    custom:"فترة مخصصة"
+  }[period] || "";
+}
+
+
+function generateReport(){
+
+  if(!profile || profile.role!=="admin"){
+
+    toast("❌ التقارير متاحة للإدارة المركزية فقط");
+
     return;
+  }
+
+
+  const range=getReportDateRange();
+
+  if(!range)
+    return;
+
 
   const facility =
     document.getElementById("reportFacility").value;
@@ -1880,15 +2696,11 @@ function renderReportTable(){
   const type =
     document.getElementById("reportType").value;
 
-  const status =
-    document.getElementById("reportStatus").value;
-
-
-  const allowed=visibleFacilities();
 
   let rows =
     data.incidents.filter(
-      x=>allowed.includes(x.facility)
+      x =>
+        allFacilities.includes(x.facility)
     );
 
 
@@ -1898,6 +2710,7 @@ function renderReportTable(){
       rows.filter(
         x=>x.facility===facility
       );
+
   }
 
 
@@ -1907,95 +2720,726 @@ function renderReportTable(){
       rows.filter(
         x=>currentType(x)===type
       );
+
   }
 
 
-  if(status==="open"){
+  rows =
+    rows.filter(x=>{
 
-    rows =
-      rows.filter(
-        x=>!x.end_time
-      );
-  }
+      if(!x.start_time)
+        return false;
 
+      const d=new Date(x.start_time);
 
-  if(status==="closed"){
+      return d>=range.from && d<=range.to;
 
-    rows =
-      rows.filter(
-        x=>!!x.end_time
-      );
-  }
+    });
 
 
   rows =
     rows.slice().sort(
       (a,b)=>
-        new Date(b.start_time) -
-        new Date(a.start_time)
+        new Date(a.start_time) -
+        new Date(b.start_time)
     );
 
 
-  if(!rows.length){
+  generatedReportRows=rows;
 
-    table.innerHTML=`
 
-      <tr>
-        <td colspan="7" class="empty">
-          لا توجد بيانات مطابقة
-        </td>
-      </tr>
+  renderProfessionalReport(
+    rows,
+    range,
+    facility,
+    type
+  );
 
-    `;
+
+  toast("✅ تم إنشاء التقرير");
+}
+
+
+function renderProfessionalReport(
+  rows,
+  range,
+  facility,
+  type
+){
+
+  const total=rows.length;
+
+
+  const open =
+    rows.filter(
+      x=>!x.end_time
+    ).length;
+
+
+  const closed=total-open;
+
+
+  const electricity =
+    rows.filter(
+      x=>currentType(x)==="الكهرباء"
+    ).length;
+
+
+  const water =
+    rows.filter(
+      x=>currentType(x)==="المياه"
+    ).length;
+
+
+  const ac =
+    rows.filter(
+      x=>currentType(x)==="التكييف"
+    ).length;
+
+
+  const electronic =
+    rows.filter(
+      x=>currentType(x)==="النظام الإلكتروني"
+    ).length;
+
+
+  const generator =
+    rows.filter(
+      x=>currentType(x)==="اختبار مولدات"
+    ).length;
+
+
+  const durations =
+    rows
+      .filter(
+        x=>x.start_time && x.end_time
+      )
+      .map(
+        x=>
+          new Date(x.end_time) -
+          new Date(x.start_time)
+      );
+
+
+  const average =
+    durations.length
+      ?
+        durations.reduce(
+          (a,b)=>a+b,
+          0
+        ) / durations.length
+      :
+        0;
+
+
+  const longest =
+    durations.length
+      ?
+        Math.max(...durations)
+      :
+        0;
+
+
+  const inpatientTotal =
+    rows.reduce(
+      (sum,x)=>
+        sum+
+        Number(x.inpatient_count || 0),
+      0
+    );
+
+
+  const internal =
+    rows.filter(
+      x=>
+        currentType(x)==="الكهرباء" &&
+        x.power==="داخلي"
+    ).length;
+
+
+  const external =
+    rows.filter(
+      x=>
+        currentType(x)==="الكهرباء" &&
+        x.power==="خارجي"
+    ).length;
+
+
+  const generatorWorking =
+    rows.filter(
+      x=>
+        (
+          currentType(x)==="الكهرباء" ||
+          currentType(x)==="اختبار مولدات"
+        ) &&
+        x.generator_status==="يعمل"
+    ).length;
+
+
+  const generatorNotWorking =
+    rows.filter(
+      x=>
+        (
+          currentType(x)==="الكهرباء" ||
+          currentType(x)==="اختبار مولدات"
+        ) &&
+        x.generator_status==="لا يعمل"
+    ).length;
+
+
+  const facilityCounts={};
+
+
+  rows.forEach(x=>{
+
+    if(!facilityCounts[x.facility]){
+
+      facilityCounts[x.facility]={
+        total:0,
+        duration:0,
+        closed:0
+      };
+
+    }
+
+
+    facilityCounts[x.facility].total++;
+
+
+    if(x.end_time){
+
+      facilityCounts[x.facility].closed++;
+
+      facilityCounts[x.facility].duration +=
+        new Date(x.end_time) -
+        new Date(x.start_time);
+
+    }
+
+  });
+
+
+  const facilityRows =
+    Object.entries(facilityCounts)
+      .sort(
+        (a,b)=>
+          b[1].total-a[1].total
+      );
+
+
+  const reportTitle =
+    facility
+      ? facility
+      : "جميع المنشآت";
+
+
+  const reportType =
+    type
+      ? type
+      : "جميع البلاغات";
+
+
+  const html=`
+
+    <div class="report-header">
+
+      <h2>
+        📊 تقرير جاهزية المنشآت الصحية
+      </h2>
+
+      <p>
+        المنشأة: <b>${escapeHtml(reportTitle)}</b>
+      </p>
+
+      <p>
+        نوع البلاغ: <b>${escapeHtml(reportType)}</b>
+      </p>
+
+      <p>
+        الفترة: <b>${periodLabel()}</b>
+        —
+        من ${fmtDate(range.from)}
+        إلى ${fmtDate(range.to)}
+      </p>
+
+
+      <div class="report-mini-grid">
+
+        <div class="report-mini">
+          <span>إجمالي البلاغات</span>
+          <b>${total}</b>
+        </div>
+
+        <div class="report-mini">
+          <span>المغلقة</span>
+          <b>${closed}</b>
+        </div>
+
+        <div class="report-mini">
+          <span>النشطة</span>
+          <b>${open}</b>
+        </div>
+
+        <div class="report-mini">
+          <span>متوسط المدة</span>
+          <b>${formatMilliseconds(average)}</b>
+        </div>
+
+        <div class="report-mini">
+          <span>أطول مدة</span>
+          <b>${formatMilliseconds(longest)}</b>
+        </div>
+
+        <div class="report-mini">
+          <span>إجمالي المنومين</span>
+          <b>${inpatientTotal}</b>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="report-breakdown">
+
+      <div class="breakdown-box">
+
+        <h3>🚨 توزيع البلاغات حسب النوع</h3>
+
+        <div class="breakdown-row">
+          <span>⚡ الكهرباء</span>
+          <b>${electricity}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>💧 المياه</span>
+          <b>${water}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>❄️ التكييف</span>
+          <b>${ac}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>💻 النظام الإلكتروني</span>
+          <b>${electronic}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>🔋 اختبار مولدات</span>
+          <b>${generator}</b>
+        </div>
+
+      </div>
+
+
+      <div class="breakdown-box">
+
+        <h3>⚡ تفاصيل الكهرباء والمولدات</h3>
+
+        <div class="breakdown-row">
+          <span>كهرباء داخلية</span>
+          <b>${internal}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>كهرباء خارجية</span>
+          <b>${external}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>المولد يعمل</span>
+          <b>${generatorWorking}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>المولد لا يعمل</span>
+          <b>${generatorNotWorking}</b>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card" style="margin-top:10px">
+
+      <div class="title" style="font-size:14px">
+        🏥 ملخص حسب المنشأة
+      </div>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>المنشأة</th>
+              <th>البلاغات</th>
+              <th>المغلقة</th>
+              <th>المتوسط</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              facilityRows.length
+
+              ?
+
+              facilityRows.map(
+                ([name,v])=>`
+
+                  <tr>
+
+                    <td>
+                      ${escapeHtml(name)}
+                    </td>
+
+                    <td>
+                      ${v.total}
+                    </td>
+
+                    <td>
+                      ${v.closed}
+                    </td>
+
+                    <td>
+                      ${
+                        v.closed
+                        ?
+                        formatMilliseconds(
+                          v.duration/v.closed
+                        )
+                        :
+                        "00:00:00"
+                      }
+                    </td>
+
+                  </tr>
+
+                `
+              ).join("")
+
+              :
+
+              `
+                <tr>
+                  <td colspan="4" class="empty">
+                    لا توجد بيانات
+                  </td>
+                </tr>
+              `
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <div class="card" style="margin-top:10px">
+
+      <div class="title" style="font-size:14px">
+        📋 التفاصيل الكاملة للبلاغات
+      </div>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>المنشأة</th>
+              <th>النوع</th>
+              <th>الحالة</th>
+              <th>النطاق</th>
+              <th>البداية</th>
+              <th>النهاية</th>
+              <th>المدة</th>
+              <th>المنومين</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              rows.length
+
+              ?
+
+              rows.map(x=>`
+
+                <tr>
+
+                  <td>
+                    ${escapeHtml(x.facility)}
+                  </td>
+
+                  <td>
+                    ${escapeHtml(currentType(x))}
+                  </td>
+
+                  <td class="${x.end_time?'green':'red'}">
+                    ${x.end_time?'مغلق':'نشط'}
+                  </td>
+
+                  <td>
+                    ${escapeHtml(x.scope || "-")}
+                  </td>
+
+                  <td>
+                    ${fmtDate(x.start_time)}
+                  </td>
+
+                  <td>
+                    ${fmtDate(x.end_time)}
+                  </td>
+
+                  <td>
+                    ${
+                      x.end_time
+                      ?
+                      dur(
+                        x.start_time,
+                        x.end_time
+                      )
+                      :
+                      elapsed(x.start_time)
+                    }
+                  </td>
+
+                  <td>
+                    ${Number(x.inpatient_count || 0)}
+                  </td>
+
+                </tr>
+
+              `).join("")
+
+              :
+
+              `
+                <tr>
+                  <td colspan="8" class="empty">
+                    لا توجد بلاغات ضمن الفترة المحددة
+                  </td>
+                </tr>
+              `
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.getElementById(
+    "generatedReport"
+  ).innerHTML=html;
+}
+
+
+function renderReportTableIfGenerated(){
+
+  if(generatedReportRows.length){
+
+    /* التقرير يبقى ظاهرًا كما تم إنشاؤه.
+       لا نعيد توليده تلقائيًا أثناء التحديث. */
+
+  }
+}
+
+
+/* =====================================================
+   PRINT REPORT
+===================================================== */
+
+function printReport(){
+
+  if(!generatedReportRows.length){
+
+    toast("⚠️ أنشئ التقرير أولًا");
 
     return;
   }
 
 
-  table.innerHTML =
-    rows.map(x=>`
+  const report =
+    document.getElementById(
+      "generatedReport"
+    ).innerHTML;
 
-      <tr>
 
-        <td>${x.facility}</td>
+  const printWindow =
+    window.open(
+      "",
+      "_blank"
+    );
 
-        <td>${currentType(x)}</td>
 
-        <td class="${x.end_time?'green':'red'}">
-          ${x.end_time?'مغلق':'نشط'}
-        </td>
+  if(!printWindow){
 
-        <td>
-          ${x.scope || "-"}
-        </td>
+    toast("⚠️ المتصفح منع نافذة الطباعة");
 
-        <td>
-          ${fmtDate(x.start_time)}
-        </td>
+    return;
+  }
 
-        <td>
-          ${fmtDate(x.end_time)}
-        </td>
 
-        <td>
-          ${
-            x.end_time
-            ? dur(x.start_time,x.end_time)
-            : elapsed(x.start_time)
+  printWindow.document.write(`
+
+    <!doctype html>
+
+    <html lang="ar" dir="rtl">
+
+    <head>
+
+      <meta charset="utf-8">
+
+      <title>تقرير جاهزية المنشآت الصحية</title>
+
+      <style>
+
+        body{
+          font-family:Arial,Tahoma,sans-serif;
+          padding:25px;
+          color:#172033
+        }
+
+        .report-header{
+          background:#2563eb;
+          color:white;
+          padding:20px;
+          border-radius:12px
+        }
+
+        .report-mini-grid{
+          display:grid;
+          grid-template-columns:repeat(3,1fr);
+          gap:8px;
+          margin-top:15px
+        }
+
+        .report-mini{
+          border:1px solid #ffffff55;
+          padding:10px;
+          text-align:center;
+          border-radius:8px
+        }
+
+        .report-mini span{
+          display:block;
+          font-size:11px
+        }
+
+        .report-mini b{
+          display:block;
+          font-size:18px;
+          margin-top:4px
+        }
+
+        .report-breakdown{
+          display:grid;
+          grid-template-columns:1fr 1fr;
+          gap:12px;
+          margin-top:12px
+        }
+
+        .breakdown-box{
+          border:1px solid #ddd;
+          border-radius:10px;
+          padding:12px
+        }
+
+        .breakdown-row{
+          display:flex;
+          justify-content:space-between;
+          padding:7px;
+          border-bottom:1px solid #eee
+        }
+
+        .card{
+          border:1px solid #ddd;
+          border-radius:10px;
+          padding:12px;
+          margin-top:12px
+        }
+
+        .title{
+          font-weight:bold;
+          margin-bottom:10px
+        }
+
+        table{
+          width:100%;
+          border-collapse:collapse;
+          font-size:10px
+        }
+
+        th,td{
+          border:1px solid #ddd;
+          padding:7px;
+          text-align:right
+        }
+
+        th{
+          background:#f1f5f9
+        }
+
+        @media print{
+          body{
+            padding:10px
           }
-        </td>
+        }
 
-      </tr>
+      </style>
 
-    `).join("");
+    </head>
+
+    <body>
+
+      ${report}
+
+    </body>
+
+    </html>
+
+  `);
+
+
+  printWindow.document.close();
+
+  setTimeout(
+    ()=>{
+      printWindow.print();
+    },
+    500
+  );
 }
 
 
-/* =========================
+/* =====================================================
    NEW INCIDENT
-========================= */
+===================================================== */
 
 function openIncidentModal(){
+
+  unlockAudio();
+
 
   const select =
     document.getElementById("facilitySelect");
@@ -2044,6 +3488,8 @@ function openIncidentModal(){
     .slice(0,16);
 
 
+  handleTypeChange();
+
   document.getElementById("modal").style.display="flex";
 }
 
@@ -2054,19 +3500,75 @@ function closeModal(){
 }
 
 
-function toggleOther(){
+function handleTypeChange(){
 
-  document.getElementById("otherWrap")
+  const type =
+    document.getElementById("type").value;
+
+
+  const isElectricity =
+    type==="الكهرباء";
+
+
+  const isGenerator =
+    type==="اختبار مولدات";
+
+
+  const isElectronic =
+    type==="النظام الإلكتروني";
+
+
+  document
+    .getElementById("powerWrap")
     .classList.toggle(
       "hidden",
-      document.getElementById("type").value!=="أخرى"
+      !isElectricity
     );
+
+
+  document
+    .getElementById("generatorWrap")
+    .classList.toggle(
+      "hidden",
+      !(isElectricity || isGenerator)
+    );
+
+
+  document
+    .getElementById("electronicWrap")
+    .classList.toggle(
+      "hidden",
+      !isElectronic
+    );
+
+
+  if(!isElectricity){
+
+    document.getElementById("power").value =
+      "داخلي";
+
+  }
+
+
+  if(!(isElectricity || isGenerator)){
+
+    document.getElementById("generatorStatus").value =
+      "لا يعمل";
+
+  }
+
+
+  if(!isElectronic){
+
+    document.getElementById("electronicSystem").value="";
+  }
 }
 
 
 function togglePartial(){
 
-  document.getElementById("partialWrap")
+  document
+    .getElementById("partialWrap")
     .classList.toggle(
       "hidden",
       document.getElementById("scope").value!=="جزئي"
@@ -2074,32 +3576,75 @@ function togglePartial(){
 }
 
 
-/* =========================
+/* =====================================================
    SAVE INCIDENT
-========================= */
+===================================================== */
 
 async function saveIncident(){
+
+  unlockAudio();
+
 
   const selectedFacility =
     document.getElementById("facilitySelect").value;
 
+
   const type =
     document.getElementById("type").value;
 
-  const other =
-    document.getElementById("otherType").value.trim();
 
   const scope =
     document.getElementById("scope").value;
 
+
   const dept =
-    document.getElementById("partialDept").value.trim();
+    document
+      .getElementById("partialDept")
+      .value
+      .trim();
+
 
   const reporter =
-    document.getElementById("reporter").value.trim();
+    document
+      .getElementById("reporter")
+      .value
+      .trim();
+
 
   const start =
     document.getElementById("start").value;
+
+
+  const inpatientRaw =
+    document
+      .getElementById("inpatientCount")
+      .value
+      .trim();
+
+
+  const inpatientCount =
+    inpatientRaw===""
+      ? null
+      : Number(inpatientRaw);
+
+
+  const electronicSystem =
+    document
+      .getElementById("electronicSystem")
+      .value
+      .trim();
+
+
+  const generatorStatus =
+    document
+      .getElementById("generatorStatus")
+      .value;
+
+
+  const power =
+    document
+      .getElementById("power")
+      .value;
 
 
   if(!selectedFacility){
@@ -2121,15 +3666,21 @@ async function saveIncident(){
   }
 
 
-  if(type==="أخرى" && !other){
+  if(
+    type==="النظام الإلكتروني" &&
+    !electronicSystem
+  ){
 
-    toast("⚠️ اكتب نوع البلاغ");
+    toast("⚠️ اكتب اسم النظام الإلكتروني المتأثر");
 
     return;
   }
 
 
-  if(scope==="جزئي" && !dept){
+  if(
+    scope==="جزئي" &&
+    !dept
+  ){
 
     toast("⚠️ اكتب القسم المتأثر");
 
@@ -2153,17 +3704,45 @@ async function saveIncident(){
   }
 
 
+  if(
+    inpatientCount===null ||
+    !Number.isInteger(inpatientCount) ||
+    inpatientCount<0
+  ){
+
+    toast(
+      "⚠️ أدخل إجمالي عدد المنومين بشكل صحيح"
+    );
+
+    return;
+  }
+
+
   const payload={
 
     facility:selectedFacility,
 
     type,
 
-    other_type:
-      other || null,
+    other_type:null,
 
     power:
-      document.getElementById("power").value,
+      type==="الكهرباء"
+        ? power
+        : null,
+
+    generator_status:
+      (
+        type==="الكهرباء" ||
+        type==="اختبار مولدات"
+      )
+      ? generatorStatus
+      : null,
+
+    electronic_system:
+      type==="النظام الإلكتروني"
+        ? electronicSystem
+        : null,
 
     scope,
 
@@ -2171,12 +3750,19 @@ async function saveIncident(){
       dept || null,
 
     service_impact:
-      document.getElementById("serviceImpact").value,
+      document
+        .getElementById("serviceImpact")
+        .value,
 
     source:
-      document.getElementById("src").value,
+      document
+        .getElementById("src")
+        .value,
 
     reporter,
+
+    inpatient_count:
+      inpatientCount,
 
     start_time:
       new Date(start).toISOString(),
@@ -2184,10 +3770,16 @@ async function saveIncident(){
     end_time:null,
 
     description:
-      document.getElementById("desc").value.trim() || null,
+      document
+        .getElementById("desc")
+        .value
+        .trim() || null,
 
     note:
-      document.getElementById("note").value.trim() || null,
+      document
+        .getElementById("note")
+        .value
+        .trim() || null,
 
     status:"نشط"
   };
@@ -2211,11 +3803,18 @@ async function saveIncident(){
       error.message
     );
 
+    console.error(error);
+
     return;
   }
 
 
   data.incidents.push(inserted);
+
+  knownIncidentIds.add(
+    String(inserted.id)
+  );
+
 
   closeModal();
 
@@ -2224,32 +3823,50 @@ async function saveIncident(){
   render();
 
   toast("✅ تم حفظ البلاغ");
+
+  /* إذا كان المستخدم إدارة مركزية
+     يصدر تنبيه تأكيد محلي */
+
+  if(profile.role==="admin")
+    playNotificationSound();
 }
 
 
-/* =========================
+/* =====================================================
    CLEAR FORM
-========================= */
+===================================================== */
 
 function clearIncidentForm(){
 
-  document.getElementById("otherType").value="";
   document.getElementById("partialDept").value="";
+
   document.getElementById("reporter").value="";
+
+  document.getElementById("electronicSystem").value="";
+
+  document.getElementById("inpatientCount").value="";
+
   document.getElementById("desc").value="";
+
   document.getElementById("note").value="";
 
   document.getElementById("type").value="الكهرباء";
+
   document.getElementById("scope").value="كلي";
 
-  toggleOther();
+  document.getElementById("power").value="داخلي";
+
+  document.getElementById("generatorStatus").value="يعمل";
+
+  handleTypeChange();
+
   togglePartial();
 }
 
 
-/* =========================
+/* =====================================================
    DETAILS
-========================= */
+===================================================== */
 
 function showDetails(id){
 
@@ -2258,28 +3875,200 @@ function showDetails(id){
       i=>String(i.id)===String(id)
     );
 
+
   if(!x)
     return;
 
 
-  alert(
-    `المنشأة: ${x.facility}\n` +
-    `نوع البلاغ: ${currentType(x)}\n` +
-    `النطاق: ${x.scope}\n` +
-    `القسم: ${x.department || "كامل المنشأة"}\n` +
-    `تأثير الخدمة: ${x.service_impact || "-"}\n` +
-    `المصدر: ${x.source || "-"}\n` +
-    `المبلّغ: ${x.reporter || "-"}\n` +
-    `وقت البداية: ${fmtDate(x.start_time)}\n` +
-    `الوصف: ${x.description || "-"}\n` +
-    `الملاحظات: ${x.note || "-"}`
-  );
+  const html=`
+
+    <div class="card">
+
+      <div class="breakdown-row">
+        <span>المنشأة</span>
+        <b>${escapeHtml(x.facility)}</b>
+      </div>
+
+      <div class="breakdown-row">
+        <span>نوع البلاغ</span>
+        <b>${escapeHtml(currentType(x))}</b>
+      </div>
+
+      ${
+        currentType(x)==="الكهرباء"
+
+        ?
+
+        `
+
+        <div class="breakdown-row">
+          <span>مصدر الكهرباء</span>
+          <b>${escapeHtml(x.power || "-")}</b>
+        </div>
+
+        `
+
+        :
+
+        ""
+      }
+
+
+      ${
+        (
+          currentType(x)==="الكهرباء" ||
+          currentType(x)==="اختبار مولدات"
+        )
+
+        ?
+
+        `
+
+        <div class="breakdown-row">
+          <span>حالة المولد</span>
+          <b>${escapeHtml(x.generator_status || "-")}</b>
+        </div>
+
+        `
+
+        :
+
+        ""
+      }
+
+
+      ${
+        currentType(x)==="النظام الإلكتروني"
+
+        ?
+
+        `
+
+        <div class="breakdown-row">
+          <span>النظام الإلكتروني</span>
+          <b>${escapeHtml(x.electronic_system || "-")}</b>
+        </div>
+
+        `
+
+        :
+
+        ""
+      }
+
+
+      <div class="breakdown-row">
+        <span>النطاق</span>
+        <b>${escapeHtml(x.scope || "-")}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>القسم المتأثر</span>
+        <b>${escapeHtml(x.department || "كامل المنشأة")}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>تأثير الخدمات</span>
+        <b>${escapeHtml(x.service_impact || "-")}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>إجمالي المنومين</span>
+        <b>${Number(x.inpatient_count || 0)}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>مصدر البلاغ</span>
+        <b>${escapeHtml(x.source || "-")}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>المبلّغ</span>
+        <b>${escapeHtml(x.reporter || "-")}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>وقت البداية</span>
+        <b>${fmtDate(x.start_time)}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>وقت النهاية</span>
+        <b>${fmtDate(x.end_time)}</b>
+      </div>
+
+
+      <div class="breakdown-row">
+        <span>المدة</span>
+        <b>
+          ${
+            x.end_time
+              ? dur(x.start_time,x.end_time)
+              : elapsed(x.start_time)
+          }
+        </b>
+      </div>
+
+
+      <div style="margin-top:12px">
+
+        <div style="font-size:11px;color:var(--muted)">
+          الوصف
+        </div>
+
+        <div style="margin-top:5px">
+          ${escapeHtml(x.description || "-")}
+        </div>
+
+      </div>
+
+
+      <div style="margin-top:12px">
+
+        <div style="font-size:11px;color:var(--muted)">
+          الملاحظات
+        </div>
+
+        <div style="margin-top:5px">
+          ${escapeHtml(x.note || "-")}
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document.getElementById(
+    "detailsContent"
+  ).innerHTML=html;
+
+
+  document.getElementById(
+    "detailsModal"
+  ).style.display="flex";
 }
 
 
-/* =========================
+function closeDetails(){
+
+  document.getElementById(
+    "detailsModal"
+  ).style.display="none";
+}
+
+
+/* =====================================================
    CLOSE INCIDENT
-========================= */
+===================================================== */
 
 function openEnd(id){
 
@@ -2287,6 +4076,7 @@ function openEnd(id){
     data.incidents.find(
       i=>String(i.id)===String(id)
     );
+
 
   if(!x)
     return;
@@ -2305,6 +4095,7 @@ function openEnd(id){
 
   closingId=id;
 
+
   document.getElementById("end").value =
     new Date(
       Date.now() -
@@ -2313,13 +4104,18 @@ function openEnd(id){
     .toISOString()
     .slice(0,16);
 
-  document.getElementById("closeModalBox").style.display="flex";
+
+  document.getElementById(
+    "closeModalBox"
+  ).style.display="flex";
 }
 
 
 function closeEnd(){
 
-  document.getElementById("closeModalBox").style.display="none";
+  document.getElementById(
+    "closeModalBox"
+  ).style.display="none";
 
   closingId=null;
 }
@@ -2331,6 +4127,7 @@ async function finishIncident(){
     data.incidents.find(
       i=>String(i.id)===String(closingId)
     );
+
 
   const end =
     document.getElementById("end").value;
@@ -2371,9 +4168,12 @@ async function finishIncident(){
     await supabaseClient
       .from("incidents")
       .update({
+
         end_time:
           new Date(end).toISOString(),
+
         status:"مغلق"
+
       })
       .eq("id",closingId)
       .select()
@@ -2396,6 +4196,7 @@ async function finishIncident(){
       i=>String(i.id)===String(closingId)
     );
 
+
   if(index!==-1)
     data.incidents[index]=updated;
 
@@ -2408,25 +4209,113 @@ async function finishIncident(){
 }
 
 
-/* =========================
+/* =====================================================
+   DELETE INCIDENT - ADMIN ONLY
+===================================================== */
+
+async function deleteIncident(id){
+
+  if(!profile || profile.role!=="admin"){
+
+    toast("❌ حذف البلاغات متاح للإدارة المركزية فقط");
+
+    return;
+  }
+
+
+  const x =
+    data.incidents.find(
+      i=>String(i.id)===String(id)
+    );
+
+
+  if(!x)
+    return;
+
+
+  const confirmed =
+    confirm(
+      "⚠️ هل أنت متأكد من حذف هذا البلاغ؟\n\n" +
+      "المنشأة: " +
+      x.facility +
+      "\n" +
+      "نوع البلاغ: " +
+      currentType(x) +
+      "\n\n" +
+      "سيتم حذف البلاغ نهائيًا."
+    );
+
+
+  if(!confirmed)
+    return;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("incidents")
+      .delete()
+      .eq("id",id);
+
+
+  if(error){
+
+    toast(
+      "❌ لم يتم حذف البلاغ. " +
+      "قد تكون صلاحية الحذف في Supabase غير مفعلة."
+    );
+
+    console.error(error);
+
+    return;
+  }
+
+
+  data.incidents =
+    data.incidents.filter(
+      i=>String(i.id)!==String(id)
+    );
+
+
+  knownIncidentIds.delete(
+    String(id)
+  );
+
+
+  render();
+
+  toast("✅ تم حذف البلاغ");
+}
+
+
+/* =====================================================
    MESSAGES
-========================= */
+===================================================== */
 
 function toast(t){
 
   const e =
     document.getElementById("toast");
 
+
   e.textContent=t;
 
   e.style.display="block";
 
-  setTimeout(
-    ()=>{
-      e.style.display="none";
-    },
-    3500
+
+  clearTimeout(
+    window.toastTimer
   );
+
+
+  window.toastTimer =
+    setTimeout(
+      ()=>{
+        e.style.display="none";
+      },
+      4000
+    );
 }
 
 
@@ -2439,7 +4328,7 @@ function showConnectionError(message){
     <div class="section">
 
       <div class="errorbox">
-        ⚠️ ${message}
+        ⚠️ ${escapeHtml(message)}
       </div>
 
     </div>
@@ -2456,16 +4345,38 @@ function clearConnectionError(){
 }
 
 
-/* =========================
+/* =====================================================
+   SECURITY / HTML ESCAPE
+===================================================== */
+
+function escapeHtml(value){
+
+  if(value===null || value===undefined)
+    return "";
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/* =====================================================
    SESSION
-========================= */
+===================================================== */
 
 async function checkSession(){
+
+  applySavedTheme();
+
 
   const {
     data
   } =
     await supabaseClient.auth.getSession();
+
 
   if(data.session){
 
@@ -2475,9 +4386,13 @@ async function checkSession(){
 
   }else{
 
-    document.getElementById("loginPage").style.display="flex";
+    document.getElementById(
+      "loginPage"
+    ).style.display="flex";
 
-    document.getElementById("app").style.display="none";
+    document.getElementById(
+      "app"
+    ).style.display="none";
   }
 }
 
@@ -2488,19 +4403,26 @@ supabaseClient.auth.onAuthStateChange(
     if(event==="SIGNED_OUT"){
 
       currentUser=null;
+
       profile=null;
 
-      document.getElementById("app").style.display="none";
-      document.getElementById("loginPage").style.display="flex";
+      document.getElementById(
+        "app"
+      ).style.display="none";
+
+      document.getElementById(
+        "loginPage"
+      ).style.display="flex";
+
     }
 
   }
 );
 
 
-/* =========================
-   REFRESH
-========================= */
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
 
 setInterval(
   async ()=>{
@@ -2513,6 +4435,7 @@ setInterval(
       const success =
         await loadData();
 
+
       if(success)
         render();
 
@@ -2523,9 +4446,9 @@ setInterval(
 );
 
 
-/* =========================
+/* =====================================================
    ENTER LOGIN
-========================= */
+===================================================== */
 
 document
   .getElementById("loginPassword")
@@ -2539,6 +4462,10 @@ document
     }
   );
 
+
+/* =====================================================
+   START
+===================================================== */
 
 checkSession();
 
