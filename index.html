@@ -671,6 +671,28 @@ body.dark .report-print{
   color:#e2e8f0
 }
 
+/* ADMIN EDIT */
+
+.admin-edit-note{
+  background:#ede9fe;
+  color:#6d28d9;
+  border:1px solid #ddd6fe;
+  padding:10px;
+  border-radius:10px;
+  font-size:11px;
+  margin-bottom:12px;
+}
+
+.edit-button{
+  background:#ede9fe;
+  color:#6d28d9;
+}
+
+body.dark .edit-button{
+  background:#312e81;
+  color:#ddd6fe;
+}
+
 /* RESPONSIVE */
 
 @media(max-width:700px){
@@ -1103,8 +1125,6 @@ body.dark .report-print{
     </div>
 
 
-    <!-- ELECTRICITY -->
-
     <div
       class="field hidden"
       id="powerWrap">
@@ -1121,8 +1141,6 @@ body.dark .report-print{
     </div>
 
 
-    <!-- GENERATOR -->
-
     <div
       class="field hidden"
       id="generatorWrap">
@@ -1138,8 +1156,6 @@ body.dark .report-print{
 
     </div>
 
-
-    <!-- ELECTRONIC SYSTEM -->
 
     <div
       class="field hidden"
@@ -1202,8 +1218,6 @@ body.dark .report-print{
 
     </div>
 
-
-    <!-- INPATIENTS -->
 
     <div class="field">
 
@@ -1365,6 +1379,247 @@ body.dark .report-print{
 </div>
 
 
+<!-- ADMIN EDIT MODAL -->
+
+<div class="overlay" id="editModal">
+
+  <div class="modal">
+
+    <h2>✏️ تعديل بيانات البلاغ</h2>
+
+    <div class="admin-edit-note">
+      🔐 هذه الصلاحية متاحة للإدارة المركزية فقط.
+      يمكنك تعديل بيانات البلاغ بعد استلامه ومراجعة المعلومات.
+    </div>
+
+    <input type="hidden" id="editId">
+
+    <div class="field">
+
+      <label class="required">المنشأة</label>
+
+      <select id="editFacility"></select>
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">نوع البلاغ</label>
+
+      <select
+        id="editType"
+        onchange="handleEditTypeChange()">
+
+        <option>الكهرباء</option>
+        <option>المياه</option>
+        <option>التكييف</option>
+        <option>النظام الإلكتروني</option>
+        <option>اختبار مولدات</option>
+
+      </select>
+
+    </div>
+
+    <div
+      class="field hidden"
+      id="editPowerWrap">
+
+      <label class="required">مصدر الكهرباء</label>
+
+      <select id="editPower">
+
+        <option>داخلي</option>
+        <option>خارجي</option>
+
+      </select>
+
+    </div>
+
+    <div
+      class="field hidden"
+      id="editGeneratorWrap">
+
+      <label class="required">حالة المولد</label>
+
+      <select id="editGeneratorStatus">
+
+        <option>يعمل</option>
+        <option>لا يعمل</option>
+
+      </select>
+
+    </div>
+
+    <div
+      class="field hidden"
+      id="editElectronicWrap">
+
+      <label class="required">
+        النظام الإلكتروني المتأثر
+      </label>
+
+      <input
+        id="editElectronicSystem"
+        placeholder="اسم النظام الإلكتروني المتأثر">
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">نطاق التأثير</label>
+
+      <select
+        id="editScope"
+        onchange="toggleEditPartial()">
+
+        <option>كلي</option>
+        <option>جزئي</option>
+
+      </select>
+
+    </div>
+
+    <div
+      class="field hidden"
+      id="editPartialWrap">
+
+      <label class="required">القسم المتأثر</label>
+
+      <input
+        id="editPartialDept"
+        placeholder="اسم القسم المتأثر">
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">
+        تأثير البلاغ على الخدمات الصحية
+      </label>
+
+      <select id="editServiceImpact">
+
+        <option>لا يوجد تأثير</option>
+        <option>تأثير محدود</option>
+        <option>تأثير على الخدمة</option>
+        <option>توقف خدمة</option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">
+        إجمالي عدد المنومين في المنشأة
+      </label>
+
+      <input
+        id="editInpatientCount"
+        type="number"
+        min="0"
+        step="1">
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">مصدر البلاغ</label>
+
+      <select id="editSource">
+
+        <option>المنشأة</option>
+        <option>اتصال هاتفي</option>
+        <option>تحديث المنشأة</option>
+        <option>جولة ميدانية</option>
+        <option>أخرى</option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">اسم المبلّغ</label>
+
+      <input id="editReporter">
+
+    </div>
+
+    <div class="field">
+
+      <label class="required">وقت بداية البلاغ</label>
+
+      <input
+        id="editStart"
+        type="datetime-local">
+
+    </div>
+
+    <div class="field">
+
+      <label>وقت نهاية البلاغ</label>
+
+      <input
+        id="editEnd"
+        type="datetime-local">
+
+    </div>
+
+    <div class="field">
+
+      <label>الحالة</label>
+
+      <select id="editStatus">
+
+        <option>نشط</option>
+        <option>مغلق</option>
+
+      </select>
+
+    </div>
+
+    <div class="field">
+
+      <label>الوصف</label>
+
+      <textarea
+        id="editDescription"
+        rows="3"></textarea>
+
+    </div>
+
+    <div class="field">
+
+      <label>الملاحظات</label>
+
+      <textarea
+        id="editNote"
+        rows="3"></textarea>
+
+    </div>
+
+    <div class="ma">
+
+      <button
+        class="primary"
+        onclick="saveEditedIncident()">
+        💾 حفظ التعديلات
+      </button>
+
+      <button
+        class="neutral"
+        onclick="closeEditModal()">
+        إلغاء
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <div class="toast" id="toast"></div>
 
 
@@ -1405,6 +1660,8 @@ let data={
 };
 
 let closingId=null;
+
+let editingId=null;
 
 let firstDataLoad=true;
 let knownIncidentIds=new Set();
@@ -1507,6 +1764,8 @@ function unlockAudio(){
 
 function playNotificationSound(){
 
+  /* التنبيه الصوتي للإدارة المركزية فقط */
+
   if(!profile || profile.role!=="admin")
     return;
 
@@ -1523,6 +1782,7 @@ function playNotificationSound(){
     const gain1=ctx.createGain();
 
     osc1.type="sine";
+
     osc1.frequency.setValueAtTime(
       880,
       now
@@ -1818,6 +2078,12 @@ async function loadData(){
   const newRows=rows || [];
 
 
+  /*
+   * إشعار البلاغ الجديد:
+   * يتم تنفيذه للإدارة المركزية فقط.
+   * حسابات المنشآت لا تحصل على إشعار وصول.
+   */
+
   if(
     profile &&
     profile.role==="admin" &&
@@ -1847,7 +2113,7 @@ async function loadData(){
         const first=relevant[0];
 
         toast(
-          `🚨 بلاغ جديد • ${first.facility} • ${currentType(first)}`
+          `🚨 بلاغ جديد وارد • ${first.facility} • ${currentType(first)}`
         );
       }
     }
@@ -1972,6 +2238,29 @@ function state(f){
   )
   ? "تحتاج متابعة"
   : "طبيعي";
+}
+
+
+function toLocalInputValue(value){
+
+  if(!value)
+    return "";
+
+  const d=new Date(value);
+
+  if(isNaN(d.getTime()))
+    return "";
+
+  const offset=d.getTimezoneOffset();
+
+  const local=
+    new Date(
+      d.getTime()-offset*60000
+    );
+
+  return local
+    .toISOString()
+    .slice(0,16);
 }
 
 
@@ -2377,6 +2666,13 @@ function renderHistory(){
           ?
 
           `<td>
+
+            <button
+              class="edit-button"
+              style="padding:6px 8px;font-size:10px"
+              onclick="openEditModal('${x.id}')">
+              ✏️ تعديل
+            </button>
 
             <button
               class="delete-btn"
@@ -3824,11 +4120,11 @@ async function saveIncident(){
 
   toast("✅ تم حفظ البلاغ");
 
-  /* إذا كان المستخدم إدارة مركزية
-     يصدر تنبيه تأكيد محلي */
+  /*
+   * لا يوجد صوت تأكيد عند إنشاء البلاغ.
+   * صوت الإشعار مخصص لوصول بلاغ جديد للإدارة المركزية.
+   */
 
-  if(profile.role==="admin")
-    playNotificationSound();
 }
 
 
@@ -3880,6 +4176,11 @@ function showDetails(id){
     return;
 
 
+  const admin =
+    profile &&
+    profile.role==="admin";
+
+
   const html=`
 
     <div class="card">
@@ -3893,6 +4194,7 @@ function showDetails(id){
         <span>نوع البلاغ</span>
         <b>${escapeHtml(currentType(x))}</b>
       </div>
+
 
       ${
         currentType(x)==="الكهرباء"
@@ -4042,6 +4344,32 @@ function showDetails(id){
 
       </div>
 
+
+      ${
+        admin
+
+        ?
+
+        `
+
+        <div class="ma">
+
+          <button
+            class="edit-button"
+            onclick="openEditModal('${x.id}')">
+            ✏️ تعديل بيانات البلاغ
+          </button>
+
+        </div>
+
+        `
+
+        :
+
+        ""
+
+      }
+
     </div>
 
   `;
@@ -4063,6 +4391,518 @@ function closeDetails(){
   document.getElementById(
     "detailsModal"
   ).style.display="none";
+}
+
+
+/* =====================================================
+   ADMIN EDIT
+===================================================== */
+
+function openEditModal(id){
+
+  if(!profile || profile.role!=="admin"){
+
+    toast("❌ تعديل البلاغات متاح للإدارة المركزية فقط");
+
+    return;
+  }
+
+
+  const x =
+    data.incidents.find(
+      i=>String(i.id)===String(id)
+    );
+
+
+  if(!x){
+
+    toast("❌ لم يتم العثور على البلاغ");
+
+    return;
+  }
+
+
+  editingId=id;
+
+
+  const facilitySelect =
+    document.getElementById("editFacility");
+
+  facilitySelect.innerHTML="";
+
+
+  allFacilities.forEach(f=>{
+
+    const option =
+      document.createElement("option");
+
+    option.value=f;
+    option.textContent=f;
+
+    facilitySelect.appendChild(option);
+
+  });
+
+
+  document.getElementById("editFacility").value =
+    x.facility || "";
+
+
+  document.getElementById("editType").value =
+    x.type || "الكهرباء";
+
+
+  document.getElementById("editPower").value =
+    x.power || "داخلي";
+
+
+  document.getElementById("editGeneratorStatus").value =
+    x.generator_status || "لا يعمل";
+
+
+  document.getElementById("editElectronicSystem").value =
+    x.electronic_system || "";
+
+
+  document.getElementById("editScope").value =
+    x.scope || "كلي";
+
+
+  document.getElementById("editPartialDept").value =
+    x.department || "";
+
+
+  document.getElementById("editServiceImpact").value =
+    x.service_impact || "لا يوجد تأثير";
+
+
+  document.getElementById("editInpatientCount").value =
+    x.inpatient_count ?? "";
+
+
+  document.getElementById("editSource").value =
+    x.source || "المنشأة";
+
+
+  document.getElementById("editReporter").value =
+    x.reporter || "";
+
+
+  document.getElementById("editStart").value =
+    toLocalInputValue(x.start_time);
+
+
+  document.getElementById("editEnd").value =
+    toLocalInputValue(x.end_time);
+
+
+  document.getElementById("editStatus").value =
+    x.status ||
+    (x.end_time ? "مغلق" : "نشط");
+
+
+  document.getElementById("editDescription").value =
+    x.description || "";
+
+
+  document.getElementById("editNote").value =
+    x.note || "";
+
+
+  handleEditTypeChange();
+
+  toggleEditPartial();
+
+
+  /* إغلاق نافذة التفاصيل قبل فتح التعديل */
+
+  closeDetails();
+
+
+  document.getElementById(
+    "editModal"
+  ).style.display="flex";
+}
+
+
+function closeEditModal(){
+
+  document.getElementById(
+    "editModal"
+  ).style.display="none";
+
+  editingId=null;
+}
+
+
+function handleEditTypeChange(){
+
+  const type =
+    document.getElementById("editType").value;
+
+
+  const isElectricity =
+    type==="الكهرباء";
+
+
+  const isGenerator =
+    type==="اختبار مولدات";
+
+
+  const isElectronic =
+    type==="النظام الإلكتروني";
+
+
+  document
+    .getElementById("editPowerWrap")
+    .classList.toggle(
+      "hidden",
+      !isElectricity
+    );
+
+
+  document
+    .getElementById("editGeneratorWrap")
+    .classList.toggle(
+      "hidden",
+      !(isElectricity || isGenerator)
+    );
+
+
+  document
+    .getElementById("editElectronicWrap")
+    .classList.toggle(
+      "hidden",
+      !isElectronic
+    );
+
+
+  if(!isElectricity){
+
+    document.getElementById("editPower").value =
+      "داخلي";
+
+  }
+
+
+  if(!(isElectricity || isGenerator)){
+
+    document.getElementById("editGeneratorStatus").value =
+      "لا يعمل";
+
+  }
+
+}
+
+
+function toggleEditPartial(){
+
+  document
+    .getElementById("editPartialWrap")
+    .classList.toggle(
+      "hidden",
+      document.getElementById("editScope").value!=="جزئي"
+    );
+}
+
+
+async function saveEditedIncident(){
+
+  if(!profile || profile.role!=="admin"){
+
+    toast("❌ تعديل البلاغات متاح للإدارة المركزية فقط");
+
+    return;
+  }
+
+
+  if(!editingId){
+
+    toast("❌ لم يتم تحديد البلاغ");
+
+    return;
+  }
+
+
+  const facility =
+    document.getElementById("editFacility").value;
+
+
+  const type =
+    document.getElementById("editType").value;
+
+
+  const power =
+    document.getElementById("editPower").value;
+
+
+  const generatorStatus =
+    document.getElementById("editGeneratorStatus").value;
+
+
+  const electronicSystem =
+    document
+      .getElementById("editElectronicSystem")
+      .value
+      .trim();
+
+
+  const scope =
+    document.getElementById("editScope").value;
+
+
+  const department =
+    document
+      .getElementById("editPartialDept")
+      .value
+      .trim();
+
+
+  const serviceImpact =
+    document.getElementById("editServiceImpact").value;
+
+
+  const inpatientRaw =
+    document
+      .getElementById("editInpatientCount")
+      .value
+      .trim();
+
+
+  const inpatientCount =
+    inpatientRaw===""
+      ? null
+      : Number(inpatientRaw);
+
+
+  const source =
+    document.getElementById("editSource").value;
+
+
+  const reporter =
+    document
+      .getElementById("editReporter")
+      .value
+      .trim();
+
+
+  const start =
+    document.getElementById("editStart").value;
+
+
+  const end =
+    document.getElementById("editEnd").value;
+
+
+  const status =
+    document.getElementById("editStatus").value;
+
+
+  const description =
+    document
+      .getElementById("editDescription")
+      .value
+      .trim();
+
+
+  const note =
+    document
+      .getElementById("editNote")
+      .value
+      .trim();
+
+
+  if(!facility){
+
+    toast("⚠️ اختر المنشأة");
+
+    return;
+  }
+
+
+  if(
+    type==="النظام الإلكتروني" &&
+    !electronicSystem
+  ){
+
+    toast("⚠️ اكتب اسم النظام الإلكتروني المتأثر");
+
+    return;
+  }
+
+
+  if(
+    scope==="جزئي" &&
+    !department
+  ){
+
+    toast("⚠️ اكتب القسم المتأثر");
+
+    return;
+  }
+
+
+  if(!reporter){
+
+    toast("⚠️ اكتب اسم المبلّغ");
+
+    return;
+  }
+
+
+  if(!start){
+
+    toast("⚠️ حدد وقت بداية البلاغ");
+
+    return;
+  }
+
+
+  if(
+    inpatientCount===null ||
+    !Number.isInteger(inpatientCount) ||
+    inpatientCount<0
+  ){
+
+    toast(
+      "⚠️ أدخل إجمالي عدد المنومين بشكل صحيح"
+    );
+
+    return;
+  }
+
+
+  if(
+    end &&
+    new Date(end)<new Date(start)
+  ){
+
+    toast(
+      "⚠️ وقت النهاية لا يمكن أن يسبق وقت البداية"
+    );
+
+    return;
+  }
+
+
+  const finalEnd =
+    status==="نشط"
+      ? null
+      : (
+          end
+          ? new Date(end).toISOString()
+          : null
+        );
+
+
+  const payload={
+
+    facility,
+
+    type,
+
+    other_type:null,
+
+    power:
+      type==="الكهرباء"
+        ? power
+        : null,
+
+    generator_status:
+      (
+        type==="الكهرباء" ||
+        type==="اختبار مولدات"
+      )
+      ? generatorStatus
+      : null,
+
+    electronic_system:
+      type==="النظام الإلكتروني"
+        ? electronicSystem
+        : null,
+
+    scope,
+
+    department:
+      scope==="جزئي"
+        ? department
+        : null,
+
+    service_impact:
+      serviceImpact,
+
+    source,
+
+    reporter,
+
+    inpatient_count:
+      inpatientCount,
+
+    start_time:
+      new Date(start).toISOString(),
+
+    end_time:
+      finalEnd,
+
+    description:
+      description || null,
+
+    note:
+      note || null,
+
+    status:
+      status
+  };
+
+
+  const {
+    data:updated,
+    error
+  } =
+    await supabaseClient
+      .from("incidents")
+      .update(payload)
+      .eq("id",editingId)
+      .select()
+      .single();
+
+
+  if(error){
+
+    toast(
+      "❌ لم يتم حفظ التعديلات: " +
+      error.message
+    );
+
+    console.error(error);
+
+    return;
+  }
+
+
+  const index =
+    data.incidents.findIndex(
+      i=>String(i.id)===String(editingId)
+    );
+
+
+  if(index!==-1){
+
+    data.incidents[index]=updated;
+
+  }else{
+
+    data.incidents.push(updated);
+
+  }
+
+
+  closeEditModal();
+
+  render();
+
+  toast("✅ تم تحديث بيانات البلاغ بنجاح");
+
 }
 
 
