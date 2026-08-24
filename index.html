@@ -5253,37 +5253,90 @@ supabaseClient.auth.onAuthStateChange(
       document.getElementById(
         "loginPage"
       ).style.display="flex";
-
-    }
-
-  }
-);
-
-
 /* =====================================================
-   AUTO REFRESH
+   REALTIME INCIDENT NOTIFICATIONS
 ===================================================== */
 
-setInterval(
-  async ()=>{
+function setupRealtimeNotifications(){
 
-    if(
-      currentUser &&
-      profile
-    ){
+  if(!profile || profile.role!=="admin")
+    return;
 
-      const success =
+  supabaseClient
+    .channel("jahizia-incidents")
+    .on(
+      "postgres_changes",
+      {
+        event:"INSERT",
+        schema:"public",
+        table:"incidents"
+      },
+      async payload=>{
+
+        const incident=payload.new;
+
+        if(!incident)
+          return;
+
+        if(!allFacilities.includes(incident.facility))
+          return;
+
+        /* إضافة البلاغ مباشرة للبيانات */
+
+        const exists =
+          data.incidents.some(
+            x=>String(x.id)===String(incident.id)
+          );
+
+        if(!exists){
+
+          data.incidents.push(incident);
+
+          knownIncidentIds.add(
+            String(incident.id)
+          );
+
+          render();
+
+        }
+
+        /* صوت التنبيه */
+
+        unlockAudio();
+
+        playNotificationSound();
+
+        /* إشعار واضح للإدارة */
+
+        toast(
+          `🚨 بلاغ جديد\n${incident.facility} • ${currentType(incident)}`
+        );
+
+        /* إعادة تحميل البيانات للتأكد */
+
         await loadData();
 
-
-      if(success)
         render();
 
-    }
+      }
+    )
+    .subscribe(
+      status=>{
 
-  },
-  10000
-);
+        console.log(
+          "Realtime status:",
+          status
+        );
+
+      }
+    );
+}
+    
+
+  
+
+
+
 
 
 /* =====================================================
