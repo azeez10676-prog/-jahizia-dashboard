@@ -233,6 +233,17 @@ body.dark .theme-btn{
   color:#e2e8f0
 }
 
+#notificationCount{
+  display:none;
+  min-width:16px;
+  padding:2px 4px;
+  border-radius:99px;
+  background:#dc2626;
+  color:#fff;
+  font-size:9px;
+  font-weight:900
+}
+
 .logout{
   background:#fee2e2;
   color:#b91c1c;
@@ -372,7 +383,7 @@ body.dark .theme-btn{
 
 .actions{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(4,1fr);
   gap:8px;
   margin-top:10px
 }
@@ -671,25 +682,50 @@ body.dark .report-print{
   color:#e2e8f0
 }
 
-/* ADMIN EDIT */
+/* SEVERITY / AUDIT / ESCALATION */
 
-.admin-edit-note{
-  background:#ede9fe;
-  color:#6d28d9;
-  border:1px solid #ddd6fe;
-  padding:10px;
-  border-radius:10px;
+.badge.high{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+.audit-box{
+  margin-top:14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  background:var(--card);
+}
+
+.audit-title{
+  font-weight:900;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.audit-item{
+  border-top:1px solid var(--line);
+  padding:9px 0;
   font-size:11px;
-  margin-bottom:12px;
 }
 
-.edit-button{
-  background:#ede9fe;
-  color:#6d28d9;
+.audit-item:first-child{border-top:0}
+.audit-item .audit-head{font-weight:800}
+.audit-item .audit-change{color:var(--muted);margin-top:4px}
+
+.escalation-box{
+  margin-top:12px;
+  border:1px solid #ddd6fe;
+  background:#f5f3ff;
+  color:#5b21b6;
+  border-radius:12px;
+  padding:11px;
+  font-size:11px;
 }
 
-body.dark .edit-button{
-  background:#312e81;
+body.dark .escalation-box{
+  background:#2e1065;
+  border-color:#4c1d95;
   color:#ddd6fe;
 }
 
@@ -797,6 +833,14 @@ body.dark .edit-button{
 
       <button
         class="theme-btn"
+        onclick="showNotifications()"
+        id="notificationButton"
+        title="الإشعارات">
+        🔔 <span id="notificationCount">0</span>
+      </button>
+
+      <button
+        class="theme-btn"
         onclick="toggleTheme()"
         id="themeButton">
         🌙 ليلي
@@ -841,6 +885,11 @@ body.dark .edit-button{
     <div class="stat">
       <span>تحتاج متابعة</span>
       <b class="orange" id="follow">0</b>
+    </div>
+
+    <div class="stat">
+      <span>متابعة عالية</span>
+      <b class="red" id="highFollow">0</b>
     </div>
 
     <div class="stat">
@@ -1007,6 +1056,7 @@ body.dark .edit-button{
           <option>التكييف</option>
           <option>النظام الإلكتروني</option>
           <option>اختبار مولدات</option>
+          <option>أخرى</option>
         </select>
       </div>
 
@@ -1119,11 +1169,20 @@ body.dark .edit-button{
         <option>التكييف</option>
         <option>النظام الإلكتروني</option>
         <option>اختبار مولدات</option>
+        <option>أخرى</option>
 
       </select>
 
     </div>
 
+
+    <div class="field hidden" id="otherTypeWrap">
+      <label class="required">نوع البلاغ (أخرى)</label>
+      <input id="otherType" placeholder="اكتب نوع البلاغ">
+    </div>
+
+
+    <!-- ELECTRICITY -->
 
     <div
       class="field hidden"
@@ -1141,6 +1200,8 @@ body.dark .edit-button{
     </div>
 
 
+    <!-- GENERATOR -->
+
     <div
       class="field hidden"
       id="generatorWrap">
@@ -1156,6 +1217,8 @@ body.dark .edit-button{
 
     </div>
 
+
+    <!-- ELECTRONIC SYSTEM -->
 
     <div
       class="field hidden"
@@ -1218,6 +1281,8 @@ body.dark .edit-button{
 
     </div>
 
+
+    <!-- INPATIENTS -->
 
     <div class="field">
 
@@ -1317,6 +1382,129 @@ body.dark .edit-button{
 </div>
 
 
+<!-- EDIT INCIDENT - ADMIN ONLY -->
+
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <h2>✏️ تعديل البلاغ</h2>
+
+    <div class="field">
+      <label class="required">المنشأة</label>
+      <select id="editFacility"></select>
+    </div>
+
+    <div class="field">
+      <label class="required">نوع البلاغ</label>
+      <select id="editType" onchange="handleEditTypeChange()">
+        <option>الكهرباء</option><option>المياه</option><option>التكييف</option>
+        <option>النظام الإلكتروني</option><option>اختبار مولدات</option><option>أخرى</option>
+      </select>
+    </div>
+
+    <div class="field hidden" id="editOtherTypeWrap">
+      <label class="required">نوع البلاغ (أخرى)</label>
+      <input id="editOtherType" placeholder="اكتب نوع البلاغ">
+    </div>
+
+    <div class="field hidden" id="editPowerWrap">
+      <label class="required">مصدر الكهرباء</label>
+      <select id="editPower"><option>داخلي</option><option>خارجي</option></select>
+    </div>
+
+    <div class="field hidden" id="editGeneratorWrap">
+      <label class="required">حالة المولد</label>
+      <select id="editGeneratorStatus"><option>يعمل</option><option>لا يعمل</option></select>
+    </div>
+
+    <div class="field hidden" id="editElectronicWrap">
+      <label class="required">النظام الإلكتروني المتأثر</label>
+      <input id="editElectronicSystem" placeholder="اسم النظام الإلكتروني المتأثر">
+    </div>
+
+    <div class="field">
+      <label class="required">نطاق التأثير</label>
+      <select id="editScope" onchange="toggleEditPartial()"><option>كلي</option><option>جزئي</option></select>
+    </div>
+
+    <div class="field hidden" id="editPartialWrap">
+      <label class="required">القسم المتأثر</label>
+      <input id="editDepartment" placeholder="اسم القسم المتأثر">
+    </div>
+
+    <div class="field">
+      <label class="required">تأثير البلاغ على الخدمات الصحية</label>
+      <select id="editServiceImpact"><option>لا يوجد تأثير</option><option>تأثير محدود</option><option>تأثير على الخدمة</option><option>توقف خدمة</option></select>
+    </div>
+
+    <div class="field">
+      <label class="required">إجمالي عدد المنومين في المنشأة</label>
+      <input id="editInpatientCount" type="number" min="0" step="1">
+    </div>
+
+    <div class="field">
+      <label class="required">مصدر البلاغ</label>
+      <select id="editSource"><option>المنشأة</option><option>اتصال هاتفي</option><option>تحديث المنشأة</option><option>جولة ميدانية</option><option>أخرى</option></select>
+    </div>
+
+    <div class="field">
+      <label class="required">اسم المبلّغ</label>
+      <input id="editReporter" placeholder="اسم المبلّغ">
+    </div>
+
+    <div class="field">
+      <label class="required">وقت بداية البلاغ</label>
+      <input id="editStart" type="datetime-local">
+    </div>
+
+    <div class="field">
+      <label>الوصف</label>
+      <textarea id="editDescription" rows="2" placeholder="وصف مختصر للبلاغ"></textarea>
+    </div>
+
+    <div class="field">
+      <label>الملاحظات</label>
+      <textarea id="editNote" rows="3" placeholder="أي ملاحظات إضافية"></textarea>
+    </div>
+
+    <div class="ma">
+      <button class="primary" onclick="saveEditedIncident()">💾 حفظ التعديل</button>
+      <button class="neutral" onclick="closeEditModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ESCALATION -->
+
+<div class="overlay" id="escalationModal">
+  <div class="modal">
+    <h2>⬆️ تصعيد البلاغ</h2>
+
+    <div class="field">
+      <label class="required">الجهة المراد التصعيد إليها</label>
+      <select id="escalationTarget" onchange="toggleOtherEscalation()">
+        <option value="">اختر الجهة</option>
+        <option>تجمع جازان الصحي</option>
+        <option>وزارة الصحة</option>
+        <option>مركز العمليات</option>
+        <option>إدارة الطوارئ والكوارث</option>
+        <option>أخرى</option>
+      </select>
+    </div>
+
+    <div class="field hidden" id="otherEscalationWrap">
+      <label class="required">اسم الجهة</label>
+      <input id="otherEscalation" placeholder="اكتب اسم الجهة المراد التصعيد إليها">
+    </div>
+
+    <div class="ma">
+      <button class="primary" onclick="saveEscalation()">⬆️ تصعيد البلاغ</button>
+      <button class="neutral" onclick="closeEscalationModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- CLOSE -->
 
 <div class="overlay" id="closeModalBox">
@@ -1366,251 +1554,22 @@ body.dark .edit-button{
 
     <div class="ma">
 
+      ${
+        profile && profile.role==="admin"
+        ? `<button class="admin-button" onclick="closeDetails();openEdit('${x.id}')">✏️ تعديل البلاغ</button>`
+        : ""
+      }
+
+      ${
+        profile && profile.role==="admin"
+        ? `<button class="neutral" onclick="closeDetails();openEscalation('${x.id}')">⬆️ تصعيد البلاغ</button>`
+        : ""
+      }
+
       <button
         class="neutral"
         onclick="closeDetails()">
         إغلاق
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ADMIN EDIT MODAL -->
-
-<div class="overlay" id="editModal">
-
-  <div class="modal">
-
-    <h2>✏️ تعديل بيانات البلاغ</h2>
-
-    <div class="admin-edit-note">
-      🔐 هذه الصلاحية متاحة للإدارة المركزية فقط.
-      يمكنك تعديل بيانات البلاغ بعد استلامه ومراجعة المعلومات.
-    </div>
-
-    <input type="hidden" id="editId">
-
-    <div class="field">
-
-      <label class="required">المنشأة</label>
-
-      <select id="editFacility"></select>
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">نوع البلاغ</label>
-
-      <select
-        id="editType"
-        onchange="handleEditTypeChange()">
-
-        <option>الكهرباء</option>
-        <option>المياه</option>
-        <option>التكييف</option>
-        <option>النظام الإلكتروني</option>
-        <option>اختبار مولدات</option>
-
-      </select>
-
-    </div>
-
-    <div
-      class="field hidden"
-      id="editPowerWrap">
-
-      <label class="required">مصدر الكهرباء</label>
-
-      <select id="editPower">
-
-        <option>داخلي</option>
-        <option>خارجي</option>
-
-      </select>
-
-    </div>
-
-    <div
-      class="field hidden"
-      id="editGeneratorWrap">
-
-      <label class="required">حالة المولد</label>
-
-      <select id="editGeneratorStatus">
-
-        <option>يعمل</option>
-        <option>لا يعمل</option>
-
-      </select>
-
-    </div>
-
-    <div
-      class="field hidden"
-      id="editElectronicWrap">
-
-      <label class="required">
-        النظام الإلكتروني المتأثر
-      </label>
-
-      <input
-        id="editElectronicSystem"
-        placeholder="اسم النظام الإلكتروني المتأثر">
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">نطاق التأثير</label>
-
-      <select
-        id="editScope"
-        onchange="toggleEditPartial()">
-
-        <option>كلي</option>
-        <option>جزئي</option>
-
-      </select>
-
-    </div>
-
-    <div
-      class="field hidden"
-      id="editPartialWrap">
-
-      <label class="required">القسم المتأثر</label>
-
-      <input
-        id="editPartialDept"
-        placeholder="اسم القسم المتأثر">
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">
-        تأثير البلاغ على الخدمات الصحية
-      </label>
-
-      <select id="editServiceImpact">
-
-        <option>لا يوجد تأثير</option>
-        <option>تأثير محدود</option>
-        <option>تأثير على الخدمة</option>
-        <option>توقف خدمة</option>
-
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">
-        إجمالي عدد المنومين في المنشأة
-      </label>
-
-      <input
-        id="editInpatientCount"
-        type="number"
-        min="0"
-        step="1">
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">مصدر البلاغ</label>
-
-      <select id="editSource">
-
-        <option>المنشأة</option>
-        <option>اتصال هاتفي</option>
-        <option>تحديث المنشأة</option>
-        <option>جولة ميدانية</option>
-        <option>أخرى</option>
-
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">اسم المبلّغ</label>
-
-      <input id="editReporter">
-
-    </div>
-
-    <div class="field">
-
-      <label class="required">وقت بداية البلاغ</label>
-
-      <input
-        id="editStart"
-        type="datetime-local">
-
-    </div>
-
-    <div class="field">
-
-      <label>وقت نهاية البلاغ</label>
-
-      <input
-        id="editEnd"
-        type="datetime-local">
-
-    </div>
-
-    <div class="field">
-
-      <label>الحالة</label>
-
-      <select id="editStatus">
-
-        <option>نشط</option>
-        <option>مغلق</option>
-
-      </select>
-
-    </div>
-
-    <div class="field">
-
-      <label>الوصف</label>
-
-      <textarea
-        id="editDescription"
-        rows="3"></textarea>
-
-    </div>
-
-    <div class="field">
-
-      <label>الملاحظات</label>
-
-      <textarea
-        id="editNote"
-        rows="3"></textarea>
-
-    </div>
-
-    <div class="ma">
-
-      <button
-        class="primary"
-        onclick="saveEditedIncident()">
-        💾 حفظ التعديلات
-      </button>
-
-      <button
-        class="neutral"
-        onclick="closeEditModal()">
-        إلغاء
       </button>
 
     </div>
@@ -1660,7 +1619,6 @@ let data={
 };
 
 let closingId=null;
-
 let editingId=null;
 
 let firstDataLoad=true;
@@ -1668,6 +1626,19 @@ let knownIncidentIds=new Set();
 
 let audioContext=null;
 let audioUnlocked=false;
+
+let realtimeChannel=null;
+let notifications=[];
+let unreadNotifications=0;
+let escalationId=null;
+
+const ESCALATION_TARGETS=[
+  "تجمع جازان الصحي",
+  "وزارة الصحة",
+  "مركز العمليات",
+  "إدارة الطوارئ والكوارث",
+  "أخرى"
+];
 
 
 /* =====================================================
@@ -1764,8 +1735,6 @@ function unlockAudio(){
 
 function playNotificationSound(){
 
-  /* التنبيه الصوتي للإدارة المركزية فقط */
-
   if(!profile || profile.role!=="admin")
     return;
 
@@ -1782,7 +1751,6 @@ function playNotificationSound(){
     const gain1=ctx.createGain();
 
     osc1.type="sine";
-
     osc1.frequency.setValueAtTime(
       880,
       now
@@ -1916,6 +1884,8 @@ async function login(){
 
 async function logout(){
 
+  stopIncidentRealtime();
+
   await supabaseClient.auth.signOut();
 
   currentUser=null;
@@ -2027,6 +1997,9 @@ async function startApp(){
   await loadData();
 
   render();
+
+  if(profile.role==="admin")
+    startIncidentRealtime();
 }
 
 
@@ -2042,6 +2015,93 @@ function visibleFacilities(){
   return profile
     ? [profile.facility]
     : [];
+}
+
+
+/* =====================================================
+   REALTIME NOTIFICATIONS - CENTRAL ADMIN ONLY
+===================================================== */
+
+function updateNotificationBadge(){
+
+  const badge=document.getElementById("notificationCount");
+
+  if(!badge) return;
+
+  badge.textContent=String(unreadNotifications);
+  badge.style.display=unreadNotifications>0 ? "inline-block" : "none";
+}
+
+function addIncidentNotification(x){
+
+  if(!x || !profile || profile.role!=="admin") return;
+
+  const item={
+    id:String(x.id),
+    facility:x.facility || "-",
+    type:currentType(x),
+    time:new Date().toISOString()
+  };
+
+  if(notifications.some(n=>n.id===item.id)) return;
+
+  notifications.unshift(item);
+  notifications=notifications.slice(0,20);
+  unreadNotifications++;
+  updateNotificationBadge();
+  playNotificationSound();
+  toast(`🚨 بلاغ جديد • ${escapeHtml(item.facility)} • ${escapeHtml(item.type)}`);
+}
+
+function showNotifications(){
+
+  if(!profile || profile.role!=="admin") return;
+
+  if(!notifications.length){
+    toast("🔔 لا توجد إشعارات جديدة");
+    return;
+  }
+
+  const text=notifications.slice(0,8)
+    .map(n=>`• ${n.facility} — ${n.type} — ${fmtDate(n.time)}`)
+    .join("\n");
+
+  alert("🔔 إشعارات البلاغات الجديدة\n\n"+text);
+  unreadNotifications=0;
+  updateNotificationBadge();
+}
+
+function startIncidentRealtime(){
+
+  if(!profile || profile.role!=="admin") return;
+
+  stopIncidentRealtime();
+
+  realtimeChannel=supabaseClient
+    .channel("jahizia-incidents-realtime")
+    .on("postgres_changes",{event:"INSERT",schema:"public",table:"incidents"},payload=>{
+
+      const x=payload.new;
+
+      if(!x || !allFacilities.includes(x.facility)) return;
+
+      const id=String(x.id);
+      if(knownIncidentIds.has(id)) return;
+
+      knownIncidentIds.add(id);
+      data.incidents.push(x);
+      render();
+      addIncidentNotification(x);
+    })
+    .subscribe(status=>console.log("Incident realtime:",status));
+}
+
+function stopIncidentRealtime(){
+
+  if(realtimeChannel){
+    try{ supabaseClient.removeChannel(realtimeChannel); }catch(e){ console.log(e); }
+    realtimeChannel=null;
+  }
 }
 
 
@@ -2078,12 +2138,6 @@ async function loadData(){
   const newRows=rows || [];
 
 
-  /*
-   * إشعار البلاغ الجديد:
-   * يتم تنفيذه للإدارة المركزية فقط.
-   * حسابات المنشآت لا تحصل على إشعار وصول.
-   */
-
   if(
     profile &&
     profile.role==="admin" &&
@@ -2107,14 +2161,7 @@ async function loadData(){
 
 
       if(relevant.length){
-
-        playNotificationSound();
-
-        const first=relevant[0];
-
-        toast(
-          `🚨 بلاغ جديد وارد • ${first.facility} • ${currentType(first)}`
-        );
+        relevant.forEach(x=>addIncidentNotification(x));
       }
     }
   }
@@ -2225,9 +2272,44 @@ function icon(s){
 
 function currentType(x){
 
+  if(!x)
+    return "-";
+
+  if(x.type==="أخرى")
+    return x.other_type || "أخرى";
+
   return x.type || "-";
 }
 
+
+function incidentSeverity(x){
+
+  if(!x || x.end_time)
+    return "طبيعي";
+
+  if(
+    currentType(x)==="الكهرباء" &&
+    x.generator_status==="لا يعمل"
+  ){
+    return "يحتاج متابعة عالية";
+  }
+
+  return "يحتاج متابعة";
+}
+
+function severityBadge(x){
+  const s=incidentSeverity(x);
+  if(s==="يحتاج متابعة عالية")
+    return '<span class="badge high">🔴 يحتاج متابعة عالية</span>';
+  if(s==="يحتاج متابعة")
+    return '<span class="badge o">🟠 يحتاج متابعة</span>';
+  return '<span class="badge">🟢 طبيعي</span>';
+}
+
+function severityRank(x){
+  const s=incidentSeverity(x);
+  return s==="يحتاج متابعة عالية" ? 0 : s==="يحتاج متابعة" ? 1 : 2;
+}
 
 function state(f){
 
@@ -2241,29 +2323,6 @@ function state(f){
 }
 
 
-function toLocalInputValue(value){
-
-  if(!value)
-    return "";
-
-  const d=new Date(value);
-
-  if(isNaN(d.getTime()))
-    return "";
-
-  const offset=d.getTimezoneOffset();
-
-  const local=
-    new Date(
-      d.getTime()-offset*60000
-    );
-
-  return local
-    .toISOString()
-    .slice(0,16);
-}
-
-
 /* =====================================================
    RENDER
 ===================================================== */
@@ -2274,6 +2333,7 @@ function render(){
 
   let normal=0;
   let follow=0;
+  let highFollow=0;
 
 
   facilities.forEach(f=>{
@@ -2282,6 +2342,14 @@ function render(){
       normal++;
     else
       follow++;
+
+    if(
+      data.incidents.some(
+        x=>x.facility===f && incidentSeverity(x)==="يحتاج متابعة عالية"
+      )
+    ){
+      highFollow++;
+    }
 
   });
 
@@ -2295,6 +2363,9 @@ function render(){
   document.getElementById("follow").textContent =
     follow;
 
+  document.getElementById("highFollow").textContent =
+    highFollow;
+
 
   const open =
     data.incidents
@@ -2305,8 +2376,8 @@ function render(){
       )
       .sort(
         (a,b)=>
-          new Date(a.start_time) -
-          new Date(b.start_time)
+          severityRank(a)-severityRank(b) ||
+          (new Date(a.start_time) - new Date(b.start_time))
       );
 
 
@@ -2339,9 +2410,10 @@ function render(){
 
             </div>
 
-            <span class="badge o">
-              مفتوح
-            </span>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+              ${severityBadge(x)}
+              <span class="badge o">مفتوح</span>
+            </div>
 
           </div>
 
@@ -2386,6 +2458,18 @@ function render(){
               onclick="showDetails('${x.id}')">
               فتح التفاصيل
             </button>
+
+            ${
+              profile && profile.role==="admin"
+              ? `<button class="admin-button" onclick="openEdit('${x.id}')">✏️ تعديل</button>`
+              : ""
+            }
+
+            ${
+              profile && profile.role==="admin"
+              ? `<button class="neutral" onclick="openEscalation('${x.id}')">⬆️ تصعيد</button>`
+              : ""
+            }
 
             <button
               class="danger"
@@ -2510,17 +2594,13 @@ function renderFacilities(){
             ${escapeHtml(f)}
           </div>
 
-          <span class="badge ${
-            st==="تحتاج متابعة" ? "o" : ""
-          }">
-
-            ${
-              st==="طبيعي"
-              ? "🟢 جاهزة"
-              : "🟠 تحتاج متابعة"
-            }
-
-          </span>
+          ${(() => {
+            const highest=open.reduce((best,i)=>
+              !best || severityRank(i)<severityRank(best) ? i : best, null);
+            return highest
+              ? severityBadge(highest)
+              : '<span class="badge">🟢 جاهزة</span>';
+          })()}
 
         </div>
 
@@ -2557,6 +2637,8 @@ function renderFacilities(){
               onclick="showDetails('${last.id}')">
               فتح التفاصيل
             </button>
+
+            ${profile && profile.role==="admin" ? `<button class="neutral" onclick="openEscalation('${last.id}')">⬆️ تصعيد</button>` : ""}
 
             <button
               class="danger"
@@ -2668,9 +2750,8 @@ function renderHistory(){
           `<td>
 
             <button
-              class="edit-button"
-              style="padding:6px 8px;font-size:10px"
-              onclick="openEditModal('${x.id}')">
+              class="admin-button"
+              onclick="openEdit('${x.id}')">
               ✏️ تعديل
             </button>
 
@@ -3104,6 +3185,15 @@ function renderProfessionalReport(
       x=>currentType(x)==="اختبار مولدات"
     ).length;
 
+  const other =
+    rows.filter(
+      x=>currentType(x)!=="الكهرباء" &&
+         currentType(x)!=="المياه" &&
+         currentType(x)!=="التكييف" &&
+         currentType(x)!=="النظام الإلكتروني" &&
+         currentType(x)!=="اختبار مولدات"
+    ).length;
+
 
   const durations =
     rows
@@ -3325,6 +3415,11 @@ function renderProfessionalReport(
         <div class="breakdown-row">
           <span>🔋 اختبار مولدات</span>
           <b>${generator}</b>
+        </div>
+
+        <div class="breakdown-row">
+          <span>⚙️ أخرى</span>
+          <b>${other}</b>
         </div>
 
       </div>
@@ -3814,6 +3909,15 @@ function handleTypeChange(){
     type==="النظام الإلكتروني";
 
 
+  const isOther =
+    type==="أخرى";
+
+
+  document
+    .getElementById("otherTypeWrap")
+    .classList.toggle("hidden",!isOther);
+
+
   document
     .getElementById("powerWrap")
     .classList.toggle(
@@ -3858,6 +3962,12 @@ function handleTypeChange(){
 
     document.getElementById("electronicSystem").value="";
   }
+
+
+  if(!isOther){
+
+    document.getElementById("otherType").value="";
+  }
 }
 
 
@@ -3887,6 +3997,10 @@ async function saveIncident(){
 
   const type =
     document.getElementById("type").value;
+
+
+  const otherType =
+    document.getElementById("otherType").value.trim();
 
 
   const scope =
@@ -3973,6 +4087,14 @@ async function saveIncident(){
   }
 
 
+  if(type==="أخرى" && !otherType){
+
+    toast("⚠️ اكتب نوع البلاغ");
+
+    return;
+  }
+
+
   if(
     scope==="جزئي" &&
     !dept
@@ -4020,7 +4142,10 @@ async function saveIncident(){
 
     type,
 
-    other_type:null,
+    other_type:
+      type==="أخرى"
+        ? otherType
+        : null,
 
     power:
       type==="الكهرباء"
@@ -4120,11 +4245,7 @@ async function saveIncident(){
 
   toast("✅ تم حفظ البلاغ");
 
-  /*
-   * لا يوجد صوت تأكيد عند إنشاء البلاغ.
-   * صوت الإشعار مخصص لوصول بلاغ جديد للإدارة المركزية.
-   */
-
+  /* البلاغ الذي أنشأه المدير يظهر مباشرة ولا يُعامل كبلاغ وارد جديد. */
 }
 
 
@@ -4139,6 +4260,8 @@ function clearIncidentForm(){
   document.getElementById("reporter").value="";
 
   document.getElementById("electronicSystem").value="";
+
+  document.getElementById("otherType").value="";
 
   document.getElementById("inpatientCount").value="";
 
@@ -4164,7 +4287,7 @@ function clearIncidentForm(){
    DETAILS
 ===================================================== */
 
-function showDetails(id){
+async function showDetails(id){
 
   const x =
     data.incidents.find(
@@ -4174,11 +4297,6 @@ function showDetails(id){
 
   if(!x)
     return;
-
-
-  const admin =
-    profile &&
-    profile.role==="admin";
 
 
   const html=`
@@ -4194,7 +4312,6 @@ function showDetails(id){
         <span>نوع البلاغ</span>
         <b>${escapeHtml(currentType(x))}</b>
       </div>
-
 
       ${
         currentType(x)==="الكهرباء"
@@ -4296,6 +4413,20 @@ function showDetails(id){
 
 
       <div class="breakdown-row">
+        <span>خطورة البلاغ</span>
+        <b>${escapeHtml(incidentSeverity(x))}</b>
+      </div>
+
+      ${x.escalated_to ? `
+        <div class="escalation-box">
+          ⬆️ <b>تم تصعيد البلاغ بواسطة الإدارة المركزية</b><br>
+          الجهة: <b>${escapeHtml(x.escalated_to)}</b><br>
+          الحالة: <b>${escapeHtml(x.escalation_status || "مصعّد")}</b><br>
+          وقت التصعيد: ${fmtDate(x.escalated_at)}
+        </div>
+      ` : ""}
+
+      <div class="breakdown-row">
         <span>وقت البداية</span>
         <b>${fmtDate(x.start_time)}</b>
       </div>
@@ -4344,31 +4475,10 @@ function showDetails(id){
 
       </div>
 
-
-      ${
-        admin
-
-        ?
-
-        `
-
-        <div class="ma">
-
-          <button
-            class="edit-button"
-            onclick="openEditModal('${x.id}')">
-            ✏️ تعديل بيانات البلاغ
-          </button>
-
-        </div>
-
-        `
-
-        :
-
-        ""
-
-      }
+      <div id="auditLogContent" class="audit-box">
+        <div class="audit-title">✏️ سجل تعديلات بيانات البلاغ الرئيسي</div>
+        <div style="color:var(--muted);font-size:10px">جاري تحميل سجل التعديلات...</div>
+      </div>
 
     </div>
 
@@ -4383,8 +4493,131 @@ function showDetails(id){
   document.getElementById(
     "detailsModal"
   ).style.display="flex";
+
+  loadIncidentAudit(id);
 }
 
+
+async function loadIncidentAudit(incidentId){
+  const box=document.getElementById("auditLogContent");
+  if(!box) return;
+
+  const {data:logs,error}=await supabaseClient
+    .from("incident_audit_log")
+    .select("id,user_id,action,changed_fields,created_at")
+    .eq("incident_id",incidentId)
+    .order("created_at",{ascending:false});
+
+  if(error){
+    box.innerHTML='<div class="audit-title">✏️ سجل تعديلات بيانات البلاغ الرئيسي</div><div style="color:var(--muted);font-size:10px">تعذر تحميل سجل التعديلات.</div>';
+    return;
+  }
+
+  if(!logs || !logs.length){
+    box.innerHTML='<div class="audit-title">✏️ سجل تعديلات بيانات البلاغ الرئيسي</div><div style="color:var(--muted);font-size:10px">لا توجد تعديلات مسجلة على هذا البلاغ.</div>';
+    return;
+  }
+
+  const labels={
+    facility:"المنشأة",type:"نوع البلاغ",other_type:"نوع البلاغ (أخرى)",power:"مصدر الكهرباء",
+    scope:"النطاق",department:"القسم المتأثر",service_impact:"تأثير الخدمات",source:"مصدر البلاغ",
+    reporter:"المبلّغ",start_time:"وقت البداية",end_time:"وقت النهاية",description:"الوصف",note:"الملاحظات",
+    status:"حالة البلاغ",generator_status:"حالة المولد",electronic_system:"النظام الإلكتروني",
+    inpatient_count:"عدد المنومين",system_type:"نوع النظام",inpatients_count:"عدد المنومين",
+    escalated_to:"الجهة المصعّد إليها",escalation_status:"حالة التصعيد"
+  };
+
+  box.innerHTML='<div class="audit-title">✏️ سجل تعديلات بيانات البلاغ الرئيسي</div>'+logs.map(log=>{
+    const changes=log.changed_fields || {};
+    const details=Object.keys(changes).map(k=>{
+      const c=changes[k] || {};
+      return `<div class="audit-change"><b>${escapeHtml(labels[k]||k)}:</b> ${escapeHtml(c.old ?? "-")} ← ${escapeHtml(c.new ?? "-")}</div>`;
+    }).join("");
+    const isEscalation=log.action==="escalation";
+    return `<div class="audit-item"><div class="audit-head">${isEscalation ? "⬆️ تم تصعيد البلاغ بواسطة الإدارة المركزية" : "✏️ تم تعديل بيانات البلاغ الرئيسي بواسطة الإدارة المركزية"}</div><div style="color:var(--muted);margin-top:3px">${fmtDate(log.created_at)}</div>${details}</div>`;
+  }).join("");
+}
+
+function openEscalation(id){
+  if(!profile || profile.role!=="admin"){ toast("❌ التصعيد متاح للإدارة المركزية فقط"); return; }
+  const x=data.incidents.find(i=>String(i.id)===String(id));
+  if(!x) return;
+  escalationId=id;
+  document.getElementById("escalationTarget").value=x.escalated_to || "";
+  document.getElementById("otherEscalation").value=ESCALATION_TARGETS.includes(x.escalated_to) ? "" : (x.escalated_to || "");
+  toggleOtherEscalation();
+  document.getElementById("escalationModal").style.display="flex";
+}
+
+function toggleOtherEscalation(){
+  const other=document.getElementById("escalationTarget").value==="أخرى";
+  document.getElementById("otherEscalationWrap").classList.toggle("hidden",!other);
+}
+
+function closeEscalationModal(){
+  document.getElementById("escalationModal").style.display="none";
+  escalationId=null;
+}
+
+async function saveEscalation(){
+  if(!profile || profile.role!=="admin"){ toast("❌ التصعيد متاح للإدارة المركزية فقط"); return; }
+  if(!escalationId) return;
+  let target=document.getElementById("escalationTarget").value;
+  if(target==="أخرى") target=document.getElementById("otherEscalation").value.trim();
+  if(!target){ toast("⚠️ اختر الجهة المراد التصعيد إليها"); return; }
+
+  const {data:updated,error}=await supabaseClient
+    .from("incidents")
+    .update({
+      escalated_to:target,
+      escalation_status:"مصعّد",
+      escalated_at:new Date().toISOString(),
+      escalated_by:currentUser ? currentUser.id : null
+    })
+    .eq("id",escalationId)
+    .select()
+    .single();
+
+  if(error){
+    toast("❌ لم يتم تصعيد البلاغ: "+error.message);
+    console.error(error);
+    return;
+  }
+
+  // تسجيل عملية التصعيد في سجل التدقيق أيضًا
+  const currentIncident = data.incidents.find(i=>String(i.id)===String(escalationId));
+
+  const auditPayload={
+    incident_id: Number(escalationId),
+    user_id: currentUser ? currentUser.id : null,
+    action: "escalation",
+    changed_fields: {
+      escalated_to: {
+        old: currentIncident ? (currentIncident.escalated_to || null) : null,
+        new: target
+      },
+      escalation_status: {
+        old: currentIncident ? (currentIncident.escalation_status || null) : null,
+        new: "مصعّد"
+      }
+    },
+    escalation_to: target
+  };
+
+  const {error:auditError}=await supabaseClient
+    .from("incident_audit_log")
+    .insert([auditPayload]);
+
+  if(auditError){
+    console.warn("تعذر تسجيل التصعيد في سجل التدقيق",auditError);
+  }
+
+  const index=data.incidents.findIndex(i=>String(i.id)===String(escalationId));
+  if(index!==-1) data.incidents[index]=updated;
+  closeEscalationModal();
+  render();
+  toast(`✅ تم تصعيد البلاغ إلى ${target}`);
+}
 
 function closeDetails(){
 
@@ -4395,514 +4628,130 @@ function closeDetails(){
 
 
 /* =====================================================
-   ADMIN EDIT
+   EDIT INCIDENT - ADMIN ONLY
 ===================================================== */
 
-function openEditModal(id){
-
-  if(!profile || profile.role!=="admin"){
-
-    toast("❌ تعديل البلاغات متاح للإدارة المركزية فقط");
-
-    return;
-  }
-
-
-  const x =
-    data.incidents.find(
-      i=>String(i.id)===String(id)
-    );
-
-
-  if(!x){
-
-    toast("❌ لم يتم العثور على البلاغ");
-
-    return;
-  }
-
-
-  editingId=id;
-
-
-  const facilitySelect =
-    document.getElementById("editFacility");
-
-  facilitySelect.innerHTML="";
-
-
-  allFacilities.forEach(f=>{
-
-    const option =
-      document.createElement("option");
-
-    option.value=f;
-    option.textContent=f;
-
-    facilitySelect.appendChild(option);
-
-  });
-
-
-  document.getElementById("editFacility").value =
-    x.facility || "";
-
-
-  document.getElementById("editType").value =
-    x.type || "الكهرباء";
-
-
-  document.getElementById("editPower").value =
-    x.power || "داخلي";
-
-
-  document.getElementById("editGeneratorStatus").value =
-    x.generator_status || "لا يعمل";
-
-
-  document.getElementById("editElectronicSystem").value =
-    x.electronic_system || "";
-
-
-  document.getElementById("editScope").value =
-    x.scope || "كلي";
-
-
-  document.getElementById("editPartialDept").value =
-    x.department || "";
-
-
-  document.getElementById("editServiceImpact").value =
-    x.service_impact || "لا يوجد تأثير";
-
-
-  document.getElementById("editInpatientCount").value =
-    x.inpatient_count ?? "";
-
-
-  document.getElementById("editSource").value =
-    x.source || "المنشأة";
-
-
-  document.getElementById("editReporter").value =
-    x.reporter || "";
-
-
-  document.getElementById("editStart").value =
-    toLocalInputValue(x.start_time);
-
-
-  document.getElementById("editEnd").value =
-    toLocalInputValue(x.end_time);
-
-
-  document.getElementById("editStatus").value =
-    x.status ||
-    (x.end_time ? "مغلق" : "نشط");
-
-
-  document.getElementById("editDescription").value =
-    x.description || "";
-
-
-  document.getElementById("editNote").value =
-    x.note || "";
-
-
-  handleEditTypeChange();
-
-  toggleEditPartial();
-
-
-  /* إغلاق نافذة التفاصيل قبل فتح التعديل */
-
-  closeDetails();
-
-
-  document.getElementById(
-    "editModal"
-  ).style.display="flex";
+function toLocalDateTimeValue(value){
+  if(!value) return "";
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime())) return "";
+  const local=new Date(d.getTime()-d.getTimezoneOffset()*60000);
+  return local.toISOString().slice(0,16);
 }
 
+function fillEditFacilitySelect(){
+  const select=document.getElementById("editFacility");
+  select.innerHTML="";
+  allFacilities.forEach(f=>{
+    const o=document.createElement("option");
+    o.value=f; o.textContent=f; select.appendChild(o);
+  });
+}
+
+function handleEditTypeChange(){
+  const type=document.getElementById("editType").value;
+  const electricity=type==="الكهرباء";
+  const generator=type==="اختبار مولدات";
+  const electronic=type==="النظام الإلكتروني";
+  const other=type==="أخرى";
+  document.getElementById("editPowerWrap").classList.toggle("hidden",!electricity);
+  document.getElementById("editGeneratorWrap").classList.toggle("hidden",!(electricity||generator));
+  document.getElementById("editElectronicWrap").classList.toggle("hidden",!electronic);
+  document.getElementById("editOtherTypeWrap").classList.toggle("hidden",!other);
+}
+
+function toggleEditPartial(){
+  document.getElementById("editPartialWrap").classList.toggle("hidden",document.getElementById("editScope").value!=="جزئي");
+}
+
+function openEdit(id){
+  if(!profile || profile.role!=="admin"){ toast("❌ تعديل البلاغات متاح للإدارة المركزية فقط"); return; }
+  const x=data.incidents.find(i=>String(i.id)===String(id));
+  if(!x) return;
+  editingId=id;
+  fillEditFacilitySelect();
+  document.getElementById("editFacility").value=x.facility || "";
+  document.getElementById("editType").value=x.type || "الكهرباء";
+  document.getElementById("editOtherType").value=x.other_type || "";
+  document.getElementById("editPower").value=x.power || "داخلي";
+  document.getElementById("editGeneratorStatus").value=x.generator_status || "لا يعمل";
+  document.getElementById("editElectronicSystem").value=x.electronic_system || "";
+  document.getElementById("editScope").value=x.scope || "كلي";
+  document.getElementById("editDepartment").value=x.department || "";
+  document.getElementById("editServiceImpact").value=x.service_impact || "لا يوجد تأثير";
+  document.getElementById("editInpatientCount").value=x.inpatient_count ?? "";
+  document.getElementById("editSource").value=x.source || "المنشأة";
+  document.getElementById("editReporter").value=x.reporter || "";
+  document.getElementById("editStart").value=toLocalDateTimeValue(x.start_time);
+  document.getElementById("editDescription").value=x.description || "";
+  document.getElementById("editNote").value=x.note || "";
+  handleEditTypeChange();
+  toggleEditPartial();
+  document.getElementById("editModal").style.display="flex";
+}
 
 function closeEditModal(){
-
-  document.getElementById(
-    "editModal"
-  ).style.display="none";
-
+  document.getElementById("editModal").style.display="none";
   editingId=null;
 }
 
-
-function handleEditTypeChange(){
-
-  const type =
-    document.getElementById("editType").value;
-
-
-  const isElectricity =
-    type==="الكهرباء";
-
-
-  const isGenerator =
-    type==="اختبار مولدات";
-
-
-  const isElectronic =
-    type==="النظام الإلكتروني";
-
-
-  document
-    .getElementById("editPowerWrap")
-    .classList.toggle(
-      "hidden",
-      !isElectricity
-    );
-
-
-  document
-    .getElementById("editGeneratorWrap")
-    .classList.toggle(
-      "hidden",
-      !(isElectricity || isGenerator)
-    );
-
-
-  document
-    .getElementById("editElectronicWrap")
-    .classList.toggle(
-      "hidden",
-      !isElectronic
-    );
-
-
-  if(!isElectricity){
-
-    document.getElementById("editPower").value =
-      "داخلي";
-
-  }
-
-
-  if(!(isElectricity || isGenerator)){
-
-    document.getElementById("editGeneratorStatus").value =
-      "لا يعمل";
-
-  }
-
-}
-
-
-function toggleEditPartial(){
-
-  document
-    .getElementById("editPartialWrap")
-    .classList.toggle(
-      "hidden",
-      document.getElementById("editScope").value!=="جزئي"
-    );
-}
-
-
 async function saveEditedIncident(){
-
-  if(!profile || profile.role!=="admin"){
-
-    toast("❌ تعديل البلاغات متاح للإدارة المركزية فقط");
-
-    return;
-  }
-
-
-  if(!editingId){
-
-    toast("❌ لم يتم تحديد البلاغ");
-
-    return;
-  }
-
-
-  const facility =
-    document.getElementById("editFacility").value;
-
-
-  const type =
-    document.getElementById("editType").value;
-
-
-  const power =
-    document.getElementById("editPower").value;
-
-
-  const generatorStatus =
-    document.getElementById("editGeneratorStatus").value;
-
-
-  const electronicSystem =
-    document
-      .getElementById("editElectronicSystem")
-      .value
-      .trim();
-
-
-  const scope =
-    document.getElementById("editScope").value;
-
-
-  const department =
-    document
-      .getElementById("editPartialDept")
-      .value
-      .trim();
-
-
-  const serviceImpact =
-    document.getElementById("editServiceImpact").value;
-
-
-  const inpatientRaw =
-    document
-      .getElementById("editInpatientCount")
-      .value
-      .trim();
-
-
-  const inpatientCount =
-    inpatientRaw===""
-      ? null
-      : Number(inpatientRaw);
-
-
-  const source =
-    document.getElementById("editSource").value;
-
-
-  const reporter =
-    document
-      .getElementById("editReporter")
-      .value
-      .trim();
-
-
-  const start =
-    document.getElementById("editStart").value;
-
-
-  const end =
-    document.getElementById("editEnd").value;
-
-
-  const status =
-    document.getElementById("editStatus").value;
-
-
-  const description =
-    document
-      .getElementById("editDescription")
-      .value
-      .trim();
-
-
-  const note =
-    document
-      .getElementById("editNote")
-      .value
-      .trim();
-
-
-  if(!facility){
-
-    toast("⚠️ اختر المنشأة");
-
-    return;
-  }
-
-
-  if(
-    type==="النظام الإلكتروني" &&
-    !electronicSystem
-  ){
-
-    toast("⚠️ اكتب اسم النظام الإلكتروني المتأثر");
-
-    return;
-  }
-
-
-  if(
-    scope==="جزئي" &&
-    !department
-  ){
-
-    toast("⚠️ اكتب القسم المتأثر");
-
-    return;
-  }
-
-
-  if(!reporter){
-
-    toast("⚠️ اكتب اسم المبلّغ");
-
-    return;
-  }
-
-
-  if(!start){
-
-    toast("⚠️ حدد وقت بداية البلاغ");
-
-    return;
-  }
-
-
-  if(
-    inpatientCount===null ||
-    !Number.isInteger(inpatientCount) ||
-    inpatientCount<0
-  ){
-
-    toast(
-      "⚠️ أدخل إجمالي عدد المنومين بشكل صحيح"
-    );
-
-    return;
-  }
-
-
-  if(
-    end &&
-    new Date(end)<new Date(start)
-  ){
-
-    toast(
-      "⚠️ وقت النهاية لا يمكن أن يسبق وقت البداية"
-    );
-
-    return;
-  }
-
-
-  const finalEnd =
-    status==="نشط"
-      ? null
-      : (
-          end
-          ? new Date(end).toISOString()
-          : null
-        );
-
+  if(!profile || profile.role!=="admin"){ toast("❌ تعديل البلاغات متاح للإدارة المركزية فقط"); return; }
+  const x=data.incidents.find(i=>String(i.id)===String(editingId));
+  if(!x) return;
+
+  const facility=document.getElementById("editFacility").value;
+  const type=document.getElementById("editType").value;
+  const otherType=document.getElementById("editOtherType").value.trim();
+  const power=document.getElementById("editPower").value;
+  const generatorStatus=document.getElementById("editGeneratorStatus").value;
+  const electronicSystem=document.getElementById("editElectronicSystem").value.trim();
+  const scope=document.getElementById("editScope").value;
+  const department=document.getElementById("editDepartment").value.trim();
+  const serviceImpact=document.getElementById("editServiceImpact").value;
+  const inpatientRaw=document.getElementById("editInpatientCount").value.trim();
+  const inpatientCount=inpatientRaw===""?null:Number(inpatientRaw);
+  const source=document.getElementById("editSource").value;
+  const reporter=document.getElementById("editReporter").value.trim();
+  const start=document.getElementById("editStart").value;
+  const description=document.getElementById("editDescription").value.trim();
+  const note=document.getElementById("editNote").value.trim();
+
+  if(!facility){toast("⚠️ اختر المنشأة");return;}
+  if(type==="أخرى"&&!otherType){toast("⚠️ اكتب نوع البلاغ");return;}
+  if(type==="النظام الإلكتروني"&&!electronicSystem){toast("⚠️ اكتب اسم النظام الإلكتروني المتأثر");return;}
+  if(scope==="جزئي"&&!department){toast("⚠️ اكتب القسم المتأثر");return;}
+  if(!reporter){toast("⚠️ اكتب اسم المبلّغ");return;}
+  if(!start){toast("⚠️ حدد وقت بداية البلاغ");return;}
+  if(inpatientCount===null||!Number.isInteger(inpatientCount)||inpatientCount<0){toast("⚠️ أدخل إجمالي عدد المنومين بشكل صحيح");return;}
+
+  const startDate=new Date(start);
+  if(Number.isNaN(startDate.getTime())){toast("⚠️ وقت بداية البلاغ غير صحيح");return;}
+  if(x.end_time&&startDate>new Date(x.end_time)){toast("⚠️ وقت البداية لا يمكن أن يكون بعد وقت انتهاء البلاغ");return;}
 
   const payload={
-
-    facility,
-
-    type,
-
-    other_type:null,
-
-    power:
-      type==="الكهرباء"
-        ? power
-        : null,
-
-    generator_status:
-      (
-        type==="الكهرباء" ||
-        type==="اختبار مولدات"
-      )
-      ? generatorStatus
-      : null,
-
-    electronic_system:
-      type==="النظام الإلكتروني"
-        ? electronicSystem
-        : null,
-
+    facility,type,
+    other_type:type==="أخرى"?otherType:null,
+    power:type==="الكهرباء"?power:null,
+    generator_status:(type==="الكهرباء"||type==="اختبار مولدات")?generatorStatus:null,
+    electronic_system:type==="النظام الإلكتروني"?electronicSystem:null,
     scope,
-
-    department:
-      scope==="جزئي"
-        ? department
-        : null,
-
-    service_impact:
-      serviceImpact,
-
-    source,
-
-    reporter,
-
-    inpatient_count:
-      inpatientCount,
-
-    start_time:
-      new Date(start).toISOString(),
-
-    end_time:
-      finalEnd,
-
-    description:
-      description || null,
-
-    note:
-      note || null,
-
-    status:
-      status
+    department:scope==="جزئي"?department:null,
+    service_impact:serviceImpact,source,reporter,
+    inpatient_count:inpatientCount,
+    start_time:startDate.toISOString(),
+    description:description||null,
+    note:note||null
   };
 
+  const {data:updated,error}=await supabaseClient.from("incidents").update(payload).eq("id",editingId).select().single();
+  if(error){toast("❌ لم يتم تعديل البلاغ: "+error.message);console.error(error);return;}
 
-  const {
-    data:updated,
-    error
-  } =
-    await supabaseClient
-      .from("incidents")
-      .update(payload)
-      .eq("id",editingId)
-      .select()
-      .single();
-
-
-  if(error){
-
-    toast(
-      "❌ لم يتم حفظ التعديلات: " +
-      error.message
-    );
-
-    console.error(error);
-
-    return;
-  }
-
-
-  const index =
-    data.incidents.findIndex(
-      i=>String(i.id)===String(editingId)
-    );
-
-
-  if(index!==-1){
-
-    data.incidents[index]=updated;
-
-  }else{
-
-    data.incidents.push(updated);
-
-  }
-
-
+  const index=data.incidents.findIndex(i=>String(i.id)===String(editingId));
+  if(index!==-1) data.incidents[index]=updated;
   closeEditModal();
-
   render();
-
-  toast("✅ تم تحديث بيانات البلاغ بنجاح");
-
+  toast("✅ تم تعديل البلاغ بنجاح");
 }
 
 
@@ -5241,6 +5090,8 @@ supabaseClient.auth.onAuthStateChange(
   async (event,session)=>{
 
     if(event==="SIGNED_OUT"){
+
+      stopIncidentRealtime();
 
       currentUser=null;
 
