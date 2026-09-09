@@ -734,6 +734,7 @@ body.dark .escalation-box{
 .capacity-items{display:flex;flex-direction:column;gap:7px}.capacity-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}.capacity-item>span{font-weight:800;font-size:10px}.capacity-item>strong{width:88px}.capacity-er{display:block}.capacity-er-head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900;margin-bottom:7px}.capacity-er-badge{font-size:8px;padding:3px 6px;border-radius:99px;background:var(--card);color:var(--muted)}.capacity-er-values{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.capacity-er-values>div{display:flex;flex-direction:column;gap:4px}.capacity-er-values small{font-size:8px;color:var(--muted)}.capacity-er-values b{font-size:12px}.capacity-er-values .capacity-input{width:100%}.capacity-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}.capacity-facility{font-size:14px;font-weight:900;line-height:1.4}.capacity-resource{font-size:10px;color:var(--muted);margin-top:3px}.capacity-table{width:100%;border-collapse:collapse;font-size:10px}.capacity-table th,.capacity-table td{border-bottom:1px solid var(--line);padding:7px 5px;text-align:right}.capacity-table th{background:#f8fafc}body.dark .capacity-table th{background:#0f172a}.capacity-input{width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--text)}.capacity-status{display:inline-flex;align-items:center;gap:4px;padding:5px 7px;border-radius:99px;font-size:9px;font-weight:900;white-space:nowrap}.capacity-status.green{background:#ecfdf3;color:var(--green)}.capacity-status.orange{background:#fff7ed;color:var(--orange)}.capacity-status.red{background:#fee2e2;color:var(--red)}.capacity-note{font-size:10px;color:var(--muted);margin-top:6px}.capacity-progress{height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:5px}.capacity-progress>span{display:block;height:100%;border-radius:99px}@media(max-width:1000px){.capacity-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.capacity-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.capacity-card{padding:10px}.capacity-facility{font-size:12px}.capacity-table{font-size:9px}.capacity-status{font-size:8px}.capacity-input{padding:7px}}
 
 .capacity-icu{display:block}.capacity-icu-head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900;margin-bottom:7px}.capacity-icu-values{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.capacity-icu-values>div{display:flex;flex-direction:column;gap:4px}.capacity-icu-values small{font-size:8px;color:var(--muted)}.capacity-icu-values b{font-size:12px}.capacity-icu-values .capacity-input{width:100%}.capacity-icu-status{font-size:8px;color:var(--muted);margin-top:6px;font-weight:800}.capacity-updated{animation:capacityPulse 1.2s ease-in-out 3;outline:3px solid var(--orange);position:relative}.capacity-updated-label{display:inline-flex;margin-top:5px;padding:4px 7px;border-radius:999px;background:var(--orange);color:#fff;font-size:9px;font-weight:900;animation:capacityLabelPulse 1s ease-in-out infinite}.capacity-updated::before{content:"⬆️";position:absolute;top:8px;left:8px;font-size:16px;z-index:2}@keyframes capacityPulse{0%,100%{transform:translateY(0);box-shadow:0 2px 9px var(--shadow)}50%{transform:translateY(-3px);box-shadow:0 8px 22px var(--shadow)}}@keyframes capacityLabelPulse{50%{transform:scale(1.05)}}
+.weather-box{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}.weather-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.weather-title{font-size:11px;font-weight:900}.weather-current{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:10px;font-weight:900}.weather-select{width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--text);font-weight:800}.weather-updated-label{display:inline-flex;margin-top:5px;padding:4px 7px;border-radius:999px;background:var(--orange);color:#fff;font-size:9px;font-weight:900;animation:capacityLabelPulse 1s ease-in-out infinite}.weather-card-updated{animation:capacityPulse 1.2s ease-in-out 3;outline:3px solid var(--orange);position:relative}.weather-card-updated::before{content:"⬆️";position:absolute;top:8px;left:8px;font-size:16px;z-index:2}
 
 /* RESPONSIVE */
 
@@ -1652,6 +1653,17 @@ let capacityRealtimeChannel=null;
 let capacityRealtimeRefreshTimer=null;
 let capacityRecentlyUpdated=new Set();
 let capacityUpdatedAtMap=new Map();
+let weatherRealtimeChannel=null;
+let weatherRealtimeRefreshTimer=null;
+let weatherRecentlyUpdated=new Set();
+let weatherUpdatedAtMap=new Map();
+let weatherRows=[];
+const WEATHER_OPTIONS=[
+  {value:"clear",label:"لا توجد أمطار",icon:"☀️"},
+  {value:"light",label:"أمطار خفيفة",icon:"🌦️"},
+  {value:"moderate",label:"أمطار متوسطة",icon:"🌧️"},
+  {value:"heavy",label:"أمطار غزيرة",icon:"⛈️"}
+];
 let notifications=[];
 let unreadNotifications=0;
 let escalationId=null;
@@ -1909,6 +1921,8 @@ async function login(){
 async function logout(){
 
   stopIncidentRealtime();
+  stopCapacityRealtime();
+  stopWeatherRealtime();
 
   await supabaseClient.auth.signOut();
 
@@ -2019,12 +2033,14 @@ async function startApp(){
   setupFacilityFilters();
 
   await loadData();
+  await loadWeather();
 
   render();
 
   if(profile.role==="admin")
     startIncidentRealtime();
   startCapacityRealtime();
+  startWeatherRealtime();
 }
 
 
@@ -2178,6 +2194,42 @@ function stopCapacityRealtime(){
   if(capacityRealtimeChannel){
     try{ supabaseClient.removeChannel(capacityRealtimeChannel); }catch(e){ console.log(e); }
     capacityRealtimeChannel=null;
+  }
+}
+
+
+/* =====================================================
+   REALTIME WEATHER - FACILITY + CENTRAL ADMIN
+===================================================== */
+function startWeatherRealtime(){
+  if(!profile) return;
+  stopWeatherRealtime();
+  weatherRealtimeChannel=supabaseClient
+    .channel("jahizia-weather-realtime")
+    .on("postgres_changes",{event:"*",schema:"public",table:"facility_weather"},payload=>{
+      const row=payload.new || payload.old;
+      if(!row || !allFacilities.includes(row.facility)) return;
+      if(profile.role!=="admin" && row.facility!==profile.facility) return;
+      if(profile.role==="admin"){
+        weatherRecentlyUpdated.add(row.facility);
+        weatherUpdatedAtMap.set(row.facility,row.updated_at || new Date().toISOString());
+        setTimeout(()=>{
+          weatherRecentlyUpdated.delete(row.facility);
+          const card=document.querySelector(`[data-weather-facility="${CSS.escape(row.facility)}"]`);
+          if(card) card.classList.remove("weather-card-updated");
+        },15000);
+      }
+      clearTimeout(weatherRealtimeRefreshTimer);
+      weatherRealtimeRefreshTimer=setTimeout(()=>loadWeather(),250);
+    })
+    .subscribe(status=>console.log("Weather realtime:",status));
+}
+function stopWeatherRealtime(){
+  clearTimeout(weatherRealtimeRefreshTimer);
+  weatherRealtimeRefreshTimer=null;
+  if(weatherRealtimeChannel){
+    try{ supabaseClient.removeChannel(weatherRealtimeChannel); }catch(e){ console.log(e); }
+    weatherRealtimeChannel=null;
   }
 }
 
@@ -2587,12 +2639,13 @@ function showCapacityPage(){
   loadCapacity(); window.scrollTo({top:0,behavior:'smooth'});
 }
 function showDashboardPage(){document.getElementById('capacityPage').style.display='none';document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage')el.style.display='';});window.scrollTo({top:0,behavior:'smooth'});}
-function erCapacityStatus(total,current){
-  total=Number(total||0); current=Number(current||0);
+function erCapacityStatus(total,occupied){
+  total=Number(total||0); occupied=Number(occupied||0);
   if(total<=0)return{cls:'orange',label:'غير محدد',pct:0};
-  const pct=Math.min(100,current/total*100);
-  if(pct<50)return{cls:'green',label:'جاهزية جيدة',pct};
-  if(pct<80)return{cls:'orange',label:'تحتاج متابعة',pct};
+  const vacant=Math.max(0,total-occupied);
+  const pct=Math.min(100,vacant/total*100);
+  if(pct>=50)return{cls:'green',label:'جاهزية جيدة',pct};
+  if(pct>=20)return{cls:'orange',label:'تحتاج متابعة',pct};
   return{cls:'red',label:'متابعة عالية',pct};
 }
 function capacityCard(rows,facility){
@@ -2603,10 +2656,15 @@ function capacityCard(rows,facility){
   const icuTotal=Number(ICU_TOTALS[facility] ?? icuRow.total_capacity ?? 0);
   const icuOccupied=Math.max(0,Math.min(icuTotal,Number(icuRow.current_count||0)));
   const icuVacant=Math.max(0,icuTotal-icuOccupied);
-  const icuSt=erCapacityStatus(icuTotal,icuOccupied),icuPct=icuSt.pct.toFixed(0);
+  const icuAvailability=icuTotal>0?(icuVacant/icuTotal*100):0;
+  const icuSt=icuAvailability>=50?{cls:'green',label:'جاهزية جيدة',pct:icuAvailability}:icuAvailability>=20?{cls:'orange',label:'تحتاج متابعة',pct:icuAvailability}:{cls:'red',label:'متابعة عالية',pct:icuAvailability};
+  const icuPct=icuSt.pct.toFixed(0);
   const inpatient=byType.get('أسرة التنويم')||{total_capacity:0,current_count:0,updated_at:null};
   const er=byType.get('أسرة الطوارئ')||{total_capacity:0,current_count:0,updated_at:null};
-  const st=erCapacityStatus(er.total_capacity,er.current_count),pct=st.pct.toFixed(0),key=escapeAttr(facility);
+  const erTotal=Number(er.total_capacity||0);
+  const erOccupied=Math.max(0,Math.min(erTotal,Number(er.current_count||0)));
+  const erVacant=Math.max(0,erTotal-erOccupied);
+  const st=erCapacityStatus(erTotal,erOccupied),pct=st.pct.toFixed(0),key=escapeAttr(facility);
   const input=(id,val)=>editable?`<input class="capacity-input" id="${id}" type="number" min="0" step="1" value="${Number(val||0)}">`:`<b>${Number(val||0)}</b>`;
   const recentlyUpdated=capacityRecentlyUpdated.has(facility);
   return `<div class="capacity-card${recentlyUpdated?' capacity-updated':''}" data-capacity-facility="${escapeAttr(facility)}">
@@ -2617,19 +2675,20 @@ function capacityCard(rows,facility){
     <div class="capacity-items">
       <div class="capacity-item"><span>إجمالي الأسرة</span><strong>${input(`cap-total-beds-${key}`,totalBeds.total_capacity)}</strong></div>
       <div class="capacity-item capacity-icu">
-        <div class="capacity-icu-head"><span>🏥 أسرة العناية المركزة</span><span class="capacity-er-badge">الإشغال</span></div>
+        <div class="capacity-icu-head"><span>🏥 أسرة العناية المركزة</span><span class="capacity-er-badge">التوفر</span></div>
         <div class="capacity-icu-values">
           <div><small>الإجمالي</small><b>${icuTotal}</b></div>
-          <div><small>الشاغرة</small>${editable?`<input class="capacity-input" id="cap-icu-vacant-${key}" type="number" min="0" max="${icuTotal}" step="1" value="${icuVacant}">`:`<b>${icuVacant}</b>`}</div>
-          <div><small>نسبة الإشغال</small><b>${icuPct}%</b></div>
+          <div><small>المشغولة حاليًا</small>${editable?`<input class="capacity-input" id="cap-icu-occupied-${key}" type="number" min="0" max="${icuTotal}" step="1" value="${icuOccupied}">`:`<b>${icuOccupied}</b>`}</div>
+          <div><small>نسبة توفر الشاغر</small><b>${icuPct}%</b></div>
         </div>
         <div class="capacity-progress"><span style="width:${icuPct}%;background:var(--${icuSt.cls})"></span></div>
-        <div class="capacity-icu-status">${icuSt.cls==='green'?'🟢':icuSt.cls==='orange'?'🟠':'🔴'} ${icuSt.label} • المشغولة ${icuOccupied}</div>
+        <div class="capacity-icu-status">${icuSt.cls==='green'?'🟢':icuSt.cls==='orange'?'🟠':'🔴'} ${icuSt.label} • الشاغرة ${icuVacant}</div>
       </div>
       <div class="capacity-item"><span>أسرة التنويم</span><strong>${input(`cap-inpatient-${key}`,inpatient.total_capacity)}</strong></div>
-      <div class="capacity-item capacity-er"><div class="capacity-er-head"><span>أسرة الطوارئ</span><span class="capacity-er-badge">الإشغال</span></div>
-        <div class="capacity-er-values"><div><small>الإجمالي</small>${input(`cap-er-total-${key}`,er.total_capacity)}</div><div><small>الحالي</small>${input(`cap-er-current-${key}`,er.current_count)}</div><div><small>نسبة الإشغال</small><b>${pct}%</b></div></div>
+      <div class="capacity-item capacity-er"><div class="capacity-er-head"><span>أسرة الطوارئ</span><span class="capacity-er-badge">التوفر</span></div>
+        <div class="capacity-er-values"><div><small>الإجمالي</small>${input(`cap-er-total-${key}`,erTotal)}</div><div><small>المشغولة حاليًا</small>${input(`cap-er-current-${key}`,erOccupied)}</div><div><small>نسبة توفر الشاغر</small><b>${pct}%</b></div></div>
         <div class="capacity-progress"><span style="width:${pct}%;background:var(--${st.cls})"></span></div>
+        <div class="capacity-icu-status">${st.cls==='green'?'🟢':st.cls==='orange'?'🟠':'🔴'} ${st.label} • الشاغرة ${erVacant}</div>
       </div>
     </div>
     ${editable?`<button class="primary" style="width:100%;margin-top:10px" onclick="saveCapacity('${key}')">💾 حفظ</button>`:`<div class="capacity-note">آخر تحديث: ${er.updated_at?fmtDate(er.updated_at):'لم يتم التحديث'}</div>`}
@@ -2669,13 +2728,13 @@ async function saveCapacity(key){
   const facility=profile.facility;
   const totalBeds=Number(document.getElementById(`cap-total-beds-${key}`)?.value||0);
   const icuTotal=Number(ICU_TOTALS[facility] ?? 0);
-  const icuVacant=Number(document.getElementById(`cap-icu-vacant-${key}`)?.value||0);
-  const icuOccupied=icuTotal-icuVacant;
+  const icuOccupied=Number(document.getElementById(`cap-icu-occupied-${key}`)?.value||0);
+  const icuVacant=icuTotal-icuOccupied;
   const inpatient=Number(document.getElementById(`cap-inpatient-${key}`)?.value||0);
   const erTotal=Number(document.getElementById(`cap-er-total-${key}`)?.value||0);
   const erCurrent=Number(document.getElementById(`cap-er-current-${key}`)?.value||0);
-  if([totalBeds,icuVacant,inpatient,erTotal,erCurrent].some(v=>v<0)){toast('⚠️ القيم يجب أن تكون صفر أو أكثر');return;}
-  if(icuVacant>icuTotal){toast('⚠️ عدد الأسرة الشاغرة في العناية لا يمكن أن يتجاوز إجمالي أسرة العناية');return;}
+  if([totalBeds,icuOccupied,inpatient,erTotal,erCurrent].some(v=>v<0)){toast('⚠️ القيم يجب أن تكون صفر أو أكثر');return;}
+  if(icuOccupied>icuTotal){toast('⚠️ عدد الأسرة المشغولة في العناية لا يمكن أن يتجاوز إجمالي أسرة العناية');return;}
   if(erCurrent>erTotal&&erTotal>0){toast('⚠️ عدد الحالات الحالية في الطوارئ لا يمكن أن يتجاوز إجمالي أسرة الطوارئ');return;}
   const now=new Date().toISOString(),uid=currentUser?currentUser.id:null;
   const payloads=[
@@ -2690,6 +2749,40 @@ async function saveCapacity(key){
 }
 
 /* =====================================================
+   WEATHER
+===================================================== */
+function weatherInfo(value){
+  return WEATHER_OPTIONS.find(x=>x.value===value) || WEATHER_OPTIONS[0];
+}
+function weatherSelect(facility,current){
+  const options=WEATHER_OPTIONS.map(x=>`<option value="${x.value}" ${x.value===current?"selected":""}>${x.icon} ${x.label}</option>`).join('');
+  return `<select class="weather-select" onchange="saveWeather('${escapeAttr(facility)}',this.value)">${options}</select>`;
+}
+async function loadWeather(){
+  if(!profile) return;
+  const {data:rows,error}=await supabaseClient.from('facility_weather').select('*');
+  if(error){ console.log('Weather load:',error.message); return; }
+  weatherRows=rows||[];
+  weatherRows.forEach(r=>{
+    if(r.updated_at){
+      const old=weatherUpdatedAtMap.get(r.facility);
+      if(!old || new Date(r.updated_at)>new Date(old)) weatherUpdatedAtMap.set(r.facility,r.updated_at);
+    }
+  });
+  renderFacilities();
+}
+async function saveWeather(facility,value){
+  if(!profile || profile.role==='admin'){toast('❌ تحديث الحالة المطرية متاح للمنشآت فقط');return;}
+  if(profile.facility!==facility || !WEATHER_OPTIONS.some(x=>x.value===value)){toast('❌ لا يمكن تحديث حالة منشأة أخرى');return;}
+  const now=new Date().toISOString(),uid=currentUser?currentUser.id:null;
+  const {error}=await supabaseClient.from('facility_weather').upsert({facility,value,updated_at:now,updated_by:uid},{onConflict:'facility'});
+  if(error){toast('❌ لم يتم حفظ الحالة المطرية: '+error.message);return;}
+  weatherUpdatedAtMap.set(facility,now);
+  toast('✅ تم تحديث الحالة المطرية');
+  await loadWeather();
+}
+
+/* =====================================================
    FACILITIES
 ===================================================== */
 
@@ -2700,8 +2793,15 @@ function renderFacilities(){
 
   el.innerHTML="";
 
+  const facilities=[...visibleFacilities()].sort((a,b)=>{
+    const ta=weatherUpdatedAtMap.get(a), tb=weatherUpdatedAtMap.get(b);
+    if(ta && tb) return new Date(tb)-new Date(ta);
+    if(tb) return 1;
+    if(ta) return -1;
+    return a.localeCompare(b,'ar');
+  });
 
-  visibleFacilities().forEach(f=>{
+  facilities.forEach(f=>{
 
     const open =
       data.incidents.filter(
@@ -2788,6 +2888,20 @@ function renderFacilities(){
           ${cards}
         </div>
 
+        ${(() => {
+          const wr=weatherRows.find(x=>x.facility===f) || {value:'clear',updated_at:null};
+          const wi=weatherInfo(wr.value);
+          const updated=weatherRecentlyUpdated.has(f);
+          const editable=profile && profile.role!=='admin';
+          return `<div class="weather-box ${updated?'weather-card-updated':''}" data-weather-facility="${escapeAttr(f)}">
+            <div class="weather-head">
+              <span class="weather-title">🌦️ الحالة المطرية</span>
+              <span class="weather-current">${wi.icon} ${wi.label}</span>
+            </div>
+            ${updated?'<div class="weather-updated-label">🔔 تم التحديث الآن</div>':''}
+            ${editable?weatherSelect(f,wr.value):`<div class="capacity-note">آخر تحديث: ${wr.updated_at?fmtDate(wr.updated_at):'لم يتم التحديث'}</div>`}
+          </div>`;
+        })()}
 
         ${
           last
