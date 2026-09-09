@@ -2754,13 +2754,15 @@ async function saveCapacity(key){
 function weatherInfo(value){
   return WEATHER_OPTIONS.find(x=>x.value===value) || WEATHER_OPTIONS[0];
 }
-function weatherSelect(facility,current){
+function weatherSelect(current){
   const options=WEATHER_OPTIONS.map(x=>`<option value="${x.value}" ${x.value===current?"selected":""}>${x.icon} ${x.label}</option>`).join('');
-  return `<select class="weather-select" onchange="saveWeather('${escapeAttr(facility)}',this.value)">${options}</select>`;
+  return `<select class="weather-select" onchange="saveWeather(this.value)">${options}</select>`;
 }
 async function loadWeather(){
   if(!profile) return;
-  const {data:rows,error}=await supabaseClient.from('facility_weather').select('*');
+  let weatherQuery=supabaseClient.from('facility_weather').select('*');
+  if(profile.role!=='admin') weatherQuery=weatherQuery.eq('facility',profile.facility);
+  const {data:rows,error}=await weatherQuery;
   if(error){ console.log('Weather load:',error.message); return; }
   weatherRows=rows||[];
   weatherRows.forEach(r=>{
@@ -2771,17 +2773,54 @@ async function loadWeather(){
   });
   renderFacilities();
 }
-async function saveWeather(facility,value){
-  if(!profile || profile.role==='admin'){toast('❌ تحديث الحالة المطرية متاح للمنشآت فقط');return;}
-  if(!profile.facility || profile.facility!==facility || !WEATHER_OPTIONS.some(x=>x.value===value)){toast('❌ لا يمكن تحديث حالة منشأة أخرى');return;}
-  // لا نعتمد على اسم المنشأة القادم من الواجهة: نأخذ المنشأة من الحساب المسجل نفسه.
-  const targetFacility=profile.facility;
+async function saveWeather(value){
+  if(!profile || !currentUser || profile.role==='admin'){
+    toast('❌ تحديث الحالة المطرية متاح للمنشآت فقط');
+    return;
+  }
+  if(!profile.facility || !WEATHER_OPTIONS.some(x=>x.value===value)){
+    toast('❌ لا يمكن تحديث الحالة المطرية');
+    return;
+  }
+
+  // تحقق نهائي من Supabase: المنشأة المستهدفة تؤخذ من حساب المستخدم نفسه فقط.
+  const {data:authFacility,error:authError}=await supabaseClient
+    .from('facility_users')
+    .select('facility,role')
+    .eq('user_id',currentUser.id)
+    .single();
+
+  if(authError || !authFacility || authFacility.role==='admin' || !authFacility.facility){
+    toast('❌ تعذر التحقق من منشأة الحساب');
+    return;
+  }
+
+  const targetFacility=authFacility.facility;
+  if(targetFacility!==profile.facility){
+    toast('❌ بيانات الحساب غير متطابقة، تم إيقاف التحديث');
+    return;
+  }
+
   const weatherStatus=weatherInfo(value).label;
-  const now=new Date().toISOString(),uid=currentUser?currentUser.id:null;
-  const {error}=await supabaseClient.from('facility_weather').upsert({facility:targetFacility,weather_status:weatherStatus,updated_at:now,updated_by:uid},{onConflict:'facility'});
-  if(error){toast('❌ لم يتم حفظ الحالة المطرية: '+error.message);return;}
+  const now=new Date().toISOString();
+  const uid=currentUser.id;
+
+  const {error}=await supabaseClient
+    .from('facility_weather')
+    .upsert({
+      facility:targetFacility,
+      weather_status:weatherStatus,
+      updated_at:now,
+      updated_by:uid
+    },{onConflict:'facility'});
+
+  if(error){
+    toast('❌ لم يتم حفظ الحالة المطرية: '+error.message);
+    return;
+  }
+
   weatherUpdatedAtMap.set(targetFacility,now);
-  toast('✅ تم تحديث الحالة المطرية');
+  toast(`✅ تم تحديث الحالة المطرية لـ ${targetFacility}`);
   await loadWeather();
 }
 
@@ -2904,7 +2943,7 @@ function renderFacilities(){
               <span class="weather-current">${wi.icon} ${wi.label}</span>
             </div>
             ${updated?'<div class="weather-updated-label">🔔 تم التحديث الآن</div>':''}
-            ${editable?weatherSelect(f,wr.value):`<div class="capacity-note">آخر تحديث: ${wr.updated_at?fmtDate(wr.updated_at):'لم يتم التحديث'}</div>`}
+            ${editable?weatherSelect(wr.value):`<div class="capacity-note">آخر تحديث: ${wr.updated_at?fmtDate(wr.updated_at):'لم يتم التحديث'}</div>`}
           </div>`;
         })()}
 
