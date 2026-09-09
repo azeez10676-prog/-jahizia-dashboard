@@ -729,6 +729,9 @@ body.dark .escalation-box{
   color:#ddd6fe;
 }
 
+/* CAPACITY */
+.capacity-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.capacity-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 2px 9px var(--shadow)}.capacity-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.capacity-table{width:100%;border-collapse:collapse;font-size:11px}.capacity-table th,.capacity-table td{border-bottom:1px solid var(--line);padding:9px;text-align:right}.capacity-table th{background:#f8fafc}body.dark .capacity-table th{background:#0f172a}.capacity-input{width:90px;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--text)}.capacity-status{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:99px;font-size:10px;font-weight:900;white-space:nowrap}.capacity-status.green{background:#ecfdf3;color:var(--green)}.capacity-status.orange{background:#fff7ed;color:var(--orange)}.capacity-status.red{background:#fee2e2;color:var(--red)}.capacity-note{font-size:10px;color:var(--muted);margin-top:7px}.capacity-progress{height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:5px}.capacity-progress>span{display:block;height:100%;border-radius:99px}@media(max-width:700px){.capacity-table{font-size:10px}.capacity-input{width:72px}.capacity-table th,.capacity-table td{padding:7px 5px}}
+
 /* RESPONSIVE */
 
 @media(max-width:700px){
@@ -841,6 +844,13 @@ body.dark .escalation-box{
 
       <button
         class="theme-btn"
+        onclick="showCapacityPage()"
+        title="الطاقة الاستيعابية">
+        🛏️ الطاقة الاستيعابية
+      </button>
+
+      <button
+        class="theme-btn"
         onclick="toggleTheme()"
         id="themeButton">
         🌙 ليلي
@@ -937,6 +947,18 @@ body.dark .escalation-box{
 
   <div id="facilities"></div>
 
+</div>
+
+<!-- CAPACITY - SEPARATE PAGE -->
+<div class="section" id="capacityPage" style="display:none">
+  <div class="title">🛏️ الطاقة الاستيعابية</div>
+  <div class="subline" id="capacitySubtitle">تحديث ومتابعة الطاقة الاستيعابية للمنشآت بشكل مستقل عن البلاغات.</div>
+  <div class="capacity-toolbar">
+    <button class="secondary" onclick="showDashboardPage()">↩️ العودة للوحة المتابعة</button>
+    <button class="neutral" onclick="loadCapacity()">🔄 تحديث البيانات</button>
+  </div>
+  <div class="card"><div style="font-size:11px;font-weight:900">مؤشر الإشغال</div><div class="capacity-note">🟢 أقل من 50٪ • 🟠 من 50٪ إلى أقل من 80٪ • 🔴 80٪ فأكثر</div></div>
+  <div id="capacityContent"><div class="loading">جاري تحميل الطاقة الاستيعابية...</div></div>
 </div>
 
 
@@ -2509,6 +2531,23 @@ function render(){
     renderReportTableIfGenerated();
 }
 
+
+/* =====================================================
+   CAPACITY
+===================================================== */
+const CAPACITY_RESOURCE_TYPES=["أسرة الطوارئ"];
+let capacityRows=[];
+function showCapacityPage(){
+  document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage') el.style.display='none';});
+  document.getElementById('capacityPage').style.display='block';
+  document.getElementById('capacitySubtitle').textContent=profile&&profile.role==='admin'?'عرض مركزي للطاقة الاستيعابية المحدثة من المنشآت • الإدارة المركزية لا تعدّل البيانات.':`تحديث الطاقة الاستيعابية لـ ${profile.facility}`;
+  loadCapacity(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function showDashboardPage(){document.getElementById('capacityPage').style.display='none';document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage')el.style.display='';});window.scrollTo({top:0,behavior:'smooth'});}
+function capacityStatus(total,current){total=Number(total||0);current=Number(current||0);if(total<=0)return{cls:'orange',label:'غير محدد',pct:0};const pct=Math.min(100,current/total*100);if(pct<50)return{cls:'green',label:'جاهزية جيدة',pct};if(pct<80)return{cls:'orange',label:'تحتاج متابعة',pct};return{cls:'red',label:'متابعة عالية',pct};}
+function capacityCard(row){const st=capacityStatus(row.total_capacity,row.current_count),total=Number(row.total_capacity||0),current=Number(row.current_count||0),pct=st.pct.toFixed(0),editable=profile&&profile.role!=='admin',key=escapeAttr(row.resource_type);return `<div class="capacity-card"><div class="capacity-head"><div><div class="name">${escapeHtml(row.resource_type)}</div><div class="capacity-note">آخر تحديث: ${row.updated_at?fmtDate(row.updated_at):'لم يتم التحديث'}</div></div><span class="capacity-status ${st.cls}">${st.cls==='green'?'🟢':st.cls==='orange'?'🟠':'🔴'} ${st.label}</span></div><table class="capacity-table"><thead><tr><th>الطاقة الكلية</th><th>الحالات الحالية</th><th>نسبة الإشغال</th>${editable?'<th>الإجراء</th>':''}</tr></thead><tbody><tr><td>${editable?`<input class="capacity-input" id="cap-total-${key}" type="number" min="0" step="1" value="${total}">`:`<b>${total}</b>`}</td><td>${editable?`<input class="capacity-input" id="cap-current-${key}" type="number" min="0" step="1" value="${current}">`:`<b>${current}</b>`}</td><td style="min-width:150px"><b>${pct}%</b><div class="capacity-progress"><span style="width:${pct}%;background:var(--${st.cls})"></span></div></td>${editable?`<td><button class="primary" onclick="saveCapacity('${key}','${escapeHtml(row.resource_type)}')">💾 حفظ</button></td>`:''}</tr></tbody></table></div>`;}
+async function loadCapacity(){const el=document.getElementById('capacityContent');if(!el||!profile)return;el.innerHTML='<div class="loading">جاري تحميل الطاقة الاستيعابية...</div>';let q=supabaseClient.from('facility_capacity').select('*').in('resource_type',CAPACITY_RESOURCE_TYPES);if(profile.role!=='admin')q=q.eq('facility',profile.facility);const {data:rows,error}=await q.order('facility',{ascending:true}).order('resource_type',{ascending:true});if(error){el.innerHTML=`<div class="errorbox">❌ تعذر تحميل الطاقة الاستيعابية. أنشئ جدول <b>facility_capacity</b> في Supabase باستخدام SQL المرفق.<br><small>${escapeHtml(error.message)}</small></div>`;return;}const map=new Map((rows||[]).map(r=>[`${r.facility}__${r.resource_type}`,r])),facilities=profile.role==='admin'?allFacilities:[profile.facility];capacityRows=[];facilities.forEach(f=>CAPACITY_RESOURCE_TYPES.forEach(type=>capacityRows.push(map.get(`${f}__${type}`)||{facility:f,resource_type:type,total_capacity:0,current_count:0,updated_at:null})));el.innerHTML=capacityRows.map(r=>`<div style="font-weight:900;font-size:13px;margin:12px 0 7px">${escapeHtml(r.facility)}</div>${capacityCard(r)}`).join('');}
+async function saveCapacity(key,resourceType){if(!profile||profile.role==='admin'){toast('❌ تحديث الطاقة الاستيعابية متاح للمنشآت فقط');return;}const total=Number(document.getElementById(`cap-total-${key}`)?.value||0),current=Number(document.getElementById(`cap-current-${key}`)?.value||0);if(total<0||current<0){toast('⚠️ القيم يجب أن تكون صفر أو أكثر');return;}if(current>total&&total>0){toast('⚠️ عدد الحالات الحالية لا يمكن أن يتجاوز الطاقة الكلية');return;}const payload={facility:profile.facility,resource_type:resourceType,total_capacity:total,current_count:current,updated_at:new Date().toISOString(),updated_by:currentUser?currentUser.id:null};const {error}=await supabaseClient.from('facility_capacity').upsert(payload,{onConflict:'facility,resource_type'});if(error){toast('❌ لم يتم حفظ الطاقة الاستيعابية: '+error.message);return;}toast('✅ تم تحديث الطاقة الاستيعابية بنجاح');await loadCapacity();}
 
 /* =====================================================
    FACILITIES
@@ -5037,6 +5076,8 @@ function clearConnectionError(){
 /* =====================================================
    SECURITY / HTML ESCAPE
 ===================================================== */
+
+function escapeAttr(v){return String(v).replace(/[^a-zA-Z0-9_-]/g,'_');}
 
 function escapeHtml(value){
 
