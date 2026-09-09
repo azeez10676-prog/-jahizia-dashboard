@@ -2773,11 +2773,14 @@ async function loadWeather(){
 }
 async function saveWeather(facility,value){
   if(!profile || profile.role==='admin'){toast('❌ تحديث الحالة المطرية متاح للمنشآت فقط');return;}
-  if(profile.facility!==facility || !WEATHER_OPTIONS.some(x=>x.value===value)){toast('❌ لا يمكن تحديث حالة منشأة أخرى');return;}
+  if(!profile.facility || profile.facility!==facility || !WEATHER_OPTIONS.some(x=>x.value===value)){toast('❌ لا يمكن تحديث حالة منشأة أخرى');return;}
+  // لا نعتمد على اسم المنشأة القادم من الواجهة: نأخذ المنشأة من الحساب المسجل نفسه.
+  const targetFacility=profile.facility;
+  const weatherStatus=weatherInfo(value).label;
   const now=new Date().toISOString(),uid=currentUser?currentUser.id:null;
-  const {error}=await supabaseClient.from('facility_weather').upsert({facility,value,updated_at:now,updated_by:uid},{onConflict:'facility'});
+  const {error}=await supabaseClient.from('facility_weather').upsert({facility:targetFacility,weather_status:weatherStatus,updated_at:now,updated_by:uid},{onConflict:'facility'});
   if(error){toast('❌ لم يتم حفظ الحالة المطرية: '+error.message);return;}
-  weatherUpdatedAtMap.set(facility,now);
+  weatherUpdatedAtMap.set(targetFacility,now);
   toast('✅ تم تحديث الحالة المطرية');
   await loadWeather();
 }
@@ -2889,10 +2892,12 @@ function renderFacilities(){
         </div>
 
         ${(() => {
-          const wr=weatherRows.find(x=>x.facility===f) || {value:'clear',updated_at:null};
+          const wr0=weatherRows.find(x=>x.facility===f) || {weather_status:'لا توجد أمطار',updated_at:null};
+          const weatherValueMap={'لا توجد أمطار':'clear','أمطار خفيفة':'light','أمطار متوسطة':'moderate','أمطار غزيرة':'heavy'};
+          const wr={...wr0,value:weatherValueMap[wr0.weather_status] || wr0.value || 'clear'};
           const wi=weatherInfo(wr.value);
           const updated=weatherRecentlyUpdated.has(f);
-          const editable=profile && profile.role!=='admin';
+          const editable=!!(profile && profile.role!=='admin' && profile.facility===f);
           return `<div class="weather-box ${updated?'weather-card-updated':''}" data-weather-facility="${escapeAttr(f)}">
             <div class="weather-head">
               <span class="weather-title">🌦️ الحالة المطرية</span>
