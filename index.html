@@ -733,6 +733,8 @@ body.dark .escalation-box{
 .capacity-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.capacity-launch{width:100%;font-size:13px;margin-top:8px}.facility-status-legend{display:flex;align-items:center;justify-content:flex-start;gap:18px;flex-wrap:wrap;margin:10px 0 12px;padding:9px 12px;background:var(--bg);border:1px solid var(--line);border-radius:12px;font-size:10px;font-weight:800}.facility-status-legend span{display:inline-flex;align-items:center;gap:6px}.legend-dot{width:11px;height:11px;border-radius:50%;display:inline-block;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}.green-dot{background:#22c55e}.yellow-dot{background:#f59e0b}.red-dot{background:#ef4444}.capacity-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.capacity-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 2px 9px var(--shadow);min-width:0}
 .capacity-items{display:flex;flex-direction:column;gap:7px}.capacity-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}.capacity-item>span{font-weight:800;font-size:10px}.capacity-item>strong{width:88px}.capacity-er{display:block}.capacity-er-head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900;margin-bottom:7px}.capacity-er-badge{font-size:8px;padding:3px 6px;border-radius:99px;background:var(--card);color:var(--muted)}.capacity-er-values{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.capacity-er-values>div{display:flex;flex-direction:column;gap:4px}.capacity-er-values small{font-size:8px;color:var(--muted)}.capacity-er-values b{font-size:12px}.capacity-er-values .capacity-input{width:100%}.capacity-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}.capacity-facility{font-size:14px;font-weight:900;line-height:1.4}.capacity-resource{font-size:10px;color:var(--muted);margin-top:3px}.capacity-table{width:100%;border-collapse:collapse;font-size:10px}.capacity-table th,.capacity-table td{border-bottom:1px solid var(--line);padding:7px 5px;text-align:right}.capacity-table th{background:#f8fafc}body.dark .capacity-table th{background:#0f172a}.capacity-input{width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--text)}.capacity-status{display:inline-flex;align-items:center;gap:4px;padding:5px 7px;border-radius:99px;font-size:9px;font-weight:900;white-space:nowrap}.capacity-status.green{background:#ecfdf3;color:var(--green)}.capacity-status.orange{background:#fff7ed;color:var(--orange)}.capacity-status.red{background:#fee2e2;color:var(--red)}.capacity-note{font-size:10px;color:var(--muted);margin-top:6px}.capacity-progress{height:7px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:5px}.capacity-progress>span{display:block;height:100%;border-radius:99px}@media(max-width:1000px){.capacity-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.capacity-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.capacity-card{padding:10px}.capacity-facility{font-size:12px}.capacity-table{font-size:9px}.capacity-status{font-size:8px}.capacity-input{padding:7px}}
 
+.capacity-icu{display:block}.capacity-icu-head{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900;margin-bottom:7px}.capacity-icu-values{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}.capacity-icu-values>div{display:flex;flex-direction:column;gap:4px}.capacity-icu-values small{font-size:8px;color:var(--muted)}.capacity-icu-values b{font-size:12px}.capacity-icu-values .capacity-input{width:100%}.capacity-icu-status{font-size:8px;color:var(--muted);margin-top:6px;font-weight:800}.capacity-updated{animation:capacityPulse 1.2s ease-in-out 3;outline:3px solid var(--orange);position:relative}.capacity-updated-label{display:inline-flex;margin-top:5px;padding:4px 7px;border-radius:999px;background:var(--orange);color:#fff;font-size:9px;font-weight:900;animation:capacityLabelPulse 1s ease-in-out infinite}.capacity-updated::before{content:"⬆️";position:absolute;top:8px;left:8px;font-size:16px;z-index:2}@keyframes capacityPulse{0%,100%{transform:translateY(0);box-shadow:0 2px 9px var(--shadow)}50%{transform:translateY(-3px);box-shadow:0 8px 22px var(--shadow)}}@keyframes capacityLabelPulse{50%{transform:scale(1.05)}}
+
 /* RESPONSIVE */
 
 @media(max-width:700px){
@@ -1647,6 +1649,9 @@ let audioUnlocked=false;
 
 let realtimeChannel=null;
 let capacityRealtimeChannel=null;
+let capacityRealtimeRefreshTimer=null;
+let capacityRecentlyUpdated=new Set();
+let capacityUpdatedAtMap=new Map();
 let notifications=[];
 let unreadNotifications=0;
 let escalationId=null;
@@ -2144,14 +2149,32 @@ function startCapacityRealtime(){
       if(!row || !CAPACITY_RESOURCE_TYPES.includes(row.resource_type)) return;
       if(profile.role!=="admin" && row.facility!==profile.facility) return;
 
-      // تحديث فوري عند تغيير بيانات الطاقة الاستيعابية من المنشأة.
-      const page=document.getElementById("capacityPage");
-      if(page && page.style.display!=="none") loadCapacity();
+      // عند تحديث المنشأة: نسجلها لتظهر أول القائمة ونبرزها مؤقتًا.
+      if(profile.role==="admin"){
+        capacityRecentlyUpdated.add(row.facility);
+        capacityUpdatedAtMap.set(row.facility,row.updated_at || new Date().toISOString());
+
+        setTimeout(()=>{
+          capacityRecentlyUpdated.delete(row.facility);
+          const card=document.querySelector(`[data-capacity-facility="${CSS.escape(row.facility)}"]`);
+          if(card) card.classList.remove("capacity-updated");
+        },15000);
+      }
+
+      // تجميع أحداث Realtime الأربعة الناتجة عن حفظ بطاقة واحدة في تحديث واحد.
+      clearTimeout(capacityRealtimeRefreshTimer);
+      capacityRealtimeRefreshTimer=setTimeout(()=>{
+        const page=document.getElementById("capacityPage");
+        if(page && page.style.display!=="none") loadCapacity();
+      },250);
     })
     .subscribe(status=>console.log("Capacity realtime:",status));
 }
 
+
 function stopCapacityRealtime(){
+  clearTimeout(capacityRealtimeRefreshTimer);
+  capacityRealtimeRefreshTimer=null;
   if(capacityRealtimeChannel){
     try{ supabaseClient.removeChannel(capacityRealtimeChannel); }catch(e){ console.log(e); }
     capacityRealtimeChannel=null;
@@ -2550,6 +2573,12 @@ function render(){
    CAPACITY
 ===================================================== */
 const CAPACITY_RESOURCE_TYPES=["إجمالي الأسرة","أسرة العناية المركزة","أسرة التنويم","أسرة الطوارئ"];
+// إجمالي أسرة العناية المركزة المعتمد لكل منشأة بالترتيب من شفا 1 إلى شفا 21.
+const ICU_TOTALS={
+  "شفا 1":47,"شفا 2":9,"شفا 3":15,"شفا 4":8,"شفا 5":2,"شفا 6":0,"شفا 7":8,
+  "شفا 8":10,"شفا 9":2,"شفا 10":10,"شفا 11":0,"شفا 12":0,"شفا 13":4,"شفا 14":0,
+  "شفا 15":2,"شفا 16":0,"شفا 17":7,"شفا 18":0,"شفا 19":2,"شفا 20":4,"شفا 21":0
+};
 let capacityRows=[];
 function showCapacityPage(){
   document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage') el.style.display='none';});
@@ -2570,19 +2599,33 @@ function capacityCard(rows,facility){
   const editable=profile&&profile.role!=='admin';
   const byType=new Map(rows.map(r=>[r.resource_type,r]));
   const totalBeds=byType.get('إجمالي الأسرة')||{total_capacity:0,current_count:0,updated_at:null};
-  const icu=byType.get('أسرة العناية المركزة')||{total_capacity:0,current_count:0,updated_at:null};
+  const icuRow=byType.get('أسرة العناية المركزة')||{total_capacity:ICU_TOTALS[facility]||0,current_count:0,updated_at:null};
+  const icuTotal=Number(ICU_TOTALS[facility] ?? icuRow.total_capacity ?? 0);
+  const icuOccupied=Math.max(0,Math.min(icuTotal,Number(icuRow.current_count||0)));
+  const icuVacant=Math.max(0,icuTotal-icuOccupied);
+  const icuSt=erCapacityStatus(icuTotal,icuOccupied),icuPct=icuSt.pct.toFixed(0);
   const inpatient=byType.get('أسرة التنويم')||{total_capacity:0,current_count:0,updated_at:null};
   const er=byType.get('أسرة الطوارئ')||{total_capacity:0,current_count:0,updated_at:null};
   const st=erCapacityStatus(er.total_capacity,er.current_count),pct=st.pct.toFixed(0),key=escapeAttr(facility);
   const input=(id,val)=>editable?`<input class="capacity-input" id="${id}" type="number" min="0" step="1" value="${Number(val||0)}">`:`<b>${Number(val||0)}</b>`;
-  return `<div class="capacity-card">
+  const recentlyUpdated=capacityRecentlyUpdated.has(facility);
+  return `<div class="capacity-card${recentlyUpdated?' capacity-updated':''}" data-capacity-facility="${escapeAttr(facility)}">
     <div class="capacity-head">
-      <div><div class="capacity-facility">${escapeHtml(facility)}</div><div class="capacity-resource">🛏️ الطاقة الاستيعابية</div></div>
+      <div><div class="capacity-facility">${escapeHtml(facility)}</div><div class="capacity-resource">🛏️ الطاقة الاستيعابية</div>${recentlyUpdated?'<div class="capacity-updated-label">🔔 تم التحديث الآن</div>':''}</div>
       <span class="capacity-status ${st.cls}">${st.cls==='green'?'🟢':st.cls==='orange'?'🟠':'🔴'} ${st.label}</span>
     </div>
     <div class="capacity-items">
       <div class="capacity-item"><span>إجمالي الأسرة</span><strong>${input(`cap-total-beds-${key}`,totalBeds.total_capacity)}</strong></div>
-      <div class="capacity-item"><span>أسرة العناية المركزة</span><strong>${input(`cap-icu-${key}`,icu.total_capacity)}</strong></div>
+      <div class="capacity-item capacity-icu">
+        <div class="capacity-icu-head"><span>🏥 أسرة العناية المركزة</span><span class="capacity-er-badge">الإشغال</span></div>
+        <div class="capacity-icu-values">
+          <div><small>الإجمالي</small><b>${icuTotal}</b></div>
+          <div><small>الشاغرة</small>${editable?`<input class="capacity-input" id="cap-icu-vacant-${key}" type="number" min="0" max="${icuTotal}" step="1" value="${icuVacant}">`:`<b>${icuVacant}</b>`}</div>
+          <div><small>نسبة الإشغال</small><b>${icuPct}%</b></div>
+        </div>
+        <div class="capacity-progress"><span style="width:${icuPct}%;background:var(--${icuSt.cls})"></span></div>
+        <div class="capacity-icu-status">${icuSt.cls==='green'?'🟢':icuSt.cls==='orange'?'🟠':'🔴'} ${icuSt.label} • المشغولة ${icuOccupied}</div>
+      </div>
       <div class="capacity-item"><span>أسرة التنويم</span><strong>${input(`cap-inpatient-${key}`,inpatient.total_capacity)}</strong></div>
       <div class="capacity-item capacity-er"><div class="capacity-er-head"><span>أسرة الطوارئ</span><span class="capacity-er-badge">الإشغال</span></div>
         <div class="capacity-er-values"><div><small>الإجمالي</small>${input(`cap-er-total-${key}`,er.total_capacity)}</div><div><small>الحالي</small>${input(`cap-er-current-${key}`,er.current_count)}</div><div><small>نسبة الإشغال</small><b>${pct}%</b></div></div>
@@ -2601,22 +2644,43 @@ async function loadCapacity(){
   if(error){el.innerHTML=`<div class="errorbox">❌ تعذر تحميل الطاقة الاستيعابية. تأكد من جدول <b>facility_capacity</b> في Supabase.<br><small>${escapeHtml(error.message)}</small></div>`;return;}
   const facilities=profile.role==='admin'?allFacilities:[profile.facility];
   capacityRows=rows||[];
-  el.innerHTML='<div class="capacity-grid">'+facilities.map(f=>capacityCard(CAPACITY_RESOURCE_TYPES.map(type=>(rows||[]).find(r=>r.facility===f&&r.resource_type===type)||{facility:f,resource_type:type,total_capacity:0,current_count:0,updated_at:null}),f)).join('')+'</div>';
+
+  // حفظ آخر وقت تحديث لكل منشأة حتى تبقى المنشأة الأحدث في أعلى القائمة.
+  (rows||[]).forEach(r=>{
+    if(r.updated_at){
+      const old=capacityUpdatedAtMap.get(r.facility);
+      if(!old || new Date(r.updated_at)>new Date(old)) capacityUpdatedAtMap.set(r.facility,r.updated_at);
+    }
+  });
+
+  const orderedFacilities=[...facilities].sort((a,b)=>{
+    const ta=capacityUpdatedAtMap.get(a), tb=capacityUpdatedAtMap.get(b);
+    if(ta && tb) return new Date(tb)-new Date(ta);
+    if(tb) return 1;
+    if(ta) return -1;
+    return a.localeCompare(b,'ar');
+  });
+
+  el.innerHTML='<div class="capacity-grid">'+orderedFacilities.map(f=>capacityCard(CAPACITY_RESOURCE_TYPES.map(type=>(rows||[]).find(r=>r.facility===f&&r.resource_type===type)||{facility:f,resource_type:type,total_capacity:0,current_count:0,updated_at:null}),f)).join('')+'</div>';
 }
+
 async function saveCapacity(key){
   if(!profile||profile.role==='admin'){toast('❌ تحديث الطاقة الاستيعابية متاح للمنشآت فقط');return;}
   const facility=profile.facility;
   const totalBeds=Number(document.getElementById(`cap-total-beds-${key}`)?.value||0);
-  const icu=Number(document.getElementById(`cap-icu-${key}`)?.value||0);
+  const icuTotal=Number(ICU_TOTALS[facility] ?? 0);
+  const icuVacant=Number(document.getElementById(`cap-icu-vacant-${key}`)?.value||0);
+  const icuOccupied=icuTotal-icuVacant;
   const inpatient=Number(document.getElementById(`cap-inpatient-${key}`)?.value||0);
   const erTotal=Number(document.getElementById(`cap-er-total-${key}`)?.value||0);
   const erCurrent=Number(document.getElementById(`cap-er-current-${key}`)?.value||0);
-  if([totalBeds,icu,inpatient,erTotal,erCurrent].some(v=>v<0)){toast('⚠️ القيم يجب أن تكون صفر أو أكثر');return;}
+  if([totalBeds,icuVacant,inpatient,erTotal,erCurrent].some(v=>v<0)){toast('⚠️ القيم يجب أن تكون صفر أو أكثر');return;}
+  if(icuVacant>icuTotal){toast('⚠️ عدد الأسرة الشاغرة في العناية لا يمكن أن يتجاوز إجمالي أسرة العناية');return;}
   if(erCurrent>erTotal&&erTotal>0){toast('⚠️ عدد الحالات الحالية في الطوارئ لا يمكن أن يتجاوز إجمالي أسرة الطوارئ');return;}
   const now=new Date().toISOString(),uid=currentUser?currentUser.id:null;
   const payloads=[
     {facility,resource_type:'إجمالي الأسرة',total_capacity:totalBeds,current_count:0,updated_at:now,updated_by:uid},
-    {facility,resource_type:'أسرة العناية المركزة',total_capacity:icu,current_count:0,updated_at:now,updated_by:uid},
+    {facility,resource_type:'أسرة العناية المركزة',total_capacity:icuTotal,current_count:icuOccupied,updated_at:now,updated_by:uid},
     {facility,resource_type:'أسرة التنويم',total_capacity:inpatient,current_count:0,updated_at:now,updated_by:uid},
     {facility,resource_type:'أسرة الطوارئ',total_capacity:erTotal,current_count:erCurrent,updated_at:now,updated_by:uid}
   ];
