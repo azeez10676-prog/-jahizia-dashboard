@@ -771,7 +771,61 @@ body.dark .escalation-box{
     padding:7px 8px
   }
 }
-</style>
+
+/* EXECUTIVE UI — approved dashboard visual language */
+:root{
+  --navy:#0b2744;
+  --navy2:#123b63;
+  --soft-blue:#edf5fb;
+  --border-soft:#dfe8f0;
+}
+body{background:#f5f8fb}
+body.dark{background:#0b1220}
+#app{min-height:100vh}
+#app>.app{max-width:1180px;margin:0 24px 0 24px;padding-bottom:70px}
+.side-nav{position:fixed;right:0;top:0;bottom:0;width:238px;background:linear-gradient(180deg,var(--navy),#0e3457);color:#fff;padding:22px 15px;z-index:10;box-shadow:-8px 0 28px #00000012}
+.side-brand{display:flex;align-items:center;gap:10px;padding:4px 8px 22px;border-bottom:1px solid #ffffff1c;margin-bottom:18px}
+.side-logo{width:44px;height:44px;border-radius:14px;background:#ffffff14;border:1px solid #ffffff24;display:grid;place-items:center;font-size:23px}
+.side-brand b{display:block;font-size:14px}.side-brand span{display:block;font-size:9px;opacity:.68;margin-top:3px}
+.side-label{font-size:9px;opacity:.55;padding:0 10px 8px;font-weight:800}
+.side-link{width:100%;display:flex;align-items:center;gap:10px;color:#fff;background:transparent;border:1px solid transparent;text-align:right;padding:11px 12px;border-radius:12px;margin:3px 0;font-size:11px;font-weight:800}
+.side-link:hover,.side-link.active{background:#ffffff12;border-color:#ffffff14}
+.side-link .ico{width:23px;text-align:center;font-size:16px}
+.side-footer{position:absolute;right:15px;left:15px;bottom:18px;border-top:1px solid #ffffff1c;padding:12px 8px 0;font-size:9px;opacity:.58;line-height:1.7}
+header{background:#ffffffef;backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft);padding:13px 18px;box-shadow:0 2px 16px #0b274408}
+body.dark header{background:#111b2def;border-color:#263449}
+.head{max-width:1120px;margin:auto}
+.logo{background:linear-gradient(135deg,#eaf5ff,#fff);border:1px solid #d8e8f5;color:var(--navy)}
+.brand h1{font-size:19px;color:var(--navy)}
+body.dark .brand h1{color:var(--text)}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#0b2744 0%,#14527f 65%,#1b6d91 100%);color:#fff;border-radius:22px;padding:22px 24px;margin-bottom:14px;box-shadow:0 12px 30px #0b27441f}
+.hero:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;left:-70px;top:-100px;background:#ffffff0b;border:1px solid #ffffff10}
+.hero-grid{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.hero-kicker{font-size:10px;opacity:.7;font-weight:800;margin-bottom:7px}.hero h2{margin:0;font-size:23px;letter-spacing:-.3px}.hero p{margin:7px 0 0;font-size:11px;opacity:.78}
+.hero-status{min-width:210px;background:#ffffff10;border:1px solid #ffffff1c;border-radius:16px;padding:12px 14px;text-align:right}.hero-status span{display:block;font-size:9px;opacity:.7}.hero-status b{display:block;margin-top:4px;font-size:15px}.hero-live{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:9px;font-weight:800}.hero-live i{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 4px #4ade8030}
+.section{padding:12px 0}.title{font-size:16px}.subline{font-size:10px}
+.stats{grid-template-columns:repeat(4,1fr);gap:10px}.stat{position:relative;overflow:hidden;text-align:right;padding:15px 16px;border-radius:17px;border-color:var(--border-soft);box-shadow:0 5px 18px #0b27440a}.stat:before{content:"";position:absolute;right:0;top:0;bottom:0;width:3px;background:#2563eb}.stat:nth-child(2):before{background:#22c55e}.stat:nth-child(3):before{background:#f59e0b}.stat:nth-child(4):before{background:#ef4444}.stat span{font-size:10px}.stat b{font-size:25px}
+.facility-status-legend{justify-content:flex-start;background:transparent;border:0;padding:5px 0 10px;margin:0;gap:22px}.legend-dot{width:10px;height:10px}
+.card,.capacity-card,.report-card{border-color:var(--border-soft);box-shadow:0 5px 18px #0b27440a}
+/* FINAL EXECUTIVE POLISH */
+.stats{grid-template-columns:repeat(5,1fr)}
+.stat{transition:transform .18s ease,box-shadow .18s ease}
+.stat:hover{transform:translateY(-2px);box-shadow:0 9px 24px #0b274414}
+.stat b.orange{color:#d97706}.stat b.red{color:#dc2626}.stat b.green{color:#16a34a}
+.badge.high{background:#ffebee;color:#c62828;border-color:#ffcdd2}
+.badge.o{background:#fff3e0;color:#c46a00;border-color:#ffe0b2}
+.badge{border:1px solid transparent}
+.actions button{transition:transform .15s ease,filter .15s ease}.actions button:hover{transform:translateY(-1px);filter:brightness(.98)}
+.modal{box-shadow:0 22px 70px #0b27442b}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#1683b8;box-shadow:0 0 0 3px #1683b81c}
+.side-link{cursor:pointer}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+@media(max-width:900px){#app>.app{margin:0 12px}.side-nav{position:sticky;top:0;width:auto;height:auto;padding:8px;display:flex;align-items:center;gap:5px;overflow:auto;box-shadow:0 3px 14px #00000012}.side-brand,.side-label,.side-footer{display:none}.side-link{width:auto;min-width:max-content;margin:0;padding:8px 10px}.side-link .ico{font-size:14px}.hero-grid{align-items:flex-start}.hero-status{min-width:180px}}
+@media(max-width:700px){#app>.app{margin:0 9px}.hero{padding:18px;border-radius:18px}.hero-grid{display:block}.hero h2{font-size:20px}.hero-status{margin-top:14px}.stats{grid-template-columns:repeat(2,1fr)}.stat{text-align:center}.brand p{display:none}.header-actions{margin-right:auto}.theme-btn{font-size:10px}}
+
+\n/* =========================================================\n   HOMEPAGE — EXECUTIVE COMMAND CENTER\n========================================================= */\n.dashboard-home{padding-top:18px}.command-hero{position:relative;overflow:hidden;border-radius:26px;background:linear-gradient(135deg,#071f36 0%,#0d385d 55%,#0f6680 100%);min-height:205px;color:#fff;box-shadow:0 18px 50px rgba(7,31,54,.18)}\n.command-hero-bg:before,.command-hero-bg:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.09)}.command-hero-bg:before{width:360px;height:360px;left:-120px;top:-210px}.command-hero-bg:after{width:520px;height:520px;right:-220px;bottom:-390px;background:rgba(255,255,255,.025)}\n.command-hero-content{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:35px;padding:30px 34px}.command-copy{max-width:700px}.eyebrow{font-size:10px;font-weight:900;letter-spacing:.2px;color:rgba(255,255,255,.72);display:flex;align-items:center;gap:8px}.pulse-dot{width:8px;height:8px;border-radius:50%;background:#42e68a;box-shadow:0 0 0 5px rgba(66,230,138,.12),0 0 18px rgba(66,230,138,.55)}\n.command-copy h2{font-size:30px;margin:11px 0 8px;letter-spacing:-.8px}.command-copy p{font-size:12px;line-height:1.9;max-width:650px;color:rgba(255,255,255,.72);margin:0}.hero-meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:9px;font-weight:800;color:rgba(255,255,255,.58)}.hero-meta span:first-child{color:#76f2ad}\n.readiness-panel{min-width:245px;display:flex;align-items:center;gap:16px;padding:16px 18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);border-radius:20px;backdrop-filter:blur(8px)}.readiness-ring{width:108px;height:108px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#5ee6a0 0deg,#5ee6a0 0deg,rgba(255,255,255,.12) 0deg 360deg);flex:none;position:relative}.readiness-ring:after{content:"";position:absolute;inset:7px;border-radius:50%;background:#0c3b5e}.readiness-ring-inner{position:relative;z-index:2;text-align:center}.readiness-ring-inner strong{display:block;font-size:22px;line-height:1.1}.readiness-ring-inner span{display:block;font-size:7px;color:rgba(255,255,255,.58);margin-top:4px}.readiness-caption b{display:block;font-size:12px}.readiness-caption span{display:block;font-size:9px;color:rgba(255,255,255,.55);margin-top:6px;line-height:1.6}\n.dashboard-heading{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 11px}.dashboard-heading .title{margin:0}.dashboard-live{font-size:8px;font-weight:900;letter-spacing:1px;color:#15945c;background:#eafbf2;border:1px solid #c7f2d9;padding:6px 9px;border-radius:999px;display:flex;align-items:center;gap:6px}.dashboard-live span{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px #22c55e22}\n.executive-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}.exec-stat{position:relative;min-height:104px;background:var(--card);border:1px solid var(--border-soft);border-radius:18px;padding:15px;box-shadow:0 7px 24px rgba(11,39,68,.055);display:grid;grid-template-columns:38px 1fr;column-gap:10px;align-content:center;transition:.2s ease;overflow:hidden}.exec-stat:after{content:"";position:absolute;right:0;top:0;bottom:0;width:3px}.exec-stat:hover{transform:translateY(-3px);box-shadow:0 13px 30px rgba(11,39,68,.1)}.exec-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:17px;font-weight:1000;grid-row:span 2}.exec-stat span{font-size:9px;color:var(--muted);font-weight:800}.exec-stat b{display:block;font-size:25px;line-height:1.1;margin-top:3px}.exec-stat small{grid-column:2;font-size:8px;color:var(--muted);margin-top:6px}.total-stat:after{background:#2563eb}.total-stat .exec-icon{background:#edf4ff;color:#2563eb}.ready-stat:after{background:#22c55e}.ready-stat .exec-icon{background:#eafaf0;color:#16a34a}.ready-stat b{color:#16a34a}.watch-stat:after{background:#f59e0b}.watch-stat .exec-icon{background:#fff6e7;color:#d97706}.watch-stat b{color:#d97706}.critical-stat:after,.incident-stat:after{background:#ef4444}.critical-stat .exec-icon,.incident-stat .exec-icon{background:#fff0f0;color:#dc2626}.critical-stat b,.incident-stat b{color:#dc2626}\n.command-strip{margin-top:13px;padding:12px 14px;background:var(--card);border:1px solid var(--border-soft);border-radius:17px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 5px 18px rgba(11,39,68,.035)}.command-strip-title{font-size:10px;font-weight:900;white-space:nowrap}.quick-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.quick-actions button{border:1px solid var(--border-soft);background:var(--bg);color:var(--text);border-radius:10px;padding:8px 11px;font-size:9px;font-weight:900;cursor:pointer;transition:.18s}.quick-actions button:hover{border-color:#9fc6dd;transform:translateY(-1px);background:#f7fbfe}.quick-actions button span{margin-left:5px}\n.active-command-section{margin-top:3px}.section-head-pro{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:11px}.section-head-pro .title{margin-bottom:3px}.count-pill{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#fff0f0;color:#dc2626;font-size:9px;vertical-align:middle}.compact-action{width:auto!important;padding:9px 13px!important;font-size:9px!important}.active-incidents-board{display:grid;gap:9px}.active-incidents-board:empty{display:none}.mobile-new-incident{display:none}\n/* Make existing generated incident/facility cards look like executive tiles */\n.active-incidents-board>.card,.section>#facilities>.card{border-radius:18px!important;border-color:var(--border-soft)!important;box-shadow:0 6px 22px rgba(11,39,68,.055)!important;transition:.18s ease}.active-incidents-board>.card:hover,.section>#facilities>.card:hover{transform:translateY(-2px);box-shadow:0 11px 28px rgba(11,39,68,.09)!important}.section>#facilities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.section>#facilities>.card{margin:0!important}.section>#facilities>.card .fac-head{padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}.section>#facilities>.card .name{font-size:13px!important}.section>#facilities>.card .grid{gap:7px!important}.section>#facilities>.card .sys{border-radius:10px!important;padding:8px!important;background:var(--bg)}\n.facility-status-legend{margin-top:3px!important;padding:9px 12px!important;border-radius:12px!important;background:var(--bg)!important;border:1px solid var(--border-soft)!important;box-shadow:none!important}\nbody.dark .dashboard-live{background:#123524;border-color:#1f5d3b;color:#8af2b7}body.dark .command-strip,body.dark .exec-stat{border-color:#263449;box-shadow:none}.quick-actions button{color:var(--text)}body.dark .quick-actions button:hover{background:#182538;border-color:#38516d}.readiness-ring:after{background:#0b3657}\n@media(max-width:1050px){.executive-stats{grid-template-columns:repeat(3,1fr)}.readiness-panel{min-width:225px}.section>#facilities{grid-template-columns:1fr 1fr}}\n@media(max-width:800px){.command-hero-content{padding:23px;display:block}.command-copy h2{font-size:24px}.readiness-panel{margin-top:20px;min-width:0;width:100%;box-sizing:border-box}.executive-stats{grid-template-columns:repeat(2,1fr)}.command-strip{display:block}.command-strip-title{margin-bottom:9px}.quick-actions{justify-content:flex-start}.section>#facilities{grid-template-columns:1fr}}\n@media(max-width:560px){.dashboard-home{padding-top:10px}.command-hero{border-radius:20px}.command-copy h2{font-size:21px}.command-copy p{font-size:10px}.readiness-panel{padding:12px}.readiness-ring{width:88px;height:88px}.readiness-ring-inner strong{font-size:19px}.executive-stats{gap:7px}.exec-stat{min-height:92px;padding:11px;border-radius:14px;grid-template-columns:32px 1fr}.exec-icon{width:32px;height:32px;border-radius:10px;font-size:14px}.exec-stat b{font-size:21px}.exec-stat small{font-size:7px}.section-head-pro{align-items:flex-start}.compact-action{display:none}.mobile-new-incident{display:block!important;width:100%!important;margin-top:9px}.hero-meta{gap:9px}.dashboard-heading{margin-top:16px}}\n</style>
 </head>
 
 <body>
@@ -818,51 +872,56 @@ body.dark .escalation-box{
 
 <div id="app">
 
+<aside class="side-nav" aria-label="التنقل الرئيسي">
+  <div class="side-brand">
+    <div class="side-logo-mark">✦</div>
+    <div><b>جاهزية المنشآت الصحية</b><span>تجمع جازان الصحي</span></div>
+  </div>
+
+  <div class="side-label">الوصول السريع</div>
+  <button class="side-link active" data-nav="dashboard" onclick="showDashboardPage();setActiveNav('dashboard');window.scrollTo({top:0,behavior:'smooth'})"><span class="ico">⌂</span><span>الرئيسية</span></button>
+  <button class="side-link" data-nav="facilities" onclick="showSectionPage('facilitiesPage','facilities')"><span class="ico">▦</span><span>المنشآت الصحية</span></button>
+  <button class="side-link" data-nav="incidents" onclick="showSectionPage('incidentsPage','incidents')"><span class="ico">⚠</span><span>البلاغات</span></button>
+  <button class="side-link" data-nav="capacity" onclick="showCapacityPage();setActiveNav('capacity')"><span class="ico">▱</span><span>الطاقة الاستيعابية</span></button>
+  <button class="side-link" data-nav="weather" onclick="showDashboardPage();setActiveNav('weather');setTimeout(()=>document.getElementById('homeWeatherSummary')?.scrollIntoView({behavior:'smooth'}),50)"><span class="ico">☁</span><span>الحالة المطرية</span></button>
+  <button class="side-link" data-nav="reports" onclick="showSectionPage('reportsPage','reports')"><span class="ico">▥</span><span>التقارير والإحصائيات</span></button>
+  <button class="side-link" data-nav="audit" onclick="showSectionPage('auditPage','audit')"><span class="ico">▤</span><span>سجل التدقيق</span></button>
+
+  <div class="side-spacer"></div>
+  <button class="side-link side-settings" onclick="toggleTheme()"><span class="ico">⚙</span><span>الإعدادات</span></button>
+  <button class="side-link side-logout" onclick="logout()"><span class="ico">⇥</span><span>تسجيل الخروج</span></button>
+</aside>
+
 <div class="app">
 
 <header>
-
-  <div class="head">
-
-    <div class="logo">🏥</div>
-
-    <div class="brand">
-      <h1>جاهزية المنشآت الصحية</h1>
-      <p>مركز متابعة جاهزية المنشآت الصحية • تجمع جازان الصحي</p>
+  <div class="head executive-header">
+    <div class="header-user">
+      <button class="user-avatar" type="button" title="الحساب">●</button>
+      <div class="user-text"><b id="userName"></b><span id="userRole"></span></div>
+      <button class="header-menu-dot" type="button" title="الحساب">⌄</button>
     </div>
 
-    <div class="userbox">
-      <b id="userName"></b>
-      <span id="userRole"></span>
+    <div class="brand-center">
+      <div class="brand-center-copy">
+        <h1>جاهزية المنشآت الصحية</h1>
+        <p>مركز متابعة جاهزية المنشآت الصحية</p>
+      </div>
+    </div>
+
+    <div class="identity-group" aria-label="الهوية">
+      <div class="identity-mark cluster-mark"><span>✦</span><b>تجمع جازان الصحي</b><small>Jazan Health Cluster</small></div>
+      <div class="identity-divider"></div>
+      <div class="identity-mark holding-mark"><span>◆</span><b>هيئة الصحة القابضة</b><small>Health Holding</small></div>
     </div>
 
     <div class="header-actions">
-
-      <button
-        class="theme-btn"
-        onclick="showNotifications()"
-        id="notificationButton"
-        title="الإشعارات">
-        🔔 <span id="notificationCount">0</span>
-      </button>
-
-      <button
-        class="theme-btn"
-        onclick="toggleTheme()"
-        id="themeButton">
-        🌙 ليلي
-      </button>
-
-      <button
-        class="logout"
-        onclick="logout()">
-        خروج
-      </button>
-
+      <button class="theme-btn icon-only" onclick="showNotifications()" id="notificationButton" title="الإشعارات">🔔 <span id="notificationCount">0</span></button>
+      <button class="theme-btn icon-only" onclick="toggleTheme()" id="themeButton" title="الوضع الليلي">◐</button>
+      <button class="theme-btn icon-only" onclick="document.documentElement.requestFullscreen?.()" title="ملء الشاشة">⛶</button>
+      <button class="logout top-logout" onclick="logout()">خروج</button>
     </div>
-
   </div>
-
 </header>
 
 
@@ -870,71 +929,84 @@ body.dark .escalation-box{
 
 
 <!-- DASHBOARD -->
+<div class="section dashboard-home">
 
-<div class="section">
+  <div class="command-hero reference-hero">
+    <div class="hero-ornament hero-ornament-one"></div>
+    <div class="hero-ornament hero-ornament-two"></div>
+    <div class="command-hero-content">
+      <div class="command-copy">
+        <div class="eyebrow"><span class="pulse-dot"></span> مركز المتابعة والتشغيل</div>
+        <h2>جاهزية المنشآت الصحية</h2>
+        <p>منصة موحدة لمتابعة جاهزية منشآت تجمع جازان الصحي، البلاغات التشغيلية، الحالة المطرية والطاقة الاستيعابية في شاشة واحدة.</p>
+        <div class="hero-meta"><span>● متابعة مباشرة</span><span id="dashboardLastUpdate">آخر تحديث: الآن</span></div>
+      </div>
+      <div class="hero-brand-lockup">
+        <div class="hero-palm">✦</div>
+        <div><b>تجمع جازان الصحي</b><span>Jazan Health Cluster</span></div>
+        <div class="hero-divider"></div>
+        <div class="hero-holding">◆</div>
+      </div>
+    </div>
+  </div>
 
-  <div class="title">لوحة المتابعة</div>
+  <div class="dashboard-heading">
+    <div><div class="title">لوحة القيادة</div><div class="subline" id="dashboardSubtitle">نظرة تنفيذية سريعة على مستوى الجاهزية في التجمع.</div></div>
+    <div class="dashboard-live"><span></span> متابعة مباشرة</div>
+  </div>
 
-  <div class="subline" id="dashboardSubtitle"></div>
+  <div class="executive-stats reference-stats">
+    <div class="exec-stat total-stat"><div class="exec-icon">▦</div><div><span>إجمالي المنشآت الصحية</span><b id="total">0</b></div><small>منشأة صحية ضمن نطاق المتابعة</small></div>
+    <div class="exec-stat ready-stat"><div class="exec-icon">✓</div><div><span>المنشآت الجاهزة</span><b id="normal">0</b></div><small>منشأة تعمل بكفاءة</small></div>
+    <div class="exec-stat watch-stat"><div class="exec-icon">!</div><div><span>تحتاج متابعة</span><b id="followup">0</b></div><small>منها <b id="highPriority" class="inline-high">0</b> متابعة عالية</small></div>
+    <div class="exec-stat incident-stat"><div class="exec-icon">⚠</div><div><span>البلاغات النشطة</span><b id="openTotal">0</b></div><small>بلاغ تحت المتابعة الآن</small></div>
+  </div>
 
-  <div class="stats">
-
-    <div class="stat">
-      <span>إجمالي المنشآت</span>
-      <b id="total">0</b>
+  <div class="home-summary-grid">
+    <div class="home-panel incidents-panel" id="homeIncidentsSummary">
+      <div class="home-panel-head"><div><b>أحدث البلاغات النشطة</b><span>آخر الحالات التي تتطلب المتابعة</span></div><button onclick="document.getElementById('openIncidents').scrollIntoView({behavior:'smooth'})">عرض الكل ←</button></div>
+      <div id="homeOpenIncidents" class="home-list"><div class="mini-empty">جاري تحميل البلاغات...</div></div>
     </div>
 
-    <div class="stat">
-      <span>جاهزة</span>
-      <b class="green" id="normal">0</b>
+    <div class="home-panel readiness-panel-home" id="homeFacilitiesSummary">
+      <div class="home-panel-head"><div><b>حالة جاهزية المنشآت الصحية</b><span>توزيع الحالة التشغيلية الحالية</span></div><button onclick="document.getElementById('facilities').scrollIntoView({behavior:'smooth'})">عرض المنشآت ←</button></div>
+      <div class="status-legend-inline"><span><i class="legend-dot green-dot"></i> جاهزة</span><span><i class="legend-dot yellow-dot"></i> تحتاج متابعة</span><span><i class="legend-dot red-dot"></i> متابعة عالية</span></div>
+      <div id="homeFacilitiesList" class="facility-mini-list"><div class="mini-empty">جاري تحميل الحالة...</div></div>
     </div>
 
-    <div class="stat">
-      <span>بلاغات نشطة</span>
-      <b class="red" id="openTotal">0</b>
+    <div class="home-panel weather-panel-home" id="homeWeatherSummary">
+      <div class="home-panel-head"><div><b>الحالة المطرية</b><span>المؤشر العام للحالة الجوية في المنشآت</span></div><span class="panel-icon">☁</span></div>
+      <div id="homeWeatherContent" class="weather-summary-content"><div class="mini-empty">جاري تحميل الحالة المطرية...</div></div>
     </div>
 
+    <div class="home-panel capacity-panel-home" id="homeCapacitySummary">
+      <div class="home-panel-head"><div><b>الطاقة الاستيعابية</b><span>ملخص الأسرة والحالات الحالية</span></div><button onclick="showCapacityPage();setActiveNav('capacity')">التفاصيل ←</button></div>
+      <div id="homeCapacityContent" class="capacity-summary-content"><div class="mini-empty">جاري تحميل الطاقة الاستيعابية...</div></div>
+    </div>
   </div>
 
 </div>
 
 
 <!-- ACTIVE -->
-
-<div class="section">
-
-  <div class="title">
-    🚨 البلاغات النشطة
-    <span id="openCount" style="color:#6b7280;font-size:11px"></span>
+<div class="section active-command-section" id="incidentsPage">
+  <div class="section-head-pro">
+    <div>
+      <div class="title">🚨 البلاغات النشطة <span id="openCount" class="count-pill">0</span></div>
+      <div class="subline">الأولوية للبلاغات ذات التأثير الأعلى لضمان سرعة المتابعة واتخاذ القرار.</div>
+    </div>
+    <button class="primary compact-action" onclick="openIncidentModal()">＋ بلاغ جديد</button>
   </div>
-
-  <div class="subline">
-    البلاغات المفتوحة تظهر أولًا لمتابعة الحالة وإغلاقها.
+  <div id="openIncidents" class="active-incidents-board">
+    <div class="loading">جاري تحميل البلاغات...</div>
   </div>
-
-  <div id="openIncidents">
-    <div class="loading">جاري التحميل...</div>
-  </div>
-
-  <button
-    class="primary"
-    style="width:100%"
-    onclick="openIncidentModal()">
-    ＋ تسجيل بلاغ جديد
-  </button>
-
-  <button
-    class="primary capacity-launch"
-    onclick="showCapacityPage()">
-    🛏️ فتح الطاقة الاستيعابية
-  </button>
-
+  <button class="primary mobile-new-incident" onclick="openIncidentModal()">＋ تسجيل بلاغ جديد</button>
 </div>
 
 
 <!-- FACILITIES -->
 
-<div class="section">
+<div class="section" id="facilitiesPage">
 
   <div class="title">المنشآت</div>
 
@@ -963,7 +1035,7 @@ body.dark .escalation-box{
 
 <!-- HISTORY -->
 
-<div class="section">
+<div class="section" id="auditPage">
 
   <div class="title">📋 سجل البلاغات المغلقة</div>
 
@@ -1008,7 +1080,7 @@ body.dark .escalation-box{
 
 <!-- REPORTS SUMMARY -->
 
-<div class="section">
+<div class="section" id="reportsPage">
 
   <div class="title">📊 الإحصائيات</div>
 
@@ -1190,6 +1262,7 @@ body.dark .escalation-box{
         <option>التكييف</option>
         <option>النظام الإلكتروني</option>
         <option>اختبار مولدات</option>
+        <option>الطاقة الاحتياطية</option>
         <option>أخرى</option>
 
       </select>
@@ -1418,7 +1491,7 @@ body.dark .escalation-box{
       <label class="required">نوع البلاغ</label>
       <select id="editType" onchange="handleEditTypeChange()">
         <option>الكهرباء</option><option>المياه</option><option>التكييف</option>
-        <option>النظام الإلكتروني</option><option>اختبار مولدات</option><option>أخرى</option>
+        <option>النظام الإلكتروني</option><option>اختبار مولدات</option><option>الطاقة الاحتياطية</option><option>أخرى</option>
       </select>
     </div>
 
@@ -1573,26 +1646,8 @@ body.dark .escalation-box{
 
     <div id="detailsContent"></div>
 
-    <div class="ma">
-
-      ${
-        profile && profile.role==="admin"
-        ? `<button class="admin-button" onclick="closeDetails();openEdit('${x.id}')">✏️ تعديل البلاغ</button>`
-        : ""
-      }
-
-      ${
-        profile && profile.role==="admin"
-        ? `<button class="neutral" onclick="closeDetails();openEscalation('${x.id}')">⬆️ تصعيد البلاغ</button>`
-        : ""
-      }
-
-      <button
-        class="neutral"
-        onclick="closeDetails()">
-        إغلاق
-      </button>
-
+    <div class="ma" id="detailsActions">
+      <button class="neutral" onclick="closeDetails()">إغلاق</button>
     </div>
 
   </div>
@@ -2034,8 +2089,10 @@ async function startApp(){
 
   await loadData();
   await loadWeather();
+  await loadCapacity();
 
   render();
+  showDashboardPage();
 
   if(profile.role==="admin")
     startIncidentRealtime();
@@ -2392,6 +2449,7 @@ function icon(s){
   return {
     "الكهرباء":"⚡",
     "اختبار مولدات":"🔋",
+    "الطاقة الاحتياطية":"🔋",
     "المياه":"💧",
     "التكييف":"❄️",
     "النظام الإلكتروني":"💻"
@@ -2441,16 +2499,67 @@ function severityRank(x){
 }
 
 function state(f){
-
-  return data.incidents.some(
-    x =>
-      x.facility===f &&
-      !x.end_time
-  )
-  ? "تحتاج متابعة"
-  : "طبيعي";
+  const open=data.incidents.filter(x=>x.facility===f && !x.end_time);
+  if(open.some(x=>incidentSeverity(x)==="يحتاج متابعة عالية")) return "تحتاج متابعة عالية";
+  if(open.length) return "تحتاج متابعة";
+  return "جاهزة";
 }
 
+
+/* =====================================================
+   HOMEPAGE SUMMARY — REFERENCE LAYOUT
+===================================================== */
+function renderHomeSummaries(){
+  const facilities=visibleFacilities();
+  const homeInc=document.getElementById('homeOpenIncidents');
+  const homeFac=document.getElementById('homeFacilitiesList');
+  const homeWeather=document.getElementById('homeWeatherContent');
+  const homeCap=document.getElementById('homeCapacityContent');
+  if(!homeInc||!homeFac||!homeWeather||!homeCap)return;
+
+  const open=(data.incidents||[]).filter(x=>!x.end_time&&facilities.includes(x.facility))
+    .sort((a,b)=>severityRank(a)-severityRank(b)||(new Date(a.start_time)-new Date(b.start_time)));
+  homeInc.innerHTML=open.length?open.slice(0,5).map(x=>{
+    const high=incidentSeverity(x)==='يحتاج متابعة عالية';
+    const sev=high?'عالية':'متوسطة';
+    return `<div class="home-incident-row">
+      <div class="home-incident-priority ${high?'priority-high':'priority-mid'}">${sev}</div>
+      <div class="home-incident-main"><b>${escapeHtml(x.facility)} • ${icon(currentType(x))} ${escapeHtml(currentType(x))}</b><span>${escapeHtml(x.source||'مصدر غير محدد')} • ${escapeHtml(x.reporter||'')}</span></div>
+      <div class="home-incident-time">${fmtDate(x.start_time)}</div>
+    </div>`;
+  }).join(''):`<div class="mini-empty">🟢 لا توجد بلاغات نشطة</div>`;
+
+  const sortedFacilities=[...facilities].sort((a,b)=>{
+    const rank=s=>s==='تحتاج متابعة عالية'?0:s==='تحتاج متابعة'?1:2;
+    return rank(state(a))-rank(state(b)) || a.localeCompare(b,'ar');
+  });
+  homeFac.innerHTML=sortedFacilities.slice(0,6).map(f=>{
+    const st=state(f); const cls=st==='جاهزة'?'mini-ready':st==='تحتاج متابعة عالية'?'mini-high':'mini-watch';
+    const dot=st==='جاهزة'?'green':st==='تحتاج متابعة عالية'?'red':'orange';
+    return `<div class="facility-mini-row"><i class="dot ${dot}-dot"></i><b>${escapeHtml(f)}</b><span class="${cls}">${st}</span></div>`;
+  }).join('')+(sortedFacilities.length>6?`<div class="mini-empty" style="padding:8px">+ ${sortedFacilities.length-6} منشآت أخرى</div>`:'');
+
+  const weatherMap={'clear':0,'light':1,'moderate':2,'heavy':3};
+  const weatherRowsVisible=(weatherRows||[]).filter(r=>facilities.includes(r.facility));
+  let top=0;
+  weatherRowsVisible.forEach(r=>{const v=weatherMap[r.value]??weatherMap[Object.keys({'clear':0,'light':1,'moderate':2,'heavy':3}).find(k=>({'clear':'لا توجد أمطار','light':'أمطار خفيفة','moderate':'أمطار متوسطة','heavy':'أمطار غزيرة'}[k])===r.weather_status)]??0;top=Math.max(top,v);});
+  const weatherVal=['clear','light','moderate','heavy'][top];
+  const wi=weatherInfo(weatherVal);
+  const weatherCounts=['clear','light','moderate','heavy'].map(v=>({v,n:weatherRowsVisible.filter(r=>(r.value||({"لا توجد أمطار":'clear','أمطار خفيفة':'light','أمطار متوسطة':'moderate','أمطار غزيرة':'heavy'}[r.weather_status]||'clear'))===v).length}));
+  homeWeather.innerHTML=`<div class="weather-big"><div class="weather-big-icon">${wi.icon}</div><div><b>${wi.label}</b><span>${weatherRowsVisible.length?`تم رصد الحالة في ${weatherRowsVisible.length} منشأة`:'لم يتم تحديث الحالة المطرية بعد'}</span></div></div><div class="weather-counts">${weatherCounts.map(x=>`<div class="weather-count"><b>${x.n}</b><span>${weatherInfo(x.v).label.replace('أمطار ','')}</span></div>`).join('')}</div>`;
+
+  const byType=new Map((capacityRows||[]).filter(r=>facilities.includes(r.facility)).map(r=>[`${r.facility}|${r.resource_type}`,r]));
+  let totalBeds=0,erTotal=0,erCurrent=0,icuTotal=0,icuCurrent=0;
+  facilities.forEach(f=>{
+    const get=t=>byType.get(`${f}|${t}`);
+    totalBeds+=Number(get('إجمالي الأسرة')?.total_capacity||0);
+    erTotal+=Number(get('أسرة الطوارئ')?.total_capacity||0); erCurrent+=Number(get('أسرة الطوارئ')?.current_count||0);
+    icuTotal+=Number(ICU_TOTALS[f]??get('أسرة العناية المركزة')?.total_capacity??0); icuCurrent+=Number(get('أسرة العناية المركزة')?.current_count||0);
+  });
+  const erVac=Math.max(0,erTotal-erCurrent), erPct=erTotal?Math.round(erVac/erTotal*100):0;
+  const icuVac=Math.max(0,icuTotal-icuCurrent), icuPct=icuTotal?Math.round(icuVac/icuTotal*100):0;
+  homeCap.innerHTML=`<div class="capacity-metrics"><div class="capacity-metric"><b>${totalBeds.toLocaleString('ar-SA')}</b><span>إجمالي الأسرة</span></div><div class="capacity-metric"><b>${erVac.toLocaleString('ar-SA')}</b><span>أسرة طوارئ شاغرة</span><div class="capacity-bar"><i style="width:${erPct}%"></i></div></div><div class="capacity-metric"><b>${erCurrent.toLocaleString('ar-SA')}</b><span>حالات الطوارئ الحالية</span></div><div class="capacity-metric"><b>${icuVac.toLocaleString('ar-SA')}</b><span>أسرة عناية شاغرة</span><div class="capacity-bar"><i style="width:${icuPct}%"></i></div></div></div><div class="capacity-note-home">التوفر في الطوارئ: ${erPct}% • التوفر في العناية المركزة: ${icuPct}%</div>`;
+}
 
 /* =====================================================
    RENDER
@@ -2460,22 +2569,31 @@ function render(){
 
   const facilities=visibleFacilities();
 
-  let normal=0;
-
+  let normal=0, followup=0, high=0;
 
   facilities.forEach(f=>{
-
-    if(state(f)==="طبيعي")
-      normal++;
-
+    const st=state(f);
+    if(st==="جاهزة") normal++;
+    else if(st==="تحتاج متابعة عالية") high++;
+    else followup++;
   });
 
+  document.getElementById("total").textContent=facilities.length;
+  document.getElementById("normal").textContent=normal;
+  const followEl=document.getElementById("followup");
+  const highEl=document.getElementById("highPriority");
+  if(followEl) followEl.textContent=followup;
+  if(highEl) highEl.textContent=high;
 
-  document.getElementById("total").textContent =
-    facilities.length;
-
-  document.getElementById("normal").textContent =
-    normal;
+  const readinessPercent = facilities.length ? Math.round((normal / facilities.length) * 100) : 0;
+  const rp = document.getElementById("readinessPercent");
+  const rr = document.getElementById("readinessRing");
+  const rc = document.getElementById("readinessCaption");
+  if(rp) rp.textContent = readinessPercent + "%";
+  if(rr) rr.style.background = `conic-gradient(#5ee6a0 0deg ${readinessPercent*3.6}deg, rgba(255,255,255,.12) ${readinessPercent*3.6}deg 360deg)`;
+  if(rc) rc.textContent = readinessPercent >= 80 ? "جاهزية مرتفعة" : readinessPercent >= 50 ? "جاهزية مستقرة مع متابعة" : "تحتاج تدخل ومتابعة";
+  const lu=document.getElementById("dashboardLastUpdate");
+  if(lu) lu.textContent="آخر تحديث: "+new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
 
 
   const open =
@@ -2514,7 +2632,7 @@ function render(){
 
             <div class="name">
 
-              🟠 ${escapeHtml(x.facility)}
+              ${incidentSeverity(x)==="يحتاج متابعة عالية" ? "🔴" : "🟠"} ${escapeHtml(x.facility)}
               —
               ${icon(currentType(x))}
               ${escapeHtml(currentType(x))}
@@ -2611,6 +2729,7 @@ function render(){
 
 
   renderFacilities();
+  renderHomeSummaries();
 
   renderHistory();
 
@@ -2638,7 +2757,35 @@ function showCapacityPage(){
   document.getElementById('capacitySubtitle').textContent=profile&&profile.role==='admin'?'عرض مركزي للطاقة الاستيعابية المحدثة من المنشآت • الإدارة المركزية لا تعدّل البيانات.':`تحديث الطاقة الاستيعابية لـ ${profile.facility}`;
   loadCapacity(); window.scrollTo({top:0,behavior:'smooth'});
 }
-function showDashboardPage(){document.getElementById('capacityPage').style.display='none';document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage')el.style.display='';});window.scrollTo({top:0,behavior:'smooth'});}
+function showDashboardPage(){
+  document.querySelectorAll('.section').forEach(el=>el.style.display='none');
+  const home=document.querySelector('.dashboard-home');
+  if(home) home.style.display='block';
+  const cp=document.getElementById('capacityPage');
+  if(cp) cp.style.display='none';
+  setActiveNav('dashboard');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showSectionPage(sectionId, navKey){
+  document.querySelectorAll('.section').forEach(el=>el.style.display='none');
+  const page=document.getElementById(sectionId);
+  if(page) page.style.display='block';
+  const cp=document.getElementById('capacityPage');
+  if(cp) cp.style.display='none';
+  setActiveNav(navKey);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function setActiveNav(key){
+  document.querySelectorAll('.side-link').forEach(b=>b.classList.remove('active'));
+  const btn=document.querySelector(`.side-link[data-nav="${key}"]`);
+  if(btn) btn.classList.add('active');
+}
+function syncNav(){
+  const cp=document.getElementById('capacityPage');
+  setActiveNav(cp && cp.style.display!=='none' ? 'capacity' : 'dashboard');
+}
 function erCapacityStatus(total,occupied){
   total=Number(total||0); occupied=Number(occupied||0);
   if(total<=0)return{cls:'orange',label:'غير محدد',pct:0};
@@ -2703,6 +2850,7 @@ async function loadCapacity(){
   if(error){el.innerHTML=`<div class="errorbox">❌ تعذر تحميل الطاقة الاستيعابية. تأكد من جدول <b>facility_capacity</b> في Supabase.<br><small>${escapeHtml(error.message)}</small></div>`;return;}
   const facilities=profile.role==='admin'?allFacilities:[profile.facility];
   capacityRows=rows||[];
+  renderHomeSummaries();
 
   // حفظ آخر وقت تحديث لكل منشأة حتى تبقى المنشأة الأحدث في أعلى القائمة.
   (rows||[]).forEach(r=>{
@@ -2772,6 +2920,7 @@ async function loadWeather(){
     }
   });
   renderFacilities();
+  renderHomeSummaries();
 }
 async function saveWeather(value){
   if(!profile || !currentUser || profile.role==='admin'){
@@ -2859,6 +3008,7 @@ function renderFacilities(){
     const systems=[
       "الكهرباء",
       "اختبار مولدات",
+      "الطاقة الاحتياطية",
       "المياه",
       "التكييف",
       "النظام الإلكتروني"
@@ -3593,7 +3743,8 @@ function renderProfessionalReport(
       x=>
         (
           currentType(x)==="الكهرباء" ||
-          currentType(x)==="اختبار مولدات"
+          currentType(x)==="اختبار مولدات" ||
+          currentType(x)==="الطاقة الاحتياطية"
         ) &&
         x.generator_status==="يعمل"
     ).length;
@@ -3604,7 +3755,8 @@ function renderProfessionalReport(
       x=>
         (
           currentType(x)==="الكهرباء" ||
-          currentType(x)==="اختبار مولدات"
+          currentType(x)==="اختبار مولدات" ||
+          currentType(x)==="الطاقة الاحتياطية"
         ) &&
         x.generator_status==="لا يعمل"
     ).length;
@@ -4134,7 +4286,144 @@ function printReport(){
           }
         }
 
-      </style>
+      
+/* =========================================================
+   REFERENCE LAYOUT — JAZAN HEALTH CLUSTER COMMAND CENTER
+========================================================= */
+:root{
+  --ref-navy:#063451;
+  --ref-navy2:#0b5d7c;
+  --ref-teal:#0e9b91;
+  --ref-blue:#1169aa;
+  --ref-pale:#f3f9fd;
+  --ref-border:#d4e7f2;
+}
+body{background:linear-gradient(180deg,#f7fbfe 0%,#eef6fa 100%)}
+#app>.app{max-width:none;width:auto;margin:0 258px 0 18px;padding:0 0 45px}
+.side-nav{position:fixed;right:0;top:0;bottom:0;width:242px;padding:18px 14px 14px;background:linear-gradient(180deg,#06334f 0%,#063b5c 55%,#052b46 100%);border-radius:0;box-shadow:-10px 0 30px #07324a20;display:flex;flex-direction:column;z-index:30;overflow:hidden}
+.side-nav:before,.side-nav:after{content:"";position:absolute;border-radius:50%;border:1px solid #ffffff0d;pointer-events:none}.side-nav:before{width:330px;height:330px;right:-180px;bottom:-150px}.side-nav:after{width:210px;height:210px;left:-150px;bottom:45px;background:#ffffff05}
+.side-brand{position:relative;z-index:1;display:flex;align-items:center;gap:10px;padding:10px 8px 20px;border-bottom:1px solid #ffffff1c;margin-bottom:16px}.side-logo-mark{width:45px;height:45px;border-radius:14px;background:linear-gradient(145deg,#ffffff1c,#ffffff08);border:1px solid #ffffff2b;color:#fff;display:grid;place-items:center;font-size:23px}.side-brand b{font-size:13px}.side-brand span{display:block;font-size:9px;opacity:.62;margin-top:4px}.side-label{position:relative;z-index:1;font-size:9px;opacity:.55;padding:0 10px 8px;font-weight:800}
+.side-link{position:relative;z-index:1;width:100%;display:flex;align-items:center;gap:12px;color:#fff;background:transparent;border:1px solid transparent;text-align:right;padding:12px 12px;border-radius:11px;margin:3px 0;font-size:11px;font-weight:800;min-height:42px}.side-link .ico{width:24px;text-align:center;font-size:17px;opacity:.9}.side-link:hover{background:#ffffff0d}.side-link.active{background:linear-gradient(90deg,#0d8aa4,#12607d);border-color:#24b9c63b;box-shadow:inset 3px 0 0 #19c4c9}.side-spacer{flex:1;min-height:20px}.side-settings{border-top:1px solid #ffffff16;border-radius:0;margin-top:8px;padding-top:14px}.side-logout{margin-top:2px;padding-bottom:9px}
+header{position:sticky;top:0;z-index:20;background:#ffffffed;border-bottom:1px solid var(--ref-border);padding:0;box-shadow:0 4px 20px #0a45650b;backdrop-filter:blur(12px)}
+.executive-header{max-width:none;margin:0;min-height:92px;padding:0 20px;display:grid;grid-template-columns:280px 1fr 340px 145px;align-items:center;gap:14px;direction:ltr}.header-user{display:flex;align-items:center;gap:8px;direction:rtl;justify-self:start}.user-avatar{width:42px;height:42px;border-radius:50%;border:4px solid #dcecf5;background:linear-gradient(145deg,#0a5d83,#082f50);color:#fff;font-size:0;position:relative}.user-avatar:after{content:"◉";font-size:18px;position:absolute;inset:0;display:grid;place-items:center;color:#d9f4ff}.user-text{text-align:right}.user-text b{display:block;font-size:11px;color:var(--ref-navy)}.user-text span{display:block;font-size:9px;color:#23628a;margin-top:3px}.header-menu-dot{border:0;background:transparent;color:#174b6e;font-size:17px;padding:3px}.brand-center{direction:rtl;justify-self:center;text-align:center}.brand-center-copy h1{margin:0;font-size:28px;letter-spacing:-.6px;color:var(--ref-navy);font-weight:950}.brand-center-copy p{margin:5px 0 0;color:#285d79;font-size:11px;font-weight:700}.identity-group{display:flex;align-items:center;justify-content:flex-start;direction:rtl;gap:18px;justify-self:end}.identity-mark{text-align:center;color:var(--ref-navy);min-width:118px}.identity-mark span{display:block;font-size:24px;line-height:1;color:#0a8b82}.identity-mark b{display:block;font-size:10px;margin-top:4px}.identity-mark small{display:block;font-size:7px;color:#6a8a9d;margin-top:2px}.holding-mark span{color:#1595a4}.identity-divider{width:1px;height:52px;background:#194f6b}.header-actions{direction:rtl;justify-self:end;display:flex;align-items:center;gap:6px}.theme-btn.icon-only{width:39px;height:39px;padding:0;border-radius:50%;background:#f1f6fa;border:1px solid #dceaf2;color:#12476a;font-size:16px;position:relative}.theme-btn.icon-only #notificationCount{position:absolute;top:-2px;left:-1px;display:none}.top-logout{display:none}
+.logo{display:none}.brand{display:none}
+.dashboard-home{padding:18px 0 0}.reference-hero{border-radius:0 0 28px 28px;min-height:172px;background:linear-gradient(120deg,#0a4162 0%,#0b6d8d 55%,#0a3657 100%);box-shadow:0 13px 35px #073b5c1b;margin:0 0 17px;overflow:hidden}.reference-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 10% 100%,#ffffff12 0 18%,transparent 19%),linear-gradient(145deg,transparent 45%,#ffffff08 46% 49%,transparent 50%);pointer-events:none}.hero-ornament{position:absolute;border-radius:50%;border:1px solid #ffffff18}.hero-ornament-one{width:470px;height:470px;left:-250px;top:-300px}.hero-ornament-two{width:320px;height:320px;right:-120px;top:-170px;background:#ffffff08}.command-hero-content{min-height:172px;padding:25px 35px;align-items:center}.command-copy{max-width:720px}.eyebrow{font-size:9px}.command-copy h2{font-size:30px;margin:9px 0 7px}.command-copy p{font-size:11px;line-height:1.8;color:#ffffffbf}.hero-meta{font-size:9px;margin-top:14px}.hero-brand-lockup{direction:rtl;display:flex;align-items:center;gap:11px;color:#fff;padding:12px 16px;border:1px solid #ffffff26;background:#ffffff0b;border-radius:20px;min-width:295px;justify-content:center}.hero-palm,.hero-holding{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#ffffff12;border:1px solid #ffffff22;font-size:21px;color:#63e1c9}.hero-brand-lockup b{display:block;font-size:12px}.hero-brand-lockup span{display:block;font-size:7px;opacity:.6;margin-top:3px}.hero-divider{height:48px;width:1px;background:#ffffff30}.hero-holding{color:#9bd8f1}
+.dashboard-heading{margin:0 0 10px;padding:0 3px}.dashboard-heading .title{font-size:18px;color:var(--ref-navy)}.dashboard-live{font-size:8px;padding:7px 11px;color:#087e69;background:#e9f8f4;border-color:#c7eae1}
+.reference-stats{grid-template-columns:repeat(4,1fr);gap:12px}.exec-stat{min-height:105px;border-radius:15px;border-color:var(--ref-border);background:#fff;box-shadow:0 5px 20px #0c54750c;grid-template-columns:42px 1fr;padding:16px 18px}.exec-icon{width:42px;height:42px;border-radius:12px}.exec-stat span{font-size:10px;color:#52758b}.exec-stat b{font-size:27px}.exec-stat small{font-size:8px;color:#7990a0}.inline-high{font-size:8px!important;display:inline!important;color:#dc2626!important}.total-stat:after{background:#1269a6}.total-stat .exec-icon{background:#edf6fd;color:#1269a6}.ready-stat:after{background:#0c9a79}.ready-stat .exec-icon{background:#e8f8f3;color:#0c9a79}.watch-stat:after{background:#f49a20}.watch-stat .exec-icon{background:#fff5e8;color:#e18409}.incident-stat:after{background:#e84b50}.incident-stat .exec-icon{background:#fff0f1;color:#df3b43}
+.home-summary-grid{display:grid;grid-template-columns:1.15fr 1.15fr .82fr;grid-template-areas:"incidents readiness weather" "incidents readiness capacity";gap:12px;margin-top:14px}.home-panel{background:#fff;border:1px solid var(--ref-border);border-radius:15px;box-shadow:0 5px 20px #0c54750b;overflow:hidden;min-height:170px}.incidents-panel{grid-area:incidents}.readiness-panel-home{grid-area:readiness}.weather-panel-home{grid-area:weather}.capacity-panel-home{grid-area:capacity}.home-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;border-bottom:1px solid #e4eef4;background:linear-gradient(180deg,#fff,#fbfdfe)}.home-panel-head b{display:block;font-size:12px;color:var(--ref-navy)}.home-panel-head span{display:block;font-size:8px;color:#8095a2;margin-top:4px}.home-panel-head button{background:transparent;color:#0872aa;padding:3px;font-size:9px}.panel-icon{font-size:25px!important;color:#4b9ed2!important}.home-list{padding:7px 11px}.home-incident-row{display:grid;grid-template-columns:54px 1fr 74px;align-items:center;gap:8px;padding:9px 5px;border-bottom:1px solid #edf3f7}.home-incident-row:last-child{border-bottom:0}.home-incident-priority{font-size:8px;font-weight:900;text-align:center;padding:6px 5px;border-radius:99px}.priority-high{background:#ffecee;color:#d72d39}.priority-mid{background:#fff4e4;color:#c96d00}.home-incident-main b{display:block;font-size:9px;color:#164f74}.home-incident-main span{display:block;font-size:8px;color:#8195a2;margin-top:3px}.home-incident-time{text-align:left;font-size:8px;color:#708b9b;direction:rtl}.mini-empty{padding:22px 8px;text-align:center;color:#8aa0ad;font-size:9px}.status-legend-inline{display:flex;gap:13px;align-items:center;padding:10px 14px 4px;font-size:8px;color:#526f81}.status-legend-inline .legend-dot{width:8px;height:8px}.facility-mini-list{padding:3px 12px 10px}.facility-mini-row{display:grid;grid-template-columns:8px 1fr auto;gap:8px;align-items:center;padding:8px 2px;border-bottom:1px solid #edf3f7}.facility-mini-row:last-child{border-bottom:0}.facility-mini-row .dot{width:8px;height:8px;border-radius:50%}.facility-mini-row b{font-size:9px;color:#164f74}.facility-mini-row span{font-size:8px;font-weight:800;padding:5px 8px;border-radius:99px}.mini-ready{background:#e5f7f1;color:#087e67}.mini-watch{background:#fff1df;color:#c96c00}.mini-high{background:#ffe8eb;color:#d62c39}.weather-summary-content,.capacity-summary-content{padding:12px 14px}.weather-big{display:flex;align-items:center;gap:13px;padding:5px 0 12px;border-bottom:1px solid #eaf1f5}.weather-big-icon{font-size:38px}.weather-big b{display:block;font-size:19px;color:#0c5c83}.weather-big span{display:block;font-size:9px;color:#708997;margin-top:3px}.weather-counts{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:9px}.weather-count{background:#f5f9fb;border:1px solid #e3edf2;border-radius:9px;padding:7px;text-align:center}.weather-count b{display:block;font-size:14px;color:#155a7c}.weather-count span{display:block;font-size:7px;color:#8399a5;margin-top:2px}.capacity-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.capacity-metric{border:1px solid #e0edf3;border-radius:10px;padding:8px;background:#fbfdfe}.capacity-metric b{display:block;font-size:18px;color:#0b628b}.capacity-metric span{display:block;font-size:7px;color:#78909e;margin-top:2px}.capacity-bar{height:7px;border-radius:99px;background:#e8eef1;overflow:hidden;margin-top:8px}.capacity-bar i{display:block;height:100%;border-radius:99px;background:#10a47f}.capacity-note-home{font-size:8px;color:#8297a2;margin-top:8px;line-height:1.6}
+/* Keep the detailed sections below the executive home clean */
+.active-command-section{margin-top:20px}.active-command-section .title,.section>.title{color:var(--ref-navy)}
+.section>#facilities{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.facility-status-legend{border:1px solid var(--ref-border)!important;background:#fff!important;padding:9px 12px!important;margin-bottom:10px!important}
+body.dark{background:#091421}.body.dark .home-panel{background:#111d2c}
+body.dark header{background:#101b2aec;border-color:#263b4c}.body.dark .brand-center-copy h1{color:#f4f8fb}.body.dark .home-panel-head{background:#132132;border-color:#243849}.body.dark .home-panel,.body.dark .exec-stat{background:#111d2c;border-color:#2a4051}.body.dark .home-incident-row,.body.dark .facility-mini-row{border-color:#243849}.body.dark .facility-mini-row b,.body.dark .home-panel-head b{color:#e8f3f8}.body.dark .weather-count,.body.dark .capacity-metric{background:#0e1927;border-color:#2a4051}
+@media(max-width:1180px){#app>.app{margin-right:250px;margin-left:12px}.executive-header{grid-template-columns:210px 1fr 250px 90px}.identity-group{gap:8px}.identity-mark{min-width:90px}.brand-center-copy h1{font-size:24px}.reference-stats{grid-template-columns:repeat(2,1fr)}.home-summary-grid{grid-template-columns:1fr 1fr;grid-template-areas:"incidents readiness" "weather capacity"}.section>#facilities{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){#app>.app{margin:0 10px;padding-bottom:70px}.side-nav{position:sticky;top:0;right:auto;width:auto;height:auto;min-height:0;flex-direction:row;align-items:center;overflow:auto;padding:7px;gap:4px;border-radius:0;box-shadow:0 4px 16px #06334f22}.side-brand,.side-label,.side-spacer,.side-settings,.side-logout{display:none}.side-link{min-width:max-content;width:auto;margin:0;padding:9px 12px}.side-link.active{box-shadow:inset 0 -3px 0 #19c4c9}.executive-header{min-height:76px;grid-template-columns:1fr auto;grid-template-areas:"brand actions" "user user";padding:10px 12px}.brand-center{grid-area:brand;justify-self:start;text-align:right}.brand-center-copy h1{font-size:20px}.identity-group{display:none}.header-user{grid-area:user;justify-self:start;margin-top:4px}.header-actions{grid-area:actions}.command-hero-content{padding:23px}.hero-brand-lockup{min-width:0;margin-top:16px}.home-summary-grid{grid-template-columns:1fr;grid-template-areas:"incidents" "readiness" "weather" "capacity"}.section>#facilities{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.reference-stats{grid-template-columns:1fr 1fr;gap:8px}.exec-stat{min-height:92px;padding:11px;border-radius:13px;grid-template-columns:34px 1fr}.exec-icon{width:34px;height:34px}.exec-stat b{font-size:22px}.reference-hero{border-radius:0 0 20px 20px}.command-copy h2{font-size:23px}.command-copy p{font-size:10px}.hero-brand-lockup{padding:9px}.home-panel-head{padding:11px}.home-incident-row{grid-template-columns:52px 1fr 65px}.section>#facilities{grid-template-columns:1fr}.top-logout{display:none}}
+
+/* =========================================================
+   LARGE SCREEN COMMAND CENTER — FINAL BUILD
+========================================================= */
+@media(min-width:1201px){
+  body{font-size:14px;overflow-x:hidden}
+  #app>.app{margin-right:258px;margin-left:22px;max-width:none;width:auto;padding-bottom:34px}
+  header{min-height:88px}
+  .executive-header{min-height:88px;padding:0 24px;grid-template-columns:280px minmax(320px,1fr) 390px 160px;gap:18px}
+  .brand-center-copy h1{font-size:31px;letter-spacing:-1px}
+  .brand-center-copy p{font-size:12px;margin-top:7px}
+  .identity-group{gap:20px}
+  .identity-mark{min-width:132px}
+  .identity-mark span{font-size:27px}
+  .identity-mark b{font-size:11px}
+  .identity-mark small{font-size:8px}
+  .identity-divider{height:56px}
+  .header-actions{gap:8px}
+  .theme-btn.icon-only{width:42px;height:42px;font-size:17px}
+
+  .dashboard-home{padding-top:18px}
+  .reference-hero{min-height:182px;border-radius:0 0 30px 30px;margin-bottom:18px}
+  .command-hero-content{min-height:182px;padding:28px 38px}
+  .command-copy{max-width:850px}
+  .eyebrow{font-size:10px}
+  .command-copy h2{font-size:34px;margin:10px 0 8px}
+  .command-copy p{font-size:12px;max-width:780px;line-height:1.9}
+  .hero-meta{font-size:10px;margin-top:15px;gap:24px}
+  .hero-brand-lockup{min-width:340px;padding:14px 20px;border-radius:22px}
+  .hero-palm,.hero-holding{width:48px;height:48px;font-size:24px}
+  .hero-brand-lockup b{font-size:13px}
+  .hero-brand-lockup span{font-size:8px}
+
+  .dashboard-heading{margin:2px 3px 12px}
+  .dashboard-heading .title{font-size:20px}
+  .dashboard-heading .subline{font-size:10px}
+  .dashboard-live{font-size:9px;padding:8px 12px}
+
+  .reference-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .exec-stat{min-height:118px;padding:18px 20px;border-radius:17px;grid-template-columns:48px 1fr;column-gap:13px}
+  .exec-icon{width:48px;height:48px;border-radius:14px;font-size:20px}
+  .exec-stat span{font-size:11px}
+  .exec-stat b{font-size:31px;margin-top:5px}
+  .exec-stat small{font-size:9px;margin-top:7px}
+
+  .home-summary-grid{grid-template-columns:minmax(0,1.18fr) minmax(0,1.18fr) minmax(290px,.82fr);grid-template-areas:"incidents readiness weather" "incidents readiness capacity";gap:14px;margin-top:15px}
+  .home-panel{min-height:178px;border-radius:17px;box-shadow:0 8px 25px #0c54750d}
+  .incidents-panel,.readiness-panel-home{min-height:370px}
+  .home-panel-head{padding:15px 17px}
+  .home-panel-head b{font-size:13px}
+  .home-panel-head span{font-size:9px;margin-top:4px}
+  .home-panel-head button{font-size:10px}
+  .home-list{padding:8px 13px}
+  .home-incident-row{grid-template-columns:62px 1fr 88px;gap:10px;padding:11px 6px}
+  .home-incident-priority{font-size:9px;padding:7px 6px}
+  .home-incident-main b{font-size:10px}
+  .home-incident-main span{font-size:8px;margin-top:4px}
+  .home-incident-time{font-size:9px}
+  .status-legend-inline{gap:18px;padding:12px 16px 5px;font-size:9px}
+  .status-legend-inline .legend-dot{width:9px;height:9px}
+  .facility-mini-list{padding:4px 15px 12px}
+  .facility-mini-row{grid-template-columns:10px 1fr auto;gap:10px;padding:10px 2px}
+  .facility-mini-row .dot{width:10px;height:10px}
+  .facility-mini-row b{font-size:10px}
+  .facility-mini-row span{font-size:9px;padding:6px 10px}
+  .weather-summary-content,.capacity-summary-content{padding:14px 16px}
+  .weather-big{gap:16px;padding:6px 0 13px}
+  .weather-big-icon{font-size:45px}
+  .weather-big b{font-size:21px}
+  .weather-big span{font-size:9px}
+  .weather-counts{gap:8px;margin-top:10px}
+  .weather-count{padding:8px;border-radius:10px}
+  .weather-count b{font-size:16px}
+  .weather-count span{font-size:8px}
+  .capacity-metrics{gap:8px}
+  .capacity-metric{padding:10px;border-radius:10px}
+  .capacity-metric b{font-size:20px}
+  .capacity-metric span{font-size:8px}
+  .capacity-bar{height:8px;margin-top:9px}
+  .capacity-note-home{font-size:9px;margin-top:9px}
+
+  .side-nav{width:242px;padding:20px 15px 16px}
+  .side-brand{padding:10px 9px 22px;margin-bottom:18px}
+  .side-logo-mark{width:48px;height:48px}
+  .side-brand b{font-size:14px}
+  .side-brand span{font-size:9px}
+  .side-label{font-size:9px;padding-bottom:9px}
+  .side-link{padding:12px 13px;margin:4px 0;font-size:12px;border-radius:13px}
+  .side-link .ico{width:25px;font-size:18px}
+}
+
+@media(min-width:1600px){
+  #app>.app{margin-right:270px;margin-left:30px}
+  .executive-header{grid-template-columns:300px minmax(420px,1fr) 430px 175px;padding:0 28px}
+  .reference-hero{min-height:195px}
+  .command-hero-content{min-height:195px;padding:30px 46px}
+  .command-copy h2{font-size:37px}
+  .command-copy p{font-size:13px}
+  .hero-brand-lockup{min-width:370px}
+  .exec-stat{min-height:125px}
+  .home-summary-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,1.2fr) minmax(330px,.8fr)}
+  .incidents-panel,.readiness-panel-home{min-height:390px}
+}
+
+</style>
 
     </head>
 
@@ -4239,7 +4528,7 @@ function handleTypeChange(){
 
 
   const isGenerator =
-    type==="اختبار مولدات";
+    type==="اختبار مولدات" || type==="الطاقة الاحتياطية";
 
 
   const isElectronic =
@@ -4492,7 +4781,8 @@ async function saveIncident(){
     generator_status:
       (
         type==="الكهرباء" ||
-        type==="اختبار مولدات"
+        type==="اختبار مولدات" ||
+        type==="الطاقة الاحتياطية"
       )
       ? generatorStatus
       : null,
@@ -4673,7 +4963,8 @@ async function showDetails(id){
       ${
         (
           currentType(x)==="الكهرباء" ||
-          currentType(x)==="اختبار مولدات"
+          currentType(x)==="اختبار مولدات" ||
+          currentType(x)==="الطاقة الاحتياطية"
         )
 
         ?
@@ -4827,9 +5118,16 @@ async function showDetails(id){
   ).innerHTML=html;
 
 
-  document.getElementById(
-    "detailsModal"
-  ).style.display="flex";
+  document.getElementById("detailsModal").style.display="flex";
+
+  const actions=document.getElementById("detailsActions");
+  if(actions){
+    actions.innerHTML=`
+      ${profile && profile.role==="admin" ? `<button class="admin-button" onclick="closeDetails();openEdit('${escapeAttr(id)}')">✏️ تعديل البلاغ</button>` : ""}
+      ${profile && profile.role==="admin" ? `<button class="neutral" onclick="closeDetails();openEscalation('${escapeAttr(id)}')">⬆️ تصعيد البلاغ</button>` : ""}
+      ${!x.end_time ? `<button class="danger" onclick="closeDetails();openEnd('${escapeAttr(id)}')">إنهاء البلاغ</button>` : ""}
+      <button class="neutral" onclick="closeDetails()">إغلاق</button>`;
+  }
 
   loadIncidentAudit(id);
 }
