@@ -1045,6 +1045,116 @@ body.dark .brand h1{color:var(--text)}
 }
 </style>
 
+
+<style id="single-blue-header">
+/* Single unified blue header */
+body{padding-top:0!important}
+body>header,#app>header{display:none!important}
+.command-hero.reference-hero{
+  margin-top:0!important;
+  min-height:92px!important;
+  height:auto!important;
+  border-radius:0 0 22px 22px!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+.command-hero.reference-hero .hero-ornament{opacity:.18!important}
+.command-hero.reference-hero .command-hero-content{
+  min-height:92px!important;height:92px!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:20px!important;padding:0 28px!important;
+}
+.command-hero.reference-hero .command-copy{
+  display:flex!important;align-items:center!important;gap:18px!important;
+  min-width:0!important;
+}
+.command-hero.reference-hero .eyebrow{display:none!important}
+.command-hero.reference-hero .command-copy h2{
+  margin:0!important;font-size:25px!important;white-space:nowrap!important;color:#fff!important;
+}
+.command-hero.reference-hero .command-copy p{display:none!important}
+.command-hero.reference-hero .hero-meta{display:none!important}
+.command-hero.reference-hero .hero-brand-lockup{
+  display:flex!important;align-items:center!important;gap:13px!important;
+  margin:0!important;padding:0!important;border:0!important;
+  color:#fff!important;
+}
+.command-hero.reference-hero .hero-palm{
+  width:46px!important;height:46px!important;border-radius:14px!important;
+  display:grid!important;place-items:center!important;
+  background:rgba(255,255,255,.12)!important;color:#fff!important;
+  font-size:22px!important;
+}
+.command-hero.reference-hero .hero-brand-lockup b{
+  display:block!important;color:#fff!important;font-size:14px!important;
+}
+.command-hero.reference-hero .hero-brand-lockup span{
+  display:block!important;color:rgba(255,255,255,.72)!important;font-size:9px!important;
+}
+.command-hero.reference-hero .hero-divider,.command-hero.reference-hero .hero-holding{display:none!important}
+.blue-header-identity{
+  display:flex;flex-direction:column;align-items:flex-end;gap:3px;
+  margin-inline-start:auto;min-width:170px;
+}
+.blue-header-identity .identity-label{font-size:10px;color:rgba(255,255,255,.68)}
+.blue-header-identity .identity-name{font-size:15px;font-weight:900;color:#fff;white-space:nowrap}
+.blue-header-actions{display:flex;align-items:center;gap:7px;margin-inline-start:8px}
+.blue-header-actions button{
+  border:1px solid rgba(255,255,255,.18)!important;
+  background:rgba(255,255,255,.10)!important;color:#fff!important;
+  min-width:38px;height:38px;border-radius:11px;cursor:pointer;
+}
+.blue-header-actions .blue-logout{padding:0 13px;min-width:auto!important;font-weight:800}
+@media(max-width:900px){
+ .command-hero.reference-hero .command-hero-content{padding:0 16px!important;gap:10px!important}
+ .command-hero.reference-hero .command-copy h2{font-size:19px!important}
+ .blue-header-identity{min-width:0}
+ .blue-header-identity .identity-name{font-size:12px}
+ .blue-header-actions button{min-width:34px;height:34px}
+}
+</style>
+
+<style id="kpi-layout-v10">
+/* لوحة المؤشرات التنفيذية — ثلاثة مربعات أفقية فقط */
+.executive-stats{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:16px !important;
+  width:100% !important;
+  margin:0 !important;
+}
+.executive-stats .exec-stat{
+  min-width:0 !important;
+  min-height:118px !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  padding:18px 22px !important;
+}
+.executive-stats .exec-stat small{
+  grid-column:1 / -1 !important;
+}
+.executive-stats .exec-stat span{
+  font-size:12px !important;
+}
+.executive-stats .exec-stat > div:nth-child(2){
+  min-width:0 !important;
+}
+@media (min-width:1200px){
+  .executive-stats{
+    gap:20px !important;
+  }
+  .executive-stats .exec-stat{
+    min-height:126px !important;
+    padding:20px 26px !important;
+  }
+}
+@media (max-width:700px){
+  .executive-stats{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -1153,16 +1263,17 @@ body.dark .brand h1{color:var(--text)}
     <div class="hero-ornament hero-ornament-two"></div>
     <div class="command-hero-content">
       <div class="command-copy">
-        <div class="eyebrow"><span class="pulse-dot"></span> مركز المتابعة والتشغيل</div>
         <h2>جاهزية المنشآت الصحية</h2>
-        <p>منصة موحدة لمتابعة جاهزية منشآت تجمع جازان الصحي، البلاغات التشغيلية، الحالة المطرية والطاقة الاستيعابية في شاشة واحدة.</p>
-        <div class="hero-meta"><span>● متابعة مباشرة</span><span id="dashboardLastUpdate">آخر تحديث: الآن</span></div>
+        <div class="blue-header-identity">
+          <span class="identity-label">الحساب</span>
+          <strong class="identity-name" id="workspaceIdentity">جاري التحقق...</strong>
+        </div>
       </div>
-      <div class="hero-brand-lockup">
-        <div class="hero-palm">✦</div>
-        <div><b>تجمع جازان الصحي</b><span>Jazan Health Cluster</span></div>
-        <div class="hero-divider"></div>
-        <div class="hero-holding">◆</div>
+      <div class="blue-header-actions">
+        <button type="button" onclick="showNotifications()" id="blueNotificationButton" title="الإشعارات">🔔 <span id="blueNotificationCount">0</span></button>
+        <button type="button" onclick="toggleTheme()" title="الوضع الليلي">◐</button>
+        <button type="button" onclick="document.documentElement.requestFullscreen?.()" title="ملء الشاشة">⛶</button>
+        <button type="button" class="blue-logout" onclick="logout()">خروج</button>
       </div>
     </div>
   </div>
@@ -1173,11 +1284,14 @@ body.dark .brand h1{color:var(--text)}
   </div>
 
   <div class="executive-stats reference-stats">
-    <div class="exec-stat total-stat"><div class="exec-icon">▦</div><div><span>إجمالي المنشآت الصحية</span><b id="total">0</b></div><small>منشأة صحية ضمن نطاق المتابعة</small></div>
-    <div class="exec-stat ready-stat"><div class="exec-icon">✓</div><div><span>المنشآت الجاهزة</span><b id="normal">0</b></div><small>منشأة تعمل بكفاءة</small></div>
-    <div class="exec-stat watch-stat"><div class="exec-icon">!</div><div><span>تحتاج متابعة</span><b id="followup">0</b></div><small>منها <b id="highPriority" class="inline-high">0</b> متابعة عالية</small></div>
+    <div class="exec-stat total-stat"><div class="exec-icon">▦</div><div><span>إجمالي المنشآت</span><b id="total">0</b></div><small>منشأة صحية ضمن نطاق المتابعة</small></div>
+    <div class="exec-stat ready-stat"><div class="exec-icon">✓</div><div><span>جاهزة</span><b id="normal">0</b></div><small>منشأة تعمل بكفاءة</small></div>
     <div class="exec-stat incident-stat"><div class="exec-icon">⚠</div><div><span>البلاغات النشطة</span><b id="openTotal">0</b></div><small>بلاغ تحت المتابعة الآن</small></div>
   </div>
+
+  <!-- مؤشرات المتابعة القديمة محفوظة وظيفيًا في DOM حتى لا تتأثر الحسابات الداخلية -->
+  <span id="followup" style="display:none">0</span>
+  <span id="highPriority" style="display:none">0</span>
 
   <div class="home-summary-grid">
     <div class="home-panel incidents-panel" id="homeIncidentsSummary">
@@ -2289,6 +2403,13 @@ async function startApp(){
 
   }
 
+
+  const workspaceIdentity=document.getElementById("workspaceIdentity");
+  if(workspaceIdentity){
+    workspaceIdentity.textContent = profile.role==="admin"
+      ? "عمليات تجمع جازان الصحي"
+      : profile.facility;
+  }
 
   document.getElementById("dashboardSubtitle").textContent =
     profile.role==="admin"
