@@ -1293,26 +1293,22 @@ body>header,#app>header{display:none!important}
   <span id="followup" style="display:none">0</span>
   <span id="highPriority" style="display:none">0</span>
 
-  <div class="home-summary-grid">
-    <div class="home-panel incidents-panel" id="homeIncidentsSummary">
-      <div class="home-panel-head"><div><b>أحدث البلاغات النشطة</b><span>آخر الحالات التي تتطلب المتابعة</span></div><button onclick="document.getElementById('openIncidents').scrollIntoView({behavior:'smooth'})">عرض الكل ←</button></div>
-      <div id="homeOpenIncidents" class="home-list"><div class="mini-empty">جاري تحميل البلاغات...</div></div>
+  <div class="professional-home-grid" id="professionalHomeGrid">
+    <div class="pro-panel pro-incidents" id="homeIncidentsSummary">
+      <div class="pro-panel-head"><div><b>آخر البلاغات</b><span>النشطة أولاً ثم المغلقة</span></div><button onclick="document.getElementById('openIncidents').scrollIntoView({behavior:'smooth'})">عرض الكل ←</button></div>
+      <div id="homeOpenIncidents" class="pro-content"><div class="mini-empty">جاري تحميل البلاغات...</div></div>
     </div>
-
-    <div class="home-panel readiness-panel-home" id="homeFacilitiesSummary">
-      <div class="home-panel-head"><div><b>حالة جاهزية المنشآت الصحية</b><span>توزيع الحالة التشغيلية الحالية</span></div><button onclick="document.getElementById('facilities').scrollIntoView({behavior:'smooth'})">عرض المنشآت ←</button></div>
-      <div class="status-legend-inline"><span><i class="legend-dot green-dot"></i> جاهزة</span><span><i class="legend-dot yellow-dot"></i> تحتاج متابعة</span><span><i class="legend-dot red-dot"></i> متابعة عالية</span></div>
-      <div id="homeFacilitiesList" class="facility-mini-list"><div class="mini-empty">جاري تحميل الحالة...</div></div>
+    <div class="pro-panel pro-readiness" id="homeFacilitiesSummary">
+      <div class="pro-panel-head"><div><b>حالة الجاهزية التشغيلية</b><span>توزيع المنشآت حسب مستوى المتابعة</span></div><button onclick="document.getElementById('facilities').scrollIntoView({behavior:'smooth'})">التفاصيل ←</button></div>
+      <div id="homeFacilitiesList" class="pro-content"><div class="mini-empty">جاري تحميل الحالة...</div></div>
     </div>
-
-    <div class="home-panel weather-panel-home" id="homeWeatherSummary">
-      <div class="home-panel-head"><div><b>الحالة المطرية</b><span>المؤشر العام للحالة الجوية في المنشآت</span></div><span class="panel-icon">☁</span></div>
-      <div id="homeWeatherContent" class="weather-summary-content"><div class="mini-empty">جاري تحميل الحالة المطرية...</div></div>
+    <div class="pro-panel pro-capacity" id="homeCapacitySummary">
+      <div class="pro-panel-head"><div><b>الطاقة الاستيعابية</b><span>ملخص طاقة الطوارئ على مستوى المنطقة</span></div><button onclick="showCapacityPage();setActiveNav('capacity')">التفاصيل ←</button></div>
+      <div id="homeCapacityContent" class="pro-content"><div class="mini-empty">جاري تحميل الطاقة الاستيعابية...</div></div>
     </div>
-
-    <div class="home-panel capacity-panel-home" id="homeCapacitySummary">
-      <div class="home-panel-head"><div><b>الطاقة الاستيعابية</b><span>ملخص الأسرة والحالات الحالية</span></div><button onclick="showCapacityPage();setActiveNav('capacity')">التفاصيل ←</button></div>
-      <div id="homeCapacityContent" class="capacity-summary-content"><div class="mini-empty">جاري تحميل الطاقة الاستيعابية...</div></div>
+    <div class="pro-panel pro-weather" id="homeWeatherSummary">
+      <div class="pro-panel-head"><div><b>طقس منطقة جازان</b><span>الحالة الجوية الحالية والتحديث اليومي</span></div><span class="panel-live">● مباشر</span></div>
+      <div id="homeWeatherContent" class="pro-content"><div class="mini-empty">جاري تحميل الطقس...</div></div>
     </div>
   </div>
 
@@ -2855,48 +2851,23 @@ function renderHomeSummaries(){
   const homeCap=document.getElementById('homeCapacityContent');
   if(!homeInc||!homeFac||!homeWeather||!homeCap)return;
 
-  const open=(data.incidents||[]).filter(x=>!x.end_time&&facilities.includes(x.facility))
-    .sort((a,b)=>severityRank(a)-severityRank(b)||(new Date(a.start_time)-new Date(b.start_time)));
-  homeInc.innerHTML=open.length?open.slice(0,5).map(x=>{
-    const high=incidentSeverity(x)==='يحتاج متابعة عالية';
-    const sev=high?'عالية':'متوسطة';
-    return `<div class="home-incident-row">
-      <div class="home-incident-priority ${high?'priority-high':'priority-mid'}">${sev}</div>
-      <div class="home-incident-main"><b>${escapeHtml(x.facility)} • ${icon(currentType(x))} ${escapeHtml(currentType(x))}</b><span>${escapeHtml(x.source||'مصدر غير محدد')} • ${escapeHtml(x.reporter||'')}</span></div>
-      <div class="home-incident-time">${fmtDate(x.start_time)}</div>
-    </div>`;
-  }).join(''):`<div class="mini-empty">🟢 لا توجد بلاغات نشطة</div>`;
+  const incidents=(data.incidents||[]).filter(x=>facilities.includes(x.facility));
+  const active=incidents.filter(x=>!x.end_time).sort((a,b)=>severityRank(a)-severityRank(b)||new Date(a.start_time)-new Date(b.start_time));
+  const closed=incidents.filter(x=>x.end_time).sort((a,b)=>new Date(b.end_time||b.start_time)-new Date(a.end_time||a.start_time));
+  const latest=[...active,...closed].slice(0,5);
+  homeInc.innerHTML=latest.length?latest.map(x=>{const active=!x.end_time;const high=incidentSeverity(x)==='يحتاج متابعة عالية';return `<div class="pro-incident-row"><span class="pro-status ${active?(high?'red':'orange'):'closed'}">${active?(high?'عالية':'متابعة'):'مغلق'}</span><div><b>${escapeHtml(x.facility)} • ${icon(currentType(x))} ${escapeHtml(currentType(x))}</b><span>${active?'نشط الآن':'أُغلق '+fmtDate(x.end_time)}</span></div><time>${fmtDate(x.start_time)}</time></div>`}).join(''):'<div class="pro-empty">🟢 لا توجد بلاغات حالية</div>';
 
-  const sortedFacilities=[...facilities].sort((a,b)=>{
-    const rank=s=>s==='تحتاج متابعة عالية'?0:s==='تحتاج متابعة'?1:2;
-    return rank(state(a))-rank(state(b)) || a.localeCompare(b,'ar');
-  });
-  homeFac.innerHTML=sortedFacilities.slice(0,6).map(f=>{
-    const st=state(f); const cls=st==='جاهزة'?'mini-ready':st==='تحتاج متابعة عالية'?'mini-high':'mini-watch';
-    const dot=st==='جاهزة'?'green':st==='تحتاج متابعة عالية'?'red':'orange';
-    return `<div class="facility-mini-row"><i class="dot ${dot}-dot"></i><b>${escapeHtml(f)}</b><span class="${cls}">${st}</span></div>`;
-  }).join('')+(sortedFacilities.length>6?`<div class="mini-empty" style="padding:8px">+ ${sortedFacilities.length-6} منشآت أخرى</div>`:'');
-
-  const weatherMap={'clear':0,'light':1,'moderate':2,'heavy':3};
-  const weatherRowsVisible=(weatherRows||[]).filter(r=>facilities.includes(r.facility));
-  let top=0;
-  weatherRowsVisible.forEach(r=>{const v=weatherMap[r.value]??weatherMap[Object.keys({'clear':0,'light':1,'moderate':2,'heavy':3}).find(k=>({'clear':'لا توجد أمطار','light':'أمطار خفيفة','moderate':'أمطار متوسطة','heavy':'أمطار غزيرة'}[k])===r.weather_status)]??0;top=Math.max(top,v);});
-  const weatherVal=['clear','light','moderate','heavy'][top];
-  const wi=weatherInfo(weatherVal);
-  const weatherCounts=['clear','light','moderate','heavy'].map(v=>({v,n:weatherRowsVisible.filter(r=>(r.value||({"لا توجد أمطار":'clear','أمطار خفيفة':'light','أمطار متوسطة':'moderate','أمطار غزيرة':'heavy'}[r.weather_status]||'clear'))===v).length}));
-  homeWeather.innerHTML=`<div class="weather-big"><div class="weather-big-icon">${wi.icon}</div><div><b>${wi.label}</b><span>${weatherRowsVisible.length?`تم رصد الحالة في ${weatherRowsVisible.length} منشأة`:'لم يتم تحديث الحالة المطرية بعد'}</span></div></div><div class="weather-counts">${weatherCounts.map(x=>`<div class="weather-count"><b>${x.n}</b><span>${weatherInfo(x.v).label.replace('أمطار ','')}</span></div>`).join('')}</div>`;
+  const counts={ready:0,watch:0,high:0}; facilities.forEach(f=>{const st=state(f); if(st==='جاهزة')counts.ready++; else if(st==='تحتاج متابعة عالية')counts.high++; else counts.watch++;});
+  const total=facilities.length||1;
+  homeFac.innerHTML=[['ready','جاهزة',counts.ready,'green'],['watch','تحتاج متابعة',counts.watch,'orange'],['high','تحتاج متابعة عالية',counts.high,'red']].map(x=>`<div class="pro-stat-line"><div><i class="pro-dot ${x[3]}"></i><b>${x[1]}</b><strong>${x[2]}</strong></div><div class="pro-bar"><i class="${x[3]}" style="width:${Math.round(x[2]/total*100)}%"></i></div><small>${Math.round(x[2]/total*100)}٪ من المنشآت</small></div>`).join('');
 
   const byType=new Map((capacityRows||[]).filter(r=>facilities.includes(r.facility)).map(r=>[`${r.facility}|${r.resource_type}`,r]));
-  let totalBeds=0,erTotal=0,erCurrent=0,icuTotal=0,icuCurrent=0;
-  facilities.forEach(f=>{
-    const get=t=>byType.get(`${f}|${t}`);
-    totalBeds+=Number(get('إجمالي الأسرة')?.total_capacity||0);
-    erTotal+=Number(get('أسرة الطوارئ')?.total_capacity||0); erCurrent+=Number(get('أسرة الطوارئ')?.current_count||0);
-    icuTotal+=Number(ICU_TOTALS[f]??get('أسرة العناية المركزة')?.total_capacity??0); icuCurrent+=Number(get('أسرة العناية المركزة')?.current_count||0);
-  });
-  const erVac=Math.max(0,erTotal-erCurrent), erPct=erTotal?Math.round(erVac/erTotal*100):0;
-  const icuVac=Math.max(0,icuTotal-icuCurrent), icuPct=icuTotal?Math.round(icuVac/icuTotal*100):0;
-  homeCap.innerHTML=`<div class="capacity-metrics"><div class="capacity-metric"><b>${totalBeds.toLocaleString('ar-SA')}</b><span>إجمالي الأسرة</span></div><div class="capacity-metric"><b>${erVac.toLocaleString('ar-SA')}</b><span>أسرة طوارئ شاغرة</span><div class="capacity-bar"><i style="width:${erPct}%"></i></div></div><div class="capacity-metric"><b>${erCurrent.toLocaleString('ar-SA')}</b><span>حالات الطوارئ الحالية</span></div><div class="capacity-metric"><b>${icuVac.toLocaleString('ar-SA')}</b><span>أسرة عناية شاغرة</span><div class="capacity-bar"><i style="width:${icuPct}%"></i></div></div></div><div class="capacity-note-home">التوفر في الطوارئ: ${erPct}% • التوفر في العناية المركزة: ${icuPct}%</div>`;
+  let erTotal=0,erCurrent=0; facilities.forEach(f=>{const r=byType.get(`${f}|أسرة الطوارئ`);erTotal+=Number(r?.total_capacity||0);erCurrent+=Number(r?.current_count||0);});
+  const erAvailable=Math.max(0,erTotal-erCurrent), pct=erTotal?Math.round(erAvailable/erTotal*100):0;
+  homeCap.innerHTML=`<div class="capacity-hero"><b>${erAvailable.toLocaleString('ar-SA')}</b><span>أسرة طوارئ متاحة</span><div class="capacity-ring"><i style="--p:${pct}%"></i><strong>${pct}٪</strong></div></div><div class="capacity-three"><div><b>${erTotal.toLocaleString('ar-SA')}</b><span>الإجمالي</span></div><div><b>${erCurrent.toLocaleString('ar-SA')}</b><span>مشغولة</span></div><div><b>${erAvailable.toLocaleString('ar-SA')}</b><span>متاحة</span></div></div>`;
+
+  const rw=window.regionalWeatherState;
+  homeWeather.innerHTML=rw?`<div class="regional-weather"><div class="weather-icon-pro">${rw.icon}</div><div><b>${escapeHtml(rw.label)}</b><span>منطقة جازان • ${rw.temp}°م • المحسوسة ${rw.feels}°م</span><small>الرطوبة ${rw.humidity}% • الرياح ${rw.wind} كم/س</small></div></div><div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
 }
 
 /* =====================================================
@@ -6137,5 +6108,14 @@ checkSession();
 
 </script>
 
+<style id="professional-home-v12">
+.professional-home-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:18px;align-items:stretch}.pro-panel{min-height:310px;background:var(--card,#fff);border:1px solid rgba(15,61,95,.08);border-radius:22px;padding:20px;box-shadow:0 10px 30px rgba(15,61,95,.07);overflow:hidden}.pro-panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:15px;border-bottom:1px solid rgba(15,61,95,.08)}.pro-panel-head b{display:block;font-size:16px}.pro-panel-head span{display:block;color:var(--muted);font-size:11px;margin-top:5px}.pro-panel-head button{border:0;background:transparent;color:#176b9f;font-weight:800;font-size:11px;cursor:pointer}.panel-live{white-space:nowrap!important;color:#18865b!important}.pro-content{padding-top:14px}.pro-incident-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(15,61,95,.06)}.pro-incident-row b,.pro-incident-row span{display:block}.pro-incident-row b{font-size:11px}.pro-incident-row span:not(.pro-status){font-size:10px;color:var(--muted);margin-top:4px}.pro-incident-row time{font-size:9px;color:var(--muted);white-space:nowrap}.pro-status{padding:5px 8px;border-radius:999px;font-size:9px!important;font-weight:900!important}.pro-status.red{background:#fee2e2;color:#b42318}.pro-status.orange{background:#fff1d6;color:#a15c00}.pro-status.closed{background:#e8f5ee;color:#18734c}.pro-stat-line{padding:9px 0}.pro-stat-line>div:first-child{display:flex;align-items:center;gap:8px}.pro-stat-line strong{margin-right:auto;font-size:15px}.pro-stat-line small{display:block;color:var(--muted);font-size:9px;margin-top:4px}.pro-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.pro-dot.green,.pro-bar i.green{background:#1f9d68}.pro-dot.orange,.pro-bar i.orange{background:#e89b26}.pro-dot.red,.pro-bar i.red{background:#d64545}.pro-bar{height:7px;background:#eef2f5;border-radius:99px;overflow:hidden;margin-top:8px}.pro-bar i{display:block;height:100%;border-radius:99px}.capacity-hero{display:flex;align-items:center;gap:14px}.capacity-hero>b{font-size:38px}.capacity-hero>span{font-size:11px;color:var(--muted);flex:1}.capacity-ring{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#168b62 var(--p),#edf1f3 0)}.capacity-ring i{width:58px;height:58px;border-radius:50%;background:var(--card,#fff);grid-area:1/1}.capacity-ring strong{grid-area:1/1;z-index:2;font-size:13px}.capacity-three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:24px}.capacity-three div{padding:12px 8px;background:rgba(23,107,159,.05);border-radius:14px;text-align:center}.capacity-three b,.capacity-three span{display:block}.capacity-three b{font-size:18px}.capacity-three span{font-size:9px;color:var(--muted);margin-top:3px}.regional-weather{display:flex;gap:16px;align-items:center;padding:18px 4px}.weather-icon-pro{font-size:52px}.regional-weather b{font-size:18px}.regional-weather span,.regional-weather small{display:block;color:var(--muted);font-size:10px;margin-top:6px}.weather-update-pro{font-size:9px;color:var(--muted);padding-top:12px;border-top:1px solid rgba(15,61,95,.07)}.pro-empty{padding:35px 8px;text-align:center;color:var(--muted);font-size:11px}@media(max-width:1250px){.professional-home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.professional-home-grid{grid-template-columns:1fr}.pro-panel{min-height:260px}.pro-incident-row{grid-template-columns:auto 1fr}.pro-incident-row time{grid-column:2}}
+</style>
+<script>
+window.regionalWeatherState=null;
+function weatherCodeInfo(c){if(c===0)return{label:'مشمسة وصافية',icon:'☀️'};if([1,2,3].includes(c))return{label:'غائم جزئياً',icon:'⛅'};if([51,53,55,56,57].includes(c))return{label:'رذاذ وأمطار خفيفة',icon:'🌦️'};if([61,63,65,66,67].includes(c))return{label:'أمطار',icon:'🌧️'};if([80,81,82].includes(c))return{label:'زخات مطرية',icon:'🌦️'};if([95,96,99].includes(c))return{label:'عواصف رعدية',icon:'⛈️'};return{label:'حالة جوية متغيرة',icon:'🌤️'}}
+async function loadRegionalWeather(){try{const u='https://api.open-meteo.com/v1/forecast?latitude=16.88917&longitude=42.55111&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FRiyadh';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather');const d=await r.json(),c=d.current,wi=weatherCodeInfo(c.weather_code);window.regionalWeatherState={label:wi.label,icon:wi.icon,temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),humidity:Math.round(c.relative_humidity_2m),wind:Math.round(c.wind_speed_10m),updated:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})};renderHomeSummaries()}catch(e){console.log('Regional weather unavailable',e)}}
+loadRegionalWeather();setInterval(loadRegionalWeather,86400000);
+</script>
 </body>
 </html>
