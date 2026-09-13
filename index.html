@@ -1155,6 +1155,11 @@ body>header,#app>header{display:none!important}
 }
 </style>
 
+
+<style id="update-request-permissions-v1">
+.update-request-panel{margin:12px 0;padding:14px;border:1px solid var(--ref-border,#d4e7f2);border-radius:15px;background:linear-gradient(135deg,#f7fcff,#fff);box-shadow:0 5px 18px #0c54750b}.update-request-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.update-request-head b{font-size:12px;color:var(--ref-navy,#063451)}.update-request-head span{font-size:9px;color:#6f8796}.update-request-actions{display:flex;gap:7px;flex-wrap:wrap}.update-request-btn{border:0;border-radius:10px;padding:9px 12px;font-size:10px;font-weight:900;cursor:pointer}.update-request-btn.capacity{background:#e8f4ff;color:#1269a6}.update-request-btn.weather{background:#e9f8f4;color:#087e69}.update-request-btn.close{background:#fff1f2;color:#be123c}.request-banner{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding:11px 13px;border-radius:13px;border:1px solid #b9def1;background:#eff9ff}.request-banner b{font-size:10px;color:#075985}.request-banner span{font-size:8px;color:#47758b}.request-status{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:999px;font-size:8px;font-weight:900;white-space:nowrap}.request-status.pending{background:#fff4e5;color:#b45309}.request-status.done{background:#e7f8ef;color:#087e67}.request-status.closed{background:#eef2f7;color:#64748b}.request-responses{margin-top:10px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.request-response-row{padding:8px 9px;border:1px solid #e1edf3;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:7px}.request-response-row b{font-size:9px;color:#164f74}.request-response-row small{font-size:7px;color:#7b93a0}.request-empty{padding:12px;text-align:center;color:#8aa0ad;font-size:9px}.request-alert{animation:requestPulse 1.2s ease-in-out 2}@keyframes requestPulse{50%{transform:translateY(-2px);box-shadow:0 9px 24px #0c54751c}}
+@media(max-width:700px){.request-responses{grid-template-columns:1fr}.update-request-head{align-items:flex-start}.update-request-actions{width:100%}.update-request-btn{flex:1}}
+</style>
 </head>
 
 <body>
@@ -1212,7 +1217,7 @@ body>header,#app>header{display:none!important}
   <button class="side-link" data-nav="facilities" onclick="showSectionPage('facilitiesPage','facilities')"><span class="ico">▦</span><span>المنشآت الصحية</span></button>
   <button class="side-link" data-nav="incidents" onclick="showSectionPage('incidentsPage','incidents')"><span class="ico">⚠</span><span>البلاغات</span></button>
   <button class="side-link" data-nav="capacity" onclick="showCapacityPage();setActiveNav('capacity')"><span class="ico">▱</span><span>الطاقة الاستيعابية</span></button>
-  <button class="side-link" data-nav="weather" onclick="showDashboardPage();setActiveNav('weather');setTimeout(()=>document.getElementById('homeWeatherSummary')?.scrollIntoView({behavior:'smooth'}),50)"><span class="ico">☁</span><span>الحالة المطرية</span></button>
+  <button class="side-link" data-nav="weather" onclick="showWeatherPage();setActiveNav('weather')"><span class="ico">☁</span><span>الحالة المطرية</span></button>
   <button class="side-link" data-nav="reports" onclick="showSectionPage('reportsPage','reports')"><span class="ico">▥</span><span>التقارير والإحصائيات</span></button>
   <button class="side-link" data-nav="audit" onclick="showSectionPage('auditPage','audit')"><span class="ico">▤</span><span>سجل التدقيق</span></button>
 
@@ -1356,6 +1361,21 @@ body>header,#app>header{display:none!important}
 
 </div>
 
+<!-- WEATHER - SEPARATE PAGE -->
+<div class="section" id="weatherPage" style="display:none">
+  <div class="title">🌦️ الحالة المطرية</div>
+  <div class="subline">متابعة وتحديث الحالة المطرية للمنشآت بشكل مستقل عن البلاغات.</div>
+  <div class="capacity-toolbar">
+    <button class="secondary" onclick="showDashboardPage()">↩️ العودة للوحة المتابعة</button>
+    <button class="neutral" onclick="loadWeather()">🔄 تحديث البيانات</button>
+  </div>
+  <div id="weatherRequestPanel"></div>
+  <div class="facility-status-legend">
+    <span>☀️ لا توجد أمطار</span><span>🌦️ أمطار خفيفة</span><span>🌧️ أمطار متوسطة</span><span>⛈️ أمطار غزيرة</span>
+  </div>
+  <div id="weatherPageContent"><div class="loading">جاري تحميل الحالة المطرية...</div></div>
+</div>
+
 <!-- CAPACITY - SEPARATE PAGE -->
 <div class="section" id="capacityPage" style="display:none">
   <div class="title">🛏️ الطاقة الاستيعابية</div>
@@ -1364,6 +1384,7 @@ body>header,#app>header{display:none!important}
     <button class="secondary" onclick="showDashboardPage()">↩️ العودة للوحة المتابعة</button>
     <button class="neutral" onclick="loadCapacity()">🔄 تحديث البيانات</button>
   </div>
+  <div id="capacityRequestPanel"></div>
   <div class="card"><div style="font-size:11px;font-weight:900">مؤشر الإشغال</div><div class="capacity-note">🟢 أقل من 50٪ • 🟠 من 50٪ إلى أقل من 80٪ • 🔴 80٪ فأكثر</div></div>
   <div id="capacityContent"><div class="loading">جاري تحميل الطاقة الاستيعابية...</div></div>
 </div>
@@ -1606,6 +1627,15 @@ body>header,#app>header{display:none!important}
     </div>
 
 
+    <div class="field">
+      <label class="required">نوع الحالة</label>
+      <select id="incidentMode">
+        <option value="مفاجئ">مفاجئ</option>
+        <option value="صيانة مجدولة">صيانة مجدولة</option>
+      </select>
+    </div>
+
+
     <div class="field hidden" id="otherTypeWrap">
       <label class="required">نوع البلاغ (أخرى)</label>
       <input id="otherType" placeholder="اكتب نوع البلاغ">
@@ -1831,6 +1861,14 @@ body>header,#app>header{display:none!important}
       </select>
     </div>
 
+    <div class="field">
+      <label class="required">نوع الحالة</label>
+      <select id="editIncidentMode">
+        <option value="مفاجئ">مفاجئ</option>
+        <option value="صيانة مجدولة">صيانة مجدولة</option>
+      </select>
+    </div>
+
     <div class="field hidden" id="editOtherTypeWrap">
       <label class="required">نوع البلاغ (أخرى)</label>
       <input id="editOtherType" placeholder="اكتب نوع البلاغ">
@@ -2049,6 +2087,9 @@ let weatherRealtimeRefreshTimer=null;
 let weatherRecentlyUpdated=new Set();
 let weatherUpdatedAtMap=new Map();
 let weatherRows=[];
+let activeUpdateRequests={capacity:null,weather:null};
+let updateRequestResponses={capacity:[],weather:[]};
+let updateRequestRealtimeChannel=null;
 const WEATHER_OPTIONS=[
   {value:"clear",label:"لا توجد أمطار",icon:"☀️"},
   {value:"light",label:"أمطار خفيفة",icon:"🌦️"},
@@ -2433,6 +2474,7 @@ async function startApp(){
   await loadData();
   await loadWeather();
   await loadCapacity();
+  await loadUpdateRequests();
 
   render();
   showDashboardPage();
@@ -2441,6 +2483,7 @@ async function startApp(){
     startIncidentRealtime();
   startCapacityRealtime();
   startWeatherRealtime();
+  startUpdateRequestRealtime();
 }
 
 
@@ -2633,6 +2676,95 @@ function stopWeatherRealtime(){
   }
 }
 
+
+/* =====================================================
+   UPDATE REQUESTS — CENTRAL OPERATIONS PERMISSION
+===================================================== */
+function isCentralAdmin(){ return !!(profile && profile.role==='admin'); }
+function requestTypeLabel(type){ return type==='capacity' ? 'الطاقة الاستيعابية' : 'الحالة المطرية'; }
+function requestIcon(type){ return type==='capacity' ? '🛏️' : '🌦️'; }
+function requestPanelHtml(type){
+  const host=type==='capacity'?'capacityRequestPanel':'weatherRequestPanel';
+  const req=activeUpdateRequests[type];
+  const responses=updateRequestResponses[type]||[];
+  const responded=new Map(responses.map(r=>[r.facility,r]));
+  if(!req){
+    return isCentralAdmin()
+      ? `<div class="update-request-panel"><div class="update-request-head"><div><b>${requestIcon(type)} طلب تحديث ${requestTypeLabel(type)}</b><span>لا يوجد طلب تحديث نشط حاليًا.</span></div><div class="update-request-actions"><button class="update-request-btn ${type}" onclick="createUpdateRequest('${type}')">📣 طلب تحديث ${type==='capacity'?'الطاقة':'الحالة المطرية'}</button></div></div></div>`
+      : '';
+  }
+  const count=responses.length;
+  const total=allFacilities.length;
+  const adminActions=isCentralAdmin()?`<button class="update-request-btn close" onclick="closeUpdateRequest('${req.id}','${type}')">✖️ إغلاق الطلب</button>`:'';
+  const rows=isCentralAdmin()?allFacilities.map(f=>{
+    const r=responded.get(f);
+    return `<div class="request-response-row"><b>${escapeHtml(f)}</b>${r?`<span class="request-status done">✅ تم التحديث<br><small>${fmtDate(r.updated_at)}</small></span>`:`<span class="request-status pending">⏳ بانتظار التحديث</span>`}</div>`;
+  }).join(''):'';
+  return `<div class="update-request-panel request-alert"><div class="update-request-head"><div><b>${requestIcon(type)} طلب تحديث ${requestTypeLabel(type)}</b><span>صدر من عمليات تجمع جازان الصحي • ${fmtDate(req.created_at)}</span></div><div class="update-request-actions">${adminActions}</div></div><div style="margin-top:8px"><span class="request-status ${isCentralAdmin()?'pending':(responded.has(profile?.facility)?'done':'pending')}">${isCentralAdmin()?`📊 ${count}/${total} منشأة استجابت`:(responded.has(profile?.facility)?'✅ تم تسجيل استجابتك':'🔔 مطلوب تحديث بيانات منشأتك')}</span></div>${rows?`<div class="request-responses">${rows}</div>`:''}</div>`;
+}
+async function loadUpdateRequests(){
+  if(!profile) return;
+  const {data:requests,error}=await supabaseClient.from('update_requests').select('*').order('created_at',{ascending:false});
+  if(error){console.log('Update requests load:',error.message);return;}
+  activeUpdateRequests={capacity:null,weather:null};
+  (requests||[]).filter(r=>r.status==='active').forEach(r=>{ if(!activeUpdateRequests[r.request_type]) activeUpdateRequests[r.request_type]=r; });
+  updateRequestResponses={capacity:[],weather:[]};
+  for(const type of ['capacity','weather']){
+    const req=activeUpdateRequests[type];
+    if(!req) continue;
+    const {data:resp,error:respError}=await supabaseClient.from('update_request_responses').select('*').eq('request_id',req.id).order('updated_at',{ascending:false});
+    if(!respError) updateRequestResponses[type]=resp||[];
+  }
+  const cp=document.getElementById('capacityRequestPanel'); if(cp) cp.innerHTML=requestPanelHtml('capacity');
+  const wp=document.getElementById('weatherRequestPanel'); if(wp) wp.innerHTML=requestPanelHtml('weather');
+  renderWeatherPage();
+}
+async function createUpdateRequest(type){
+  if(!isCentralAdmin()){toast('❌ هذه الصلاحية متاحة لحساب عمليات تجمع جازان الصحي فقط');return;}
+  if(!['capacity','weather'].includes(type))return;
+  if(activeUpdateRequests[type]){toast(`⚠️ يوجد طلب تحديث نشط لـ ${requestTypeLabel(type)}`);return;}
+  const {data:created,error}=await supabaseClient.from('update_requests').insert({request_type:type,status:'active',created_by:currentUser.id}).select().single();
+  if(error){toast('❌ تعذر إنشاء طلب التحديث: '+error.message);return;}
+  activeUpdateRequests[type]=created;
+  updateRequestResponses[type]=[];
+  toast(`📣 تم إرسال طلب تحديث ${requestTypeLabel(type)} لجميع المنشآت`);
+  await loadUpdateRequests();
+}
+async function closeUpdateRequest(id,type){
+  if(!isCentralAdmin())return;
+  const {error}=await supabaseClient.from('update_requests').update({status:'closed',closed_at:new Date().toISOString()}).eq('id',id);
+  if(error){toast('❌ تعذر إغلاق الطلب: '+error.message);return;}
+  activeUpdateRequests[type]=null; updateRequestResponses[type]=[];
+  toast(`✅ تم إغلاق طلب تحديث ${requestTypeLabel(type)}`); await loadUpdateRequests();
+}
+async function recordUpdateResponse(type,requestId,facility){
+  if(!currentUser||!profile||profile.role==='admin'||!requestId||!facility)return;
+  const {error}=await supabaseClient.from('update_request_responses').upsert({request_id:requestId,facility,updated_at:new Date().toISOString(),updated_by:currentUser.id},{onConflict:'request_id,facility'});
+  if(error){console.log('Update response:',error.message);return;}
+  await loadUpdateRequests();
+}
+function startUpdateRequestRealtime(){
+  if(!profile)return;
+  if(updateRequestRealtimeChannel){try{supabaseClient.removeChannel(updateRequestRealtimeChannel)}catch(e){} updateRequestRealtimeChannel=null;}
+  updateRequestRealtimeChannel=supabaseClient.channel('jahizia-update-requests-realtime')
+    .on('postgres_changes',{event:'*',schema:'public',table:'update_requests'},()=>loadUpdateRequests())
+    .on('postgres_changes',{event:'*',schema:'public',table:'update_request_responses'},()=>loadUpdateRequests())
+    .subscribe(status=>console.log('Update requests realtime:',status));
+}
+function stopUpdateRequestRealtime(){ if(updateRequestRealtimeChannel){try{supabaseClient.removeChannel(updateRequestRealtimeChannel)}catch(e){} updateRequestRealtimeChannel=null;} }
+function showWeatherPage(){
+  document.querySelectorAll('.section').forEach(el=>{if(el.id!=='weatherPage')el.style.display='none';});
+  const page=document.getElementById('weatherPage'); if(page)page.style.display='block';
+  const cp=document.getElementById('capacityPage'); if(cp)cp.style.display='none';
+  setActiveNav('weather'); loadWeather(); loadUpdateRequests(); window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderWeatherPage(){
+  const el=document.getElementById('weatherPageContent'); if(!el||!profile)return;
+  const facilities=profile.role==='admin'?allFacilities:[profile.facility];
+  const map={'لا توجد أمطار':'clear','أمطار خفيفة':'light','أمطار متوسطة':'moderate','أمطار غزيرة':'heavy'};
+  const sorted=[...facilities].sort((a,b)=>(weatherUpdatedAtMap.get(b)?new Date(weatherUpdatedAtMap.get(b)):0)-(weatherUpdatedAtMap.get(a)?new Date(weatherUpdatedAtMap.get(a)):0));
+  el.innerHTML='<div class="capacity-grid">'+sorted.map(f=>{const wr0=weatherRows.find(x=>x.facility===f)||{weather_status:'لا توجد أمطار',updated_at:null};const value=map[wr0.weather_status]||wr0.value||'clear';const wi=weatherInfo(value);const editable=profile.role!=='admin'&&profile.facility===f;const updated=weatherRecentlyUpdated.has(f);return `<div class="capacity-card ${updated?'weather-card-updated':''}" data-weather-facility="${escapeAttr(f)}"><div class="capacity-head"><div><div class="capacity-facility">${escapeHtml(f)}</div><div class="capacity-resource">🌦️ الحالة المطرية</div></div><span class="weather-current">${wi.icon} ${wi.label}</span></div>${editable?weatherSelect(value):`<div class="capacity-note">آخر تحديث: ${wr0.updated_at?fmtDate(wr0.updated_at):'لم يتم التحديث'}</div>`}</div>`;}).join('')+'</div>';
+}
 
 /* =====================================================
    DATA
@@ -3084,7 +3216,7 @@ function showCapacityPage(){
   document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage') el.style.display='none';});
   document.getElementById('capacityPage').style.display='block';
   document.getElementById('capacitySubtitle').textContent=profile&&profile.role==='admin'?'عرض مركزي للطاقة الاستيعابية المحدثة من المنشآت • الإدارة المركزية لا تعدّل البيانات.':`تحديث الطاقة الاستيعابية لـ ${profile.facility}`;
-  loadCapacity(); window.scrollTo({top:0,behavior:'smooth'});
+  loadCapacity(); loadUpdateRequests(); window.scrollTo({top:0,behavior:'smooth'});
 }
 function showDashboardPage(){
   document.querySelectorAll('.section').forEach(el=>el.style.display='none');
@@ -3222,6 +3354,7 @@ async function saveCapacity(key){
   ];
   const {error}=await supabaseClient.from('facility_capacity').upsert(payloads,{onConflict:'facility,resource_type'});
   if(error){toast('❌ لم يتم حفظ الطاقة الاستيعابية: '+error.message);return;}
+  if(activeUpdateRequests.capacity) await recordUpdateResponse('capacity',activeUpdateRequests.capacity.id,facility);
   toast('✅ تم تحديث الطاقة الاستيعابية بنجاح'); await loadCapacity();
 }
 
@@ -3250,6 +3383,8 @@ async function loadWeather(){
   });
   renderFacilities();
   renderHomeSummaries();
+  renderWeatherPage();
+  const wp=document.getElementById('weatherRequestPanel'); if(wp) wp.innerHTML=requestPanelHtml('weather');
 }
 async function saveWeather(value){
   if(!profile || !currentUser || profile.role==='admin'){
@@ -3298,8 +3433,9 @@ async function saveWeather(value){
   }
 
   weatherUpdatedAtMap.set(targetFacility,now);
+  if(activeUpdateRequests.weather) await recordUpdateResponse('weather',activeUpdateRequests.weather.id,targetFacility);
   toast(`✅ تم تحديث الحالة المطرية لـ ${targetFacility}`);
-  await loadWeather();
+  await loadWeather(); renderWeatherPage();
 }
 
 /* =====================================================
@@ -3336,7 +3472,6 @@ function renderFacilities(){
 
     const systems=[
       "الكهرباء",
-      "اختبار مولدات",
       "الطاقة الاحتياطية",
       "المياه",
       "التكييف",
@@ -5010,6 +5145,10 @@ async function saveIncident(){
     document.getElementById("type").value;
 
 
+  const incidentMode =
+    document.getElementById("incidentMode").value;
+
+
   const otherType =
     document.getElementById("otherType").value.trim();
 
@@ -5071,6 +5210,14 @@ async function saveIncident(){
   if(!selectedFacility){
 
     toast("⚠️ اختر المنشأة");
+
+    return;
+  }
+
+
+  if(!incidentMode){
+
+    toast("⚠️ اختر نوع الحالة");
 
     return;
   }
@@ -5152,6 +5299,8 @@ async function saveIncident(){
     facility:selectedFacility,
 
     type,
+
+    incident_mode:incidentMode,
 
     other_type:
       type==="أخرى"
@@ -5283,6 +5432,8 @@ function clearIncidentForm(){
 
   document.getElementById("type").value="الكهرباء";
 
+  document.getElementById("incidentMode").value="مفاجئ";
+
   document.getElementById("scope").value="كلي";
 
   document.getElementById("power").value="داخلي";
@@ -5323,6 +5474,11 @@ async function showDetails(id){
       <div class="breakdown-row">
         <span>نوع البلاغ</span>
         <b>${escapeHtml(currentType(x))}</b>
+      </div>
+
+      <div class="breakdown-row">
+        <span>نوع الحالة</span>
+        <b>${escapeHtml(x.incident_mode || "مفاجئ")}</b>
       </div>
 
       ${
@@ -5539,7 +5695,7 @@ async function loadIncidentAudit(incidentId){
   }
 
   const labels={
-    facility:"المنشأة",type:"نوع البلاغ",other_type:"نوع البلاغ (أخرى)",power:"مصدر الكهرباء",
+    facility:"المنشأة",type:"نوع البلاغ",incident_mode:"نوع الحالة",other_type:"نوع البلاغ (أخرى)",power:"مصدر الكهرباء",
     scope:"النطاق",department:"القسم المتأثر",service_impact:"تأثير الخدمات",source:"مصدر البلاغ",
     reporter:"المبلّغ",start_time:"وقت البداية",end_time:"وقت النهاية",description:"الوصف",note:"الملاحظات",
     status:"حالة البلاغ",generator_status:"حالة المولد",electronic_system:"النظام الإلكتروني",
@@ -5692,6 +5848,7 @@ function openEdit(id){
   fillEditFacilitySelect();
   document.getElementById("editFacility").value=x.facility || "";
   document.getElementById("editType").value=x.type || "الكهرباء";
+  document.getElementById("editIncidentMode").value=x.incident_mode || "مفاجئ";
   document.getElementById("editOtherType").value=x.other_type || "";
   document.getElementById("editPower").value=x.power || "داخلي";
   document.getElementById("editGeneratorStatus").value=x.generator_status || "لا يعمل";
@@ -5722,6 +5879,7 @@ async function saveEditedIncident(){
 
   const facility=document.getElementById("editFacility").value;
   const type=document.getElementById("editType").value;
+  const incidentMode=document.getElementById("editIncidentMode").value;
   const otherType=document.getElementById("editOtherType").value.trim();
   const power=document.getElementById("editPower").value;
   const generatorStatus=document.getElementById("editGeneratorStatus").value;
@@ -5738,6 +5896,7 @@ async function saveEditedIncident(){
   const note=document.getElementById("editNote").value.trim();
 
   if(!facility){toast("⚠️ اختر المنشأة");return;}
+  if(!incidentMode){toast("⚠️ اختر نوع الحالة");return;}
   if(type==="أخرى"&&!otherType){toast("⚠️ اكتب نوع البلاغ");return;}
   if(type==="النظام الإلكتروني"&&!electronicSystem){toast("⚠️ اكتب اسم النظام الإلكتروني المتأثر");return;}
   if(scope==="جزئي"&&!department){toast("⚠️ اكتب القسم المتأثر");return;}
@@ -5751,6 +5910,7 @@ async function saveEditedIncident(){
 
   const payload={
     facility,type,
+    incident_mode:incidentMode,
     other_type:type==="أخرى"?otherType:null,
     power:type==="الكهرباء"?power:null,
     generator_status:(type==="الكهرباء"||type==="اختبار مولدات")?generatorStatus:null,
