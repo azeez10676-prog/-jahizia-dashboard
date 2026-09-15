@@ -1176,6 +1176,71 @@ body>header,#app>header{display:none!important}
 @media(max-width:900px){.reference-hero .command-copy{gap:10px!important}.jazan-hero-logo{width:48px!important;height:48px!important;flex-basis:48px!important;border-radius:14px!important}.jazan-hero-logo img{width:108px!important}.blue-header-identity{padding-right:8px!important}.blue-header-identity .identity-name{font-size:12px!important}}
 </style>
 
+
+<style id="capacity-visual-upgrade">
+/* CAPACITY — premium operational visual treatment */
+.capacity-grid{gap:14px!important;align-items:stretch}
+.capacity-card{position:relative;overflow:hidden!important;border:1px solid #d9e7f2!important;border-radius:20px!important;background:linear-gradient(180deg,#ffffff 0%,#f8fbfe 100%)!important;box-shadow:0 10px 30px rgba(11,39,68,.07)!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.capacity-card:before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#2563eb,#14b8a6);opacity:.95}
+.capacity-card:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(11,39,68,.11)!important;border-color:#b9d6e8!important}
+.capacity-head{padding-top:3px!important;margin-bottom:12px!important}
+.capacity-facility{font-size:15px!important;color:#0b2744;letter-spacing:-.2px}
+.capacity-resource{color:#527087!important;font-weight:700}
+.capacity-items{gap:9px!important}
+.capacity-item{border:1px solid #e0eaf2!important;background:#f7fafc!important;border-radius:13px!important;padding:10px 11px!important}
+.capacity-item>span{color:#334e68!important}
+.capacity-item>strong{color:#0b2744!important;font-variant-numeric:tabular-nums;font-family:Inter,Segoe UI,Arial,sans-serif}
+.capacity-icu,.capacity-er{background:linear-gradient(135deg,#f7fbff,#eef7fc)!important;border-color:#cfe3f0!important}
+.capacity-icu-head,.capacity-er-head{color:#123b63!important}
+.capacity-er-badge{background:#e7f3fb!important;color:#2563a6!important;border:1px solid #cfe5f4}
+.capacity-icu-values,.capacity-er-values{gap:8px!important}
+.capacity-icu-values>div,.capacity-er-values>div{background:#fff;border:1px solid #e4edf4;border-radius:10px;padding:7px 6px;min-height:52px;justify-content:center}
+.capacity-icu-values small,.capacity-er-values small{color:#6b7f90!important;font-weight:700}
+.capacity-icu-values b,.capacity-er-values b{font-size:14px!important;color:#0b2744!important;font-variant-numeric:tabular-nums;font-family:Inter,Segoe UI,Arial,sans-serif}
+.capacity-progress{height:9px!important;background:#e7edf2!important;border-radius:999px!important;margin-top:8px!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}
+.capacity-progress>span{box-shadow:0 0 10px rgba(37,99,235,.18)}
+.capacity-status{padding:6px 9px!important;font-size:9px!important;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.capacity-status.green{background:#e9f9f0!important;color:#12834b!important;border:1px solid #c9efd9}
+.capacity-status.orange{background:#fff5e6!important;color:#c56b00!important;border:1px solid #ffe0ad}
+.capacity-status.red{background:#ffeded!important;color:#d12626!important;border:1px solid #ffcaca}
+.capacity-input{font-family:Inter,Segoe UI,Arial,sans-serif!important;font-variant-numeric:tabular-nums!important;direction:ltr!important;text-align:center!important;font-weight:900!important;font-size:13px!important;border:1px solid #cbdde9!important;background:#fff!important;color:#0b2744!important}
+.capacity-input:focus{border-color:#2684c6!important;box-shadow:0 0 0 3px rgba(38,132,198,.12)!important;outline:none}
+.capacity-icu-status{font-weight:800!important}
+.capacity-card .primary{border-radius:12px!important;background:linear-gradient(135deg,#1769aa,#1683b8)!important;box-shadow:0 6px 16px rgba(23,105,170,.18)}
+.capacity-note{font-size:9px!important;color:#6b7f90!important}
+body.dark .capacity-card{background:linear-gradient(180deg,#172033,#142033)!important;border-color:#2c4258!important}
+body.dark .capacity-facility,body.dark .capacity-item>strong,body.dark .capacity-icu-values b,body.dark .capacity-er-values b{color:#f1f5f9!important}
+body.dark .capacity-item{background:#17283a!important;border-color:#2c4258!important}
+body.dark .capacity-icu,body.dark .capacity-er{background:#162b40!important;border-color:#2c5069!important}
+body.dark .capacity-icu-values>div,body.dark .capacity-er-values>div{background:#18283a!important;border-color:#30465a!important}
+body.dark .capacity-input{background:#0f172a!important;color:#f1f5f9!important;border-color:#38516d!important}
+@media(max-width:700px){.capacity-card{border-radius:16px!important}.capacity-facility{font-size:13px!important}}
+</style>
+
+<style id="central-report-upgrade">
+.report-help{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5}
+#reportFacility{min-height:118px}
+#reportFacility option{padding:6px}
+.report-header{position:relative;overflow:hidden}
+.report-brand{display:flex;align-items:center;gap:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.22);margin-bottom:12px}
+.report-brand-logo{width:58px;height:58px;border-radius:16px;background:#fff;display:grid;place-items:center;padding:6px;box-shadow:0 8px 20px rgba(0,0,0,.16);flex:0 0 auto}
+.report-brand-logo img{width:100%;height:100%;object-fit:contain}
+.report-brand-kicker{font-size:11px;font-weight:800;opacity:.9;margin-bottom:3px}
+.report-brand h2{margin:0;font-size:20px;letter-spacing:-.3px}
+.report-brand-sub{font-size:10px;opacity:.82;margin-top:4px}
+@media(max-width:700px){.report-brand h2{font-size:17px}.report-brand-logo{width:48px;height:48px}}
+</style>
+
+<style id="approved-home-cleanup">
+/* الصفحة الرئيسية المعتمدة: الملخص + آخر البلاغات + الجاهزية + الطقس + الطاقة الاستيعابية فقط */
+#homeMapSummary, #homeActiveOnlySummary { display:none !important; }
+</style>
+
+<style id="homepage-strict-visibility">
+/* الصفحة الرئيسية: عرض الملخص المعتمد فقط، وإخفاء صفحات التفاصيل من نفس الشاشة */
+body.home-dashboard-mode .section:not(.dashboard-home){display:none !important;}
+body.home-dashboard-mode .dashboard-home{display:block !important;}
+</style>
 </head>
 
 <body>
@@ -1303,15 +1368,6 @@ body>header,#app>header{display:none!important}
       <div class="pro-panel-head"><div><b>الطاقة الاستيعابية</b><span>ملخص طاقة الطوارئ على مستوى المنطقة</span></div><button onclick="showCapacityPage();setActiveNav('capacity')">التفاصيل ←</button></div>
       <div id="homeCapacityContent" class="pro-content"><div class="mini-empty">جاري تحميل الطاقة الاستيعابية...</div></div>
     </div>
-    <div class="pro-panel pro-map" id="homeMapSummary">
-      <div class="pro-panel-head"><div><b>المنشآت الصحية وحالتها</b><span>التوزيع التشغيلي لمنشآت التجمع</span></div><button onclick="document.getElementById('facilities').scrollIntoView({behavior:'smooth'})">عرض الكل ←</button></div>
-      <div id="homeMapContent" class="pro-content"><div class="mini-empty">جاري تحميل الخريطة...</div></div>
-    </div>
-    <div class="pro-panel pro-active-only" id="homeActiveOnlySummary">
-      <div class="pro-panel-head"><div><b>البلاغات الأخيرة (النشطة)</b><span>أولوية البلاغات حسب مستوى المتابعة</span></div><button onclick="document.getElementById('openIncidents').scrollIntoView({behavior:'smooth'})">عرض الكل ←</button></div>
-      <div id="homeActiveOnlyContent" class="pro-content"><div class="mini-empty">جاري تحميل البلاغات...</div></div>
-    </div>
-
     <div class="pro-panel pro-weather" id="homeWeatherSummary">
       <div class="pro-panel-head"><div><b>طقس منطقة جازان</b><span>الحالة الجوية الحالية والتحديث اليومي</span></div><span class="panel-live">● مباشر</span></div>
       <div id="homeWeatherContent" class="pro-content"><div class="mini-empty">جاري تحميل الطقس...</div></div>
@@ -1392,36 +1448,8 @@ body>header,#app>header{display:none!important}
     جميع البلاغات التي تم إغلاقها حسب صلاحية الحساب.
   </div>
 
-  <div class="card table-wrap">
-
-    <table>
-
-      <thead>
-
-        <tr>
-          <th>المنشأة</th>
-          <th>نوع البلاغ</th>
-          <th>النطاق</th>
-          <th>البداية</th>
-          <th>النهاية</th>
-          <th>المدة</th>
-          <th id="historyActionHeader"></th>
-        </tr>
-
-      </thead>
-
-      <tbody id="history">
-
-        <tr>
-          <td colspan="7" class="empty">
-            جاري التحميل...
-          </td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
+  <div id="history" class="incident-history-list">
+    <div class="history-loading">جاري تحميل السجل...</div>
   </div>
 
 </div>
@@ -1481,9 +1509,10 @@ body>header,#app>header{display:none!important}
           المنشأة
         </label>
 
-        <select id="reportFacility">
+        <select id="reportFacility" aria-label="اختيار المنشآت">
           <option value="">جميع المنشآت</option>
         </select>
+        <div class="report-help">يمكن اختيار منشأة واحدة أو عدة منشآت. اترك «جميع المنشآت» للتقرير الشامل.</div>
       </div>
 
       <div>
@@ -1497,8 +1526,19 @@ body>header,#app>header{display:none!important}
           <option>المياه</option>
           <option>التكييف</option>
           <option>النظام الإلكتروني</option>
-          <option>اختبار مولدات</option>
+          <option>الطاقة الاحتياطية</option>
           <option>أخرى</option>
+        </select>
+      </div>
+
+      <div>
+        <label style="font-size:10px;color:var(--muted)">
+          نوع الحالة
+        </label>
+        <select id="reportIncidentKind">
+          <option value="">كل الحالات</option>
+          <option value="مفاجئ">عطل / مفاجئ</option>
+          <option value="صيانة مجدولة">صيانة مجدولة</option>
         </select>
       </div>
 
@@ -1514,6 +1554,7 @@ body>header,#app>header{display:none!important}
           <option value="day">يومي</option>
           <option value="week">أسبوعي</option>
           <option value="month">شهري</option>
+          <option value="year">سنوي</option>
           <option value="custom">فترة مخصصة</option>
 
         </select>
@@ -1562,8 +1603,8 @@ body>header,#app>header{display:none!important}
 
       <button
         class="report-print"
-        onclick="printReport()">
-        🖨️ طباعة
+        onclick="exportReport()">
+        ⬇️ تصدير التقرير
       </button>
 
     </div>
@@ -2990,7 +3031,7 @@ function renderHomeSummaries(){
   const byType=new Map((capacityRows||[]).filter(r=>facilities.includes(r.facility)).map(r=>[`${r.facility}|${r.resource_type}`,r]));
   let erTotal=0,erCurrent=0; facilities.forEach(f=>{const r=byType.get(`${f}|أسرة الطوارئ`);erTotal+=Number(r?.total_capacity||0);erCurrent+=Number(r?.current_count||0);});
   const erAvailable=Math.max(0,erTotal-erCurrent), pct=erTotal?Math.round(erAvailable/erTotal*100):0;
-  homeCap.innerHTML=`<div class="capacity-hero"><b>${erAvailable.toLocaleString('ar-SA')}</b><span>أسرة طوارئ متاحة</span><div class="capacity-ring"><i style="--p:${pct}%"></i><strong>${pct}٪</strong></div></div><div class="capacity-three"><div><b>${erTotal.toLocaleString('ar-SA')}</b><span>الإجمالي</span></div><div><b>${erCurrent.toLocaleString('ar-SA')}</b><span>مشغولة</span></div><div><b>${erAvailable.toLocaleString('ar-SA')}</b><span>متاحة</span></div></div>`;
+  homeCap.innerHTML=`<div class="capacity-hero"><b>${erAvailable.toLocaleString('en-US')}</b><span>أسرة طوارئ متاحة</span><div class="capacity-ring"><i style="--p:${pct}%"></i><strong>${pct}٪</strong></div></div><div class="capacity-three"><div><b>${erTotal.toLocaleString('en-US')}</b><span>الإجمالي</span></div><div><b>${erCurrent.toLocaleString('en-US')}</b><span>مشغولة</span></div><div><b>${erAvailable.toLocaleString('en-US')}</b><span>متاحة</span></div></div>`;
 
   const rw=window.regionalWeatherState;
   homeWeather.innerHTML=rw?`<div class="regional-weather"><div class="weather-icon-pro">${rw.icon}</div><div><b>${escapeHtml(rw.label)}</b><span>منطقة جازان • ${rw.temp}°م • المحسوسة ${rw.feels}°م</span><small>الرطوبة ${rw.humidity}% • الرياح ${rw.wind} كم/س</small></div></div><div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
@@ -3202,19 +3243,30 @@ function showCapacityPage(){
   loadCapacity(); loadUpdateRequests(); window.scrollTo({top:0,behavior:'smooth'});
 }
 function showDashboardPage(){
+  document.body.classList.add('home-dashboard-mode');
   document.querySelectorAll('.section').forEach(el=>el.style.display='none');
   const home=document.querySelector('.dashboard-home');
   if(home) home.style.display='block';
-  const cp=document.getElementById('capacityPage');
-  if(cp) cp.style.display='none';
   setActiveNav('dashboard');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function showSectionPage(sectionId, navKey){
+  document.body.classList.remove('home-dashboard-mode');
   document.querySelectorAll('.section').forEach(el=>el.style.display='none');
-  const page=document.getElementById(sectionId);
-  if(page) page.style.display='block';
+
+  // التقارير تتكون من قسم الإحصائيات + لوحة إنشاء التقرير المركزي.
+  // يجب إظهار القسمين معًا عند فتح التقارير، وليس قسم الإحصائيات فقط.
+  if(navKey==='reports'){
+    const summary=document.getElementById('reportsPage');
+    const central=document.getElementById('centralReports');
+    if(summary) summary.style.display='block';
+    if(central && profile && profile.role==='admin') central.style.display='block';
+  }else{
+    const page=document.getElementById(sectionId);
+    if(page) page.style.display='block';
+  }
+
   const cp=document.getElementById('capacityPage');
   if(cp) cp.style.display='none';
   setActiveNav(navKey);
@@ -3256,7 +3308,7 @@ function capacityCard(rows,facility){
   const erOccupied=Math.max(0,Math.min(erTotal,Number(er.current_count||0)));
   const erVacant=Math.max(0,erTotal-erOccupied);
   const st=erCapacityStatus(erTotal,erOccupied),pct=st.pct.toFixed(0),key=escapeAttr(facility);
-  const input=(id,val)=>editable?`<input class="capacity-input" id="${id}" type="number" min="0" step="1" value="${Number(val||0)}">`:`<b>${Number(val||0)}</b>`;
+  const input=(id,val)=>editable?`<input class="capacity-input" id="${id}" type="number" min="0" step="1" value="${Number(val||0)}">`:`<b>${Number(val||0).toLocaleString('en-US')}</b>`;
   const recentlyUpdated=capacityRecentlyUpdated.has(facility);
   return `<div class="capacity-card${recentlyUpdated?' capacity-updated':''}" data-capacity-facility="${escapeAttr(facility)}">
     <div class="capacity-head">
@@ -3268,18 +3320,18 @@ function capacityCard(rows,facility){
       <div class="capacity-item capacity-icu">
         <div class="capacity-icu-head"><span>🏥 أسرة العناية المركزة</span><span class="capacity-er-badge">التوفر</span></div>
         <div class="capacity-icu-values">
-          <div><small>الإجمالي</small><b>${icuTotal}</b></div>
-          <div><small>المشغولة حاليًا</small>${editable?`<input class="capacity-input" id="cap-icu-occupied-${key}" type="number" min="0" max="${icuTotal}" step="1" value="${icuOccupied}">`:`<b>${icuOccupied}</b>`}</div>
+          <div><small>الإجمالي</small><b>${icuTotal.toLocaleString('en-US')}</b></div>
+          <div><small>المشغولة حاليًا</small>${editable?`<input class="capacity-input" id="cap-icu-occupied-${key}" type="number" min="0" max="${icuTotal}" step="1" value="${icuOccupied}">`:`<b>${icuOccupied.toLocaleString('en-US')}</b>`}</div>
           <div><small>نسبة توفر الشاغر</small><b>${icuPct}%</b></div>
         </div>
         <div class="capacity-progress"><span style="width:${icuPct}%;background:var(--${icuSt.cls})"></span></div>
-        <div class="capacity-icu-status">${icuSt.cls==='green'?'🟢':icuSt.cls==='orange'?'🟠':'🔴'} ${icuSt.label} • الشاغرة ${icuVacant}</div>
+        <div class="capacity-icu-status">${icuSt.cls==='green'?'🟢':icuSt.cls==='orange'?'🟠':'🔴'} ${icuSt.label} • الشاغرة ${icuVacant.toLocaleString('en-US')}</div>
       </div>
       <div class="capacity-item"><span>أسرة التنويم</span><strong>${input(`cap-inpatient-${key}`,inpatient.total_capacity)}</strong></div>
       <div class="capacity-item capacity-er"><div class="capacity-er-head"><span>أسرة الطوارئ</span><span class="capacity-er-badge">التوفر</span></div>
         <div class="capacity-er-values"><div><small>الإجمالي</small>${input(`cap-er-total-${key}`,erTotal)}</div><div><small>المشغولة حاليًا</small>${input(`cap-er-current-${key}`,erOccupied)}</div><div><small>نسبة توفر الشاغر</small><b>${pct}%</b></div></div>
         <div class="capacity-progress"><span style="width:${pct}%;background:var(--${st.cls})"></span></div>
-        <div class="capacity-icu-status">${st.cls==='green'?'🟢':st.cls==='orange'?'🟠':'🔴'} ${st.label} • الشاغرة ${erVacant}</div>
+        <div class="capacity-icu-status">${st.cls==='green'?'🟢':st.cls==='orange'?'🟠':'🔴'} ${st.label} • الشاغرة ${erVacant.toLocaleString('en-US')}</div>
       </div>
     </div>
     ${editable?`<button class="primary" style="width:100%;margin-top:10px" onclick="saveCapacity('${key}')">💾 حفظ</button>`:`<div class="capacity-note">آخر تحديث: ${er.updated_at?fmtDate(er.updated_at):'لم يتم التحديث'}</div>`}
@@ -3620,104 +3672,49 @@ function renderHistory(){
 
   const facilities=visibleFacilities();
 
-
   const history =
     data.incidents
-      .filter(
-        x =>
-          x.end_time &&
-          facilities.includes(x.facility)
-      )
+      .filter(x => x.end_time && facilities.includes(x.facility))
       .slice()
-      .reverse();
+      .sort((a,b)=>new Date(b.end_time||b.start_time)-new Date(a.end_time||a.start_time));
 
+  const admin = profile && profile.role==="admin";
+  const box=document.getElementById("history");
+  if(!box) return;
 
-  const admin =
-    profile &&
-    profile.role==="admin";
+  if(!history.length){
+    box.innerHTML='<div class="history-empty">📋 لا يوجد بلاغات مغلقة في السجل</div>';
+    return;
+  }
 
-
-  document.getElementById("historyActionHeader").textContent =
-    admin ? "الإجراء" : "";
-
-
-  const colspan=admin ? 7 : 6;
-
-
-  document.getElementById("history").innerHTML =
-
-    history.length
-
-    ?
-
-    history.map(x=>`
-
-      <tr>
-
-        <td>${escapeHtml(x.facility)}</td>
-
-        <td>${escapeHtml(currentType(x))}</td>
-
-        <td>
-
-          ${escapeHtml(x.scope || "-")}
-
-          ${
-            x.scope==="جزئي"
-            ? ` — ${escapeHtml(x.department || "-")}`
-            : ""
-          }
-
-        </td>
-
-        <td>${fmtDate(x.start_time)}</td>
-
-        <td>${fmtDate(x.end_time)}</td>
-
-        <td>${dur(x.start_time,x.end_time)}</td>
-
-        ${
-          admin
-
-          ?
-
-          `<td>
-
-            <button
-              class="admin-button"
-              onclick="openEdit('${x.id}')">
-              ✏️ تعديل
-            </button>
-
-            <button
-              class="delete-btn"
-              onclick="deleteIncident('${x.id}')">
-              🗑️ حذف
-            </button>
-
-          </td>`
-
-          :
-
-          ""
-
-        }
-
-      </tr>
-
-    `).join("")
-
-    :
-
-    `
-      <tr>
-        <td colspan="${colspan}" class="empty">
-          لا يوجد سجل
-        </td>
-      </tr>
-    `;
+  box.innerHTML=history.map(x=>{
+    const type=currentType(x);
+    const iconType=icon(type);
+    const severity=incidentSeverity(x);
+    const severityClass=severity==='يحتاج متابعة عالية'?'critical':(severity==='يحتاج متابعة'?'watch':'closed');
+    const scope=x.scope==='جزئي' ? ` • ${escapeHtml(x.department||'قسم محدد')}` : '';
+    return `
+      <div class="history-incident-row">
+        <div class="history-incident-main">
+          <div class="history-incident-title">
+            <span class="history-incident-icon">${iconType}</span>
+            <strong>البلاغ • ${escapeHtml(x.facility)} • ${escapeHtml(type)}</strong>
+          </div>
+          <div class="history-incident-meta">
+            <span>🕒 ${fmtDate(x.end_time)}</span>
+            <span>بدأ ${fmtDate(x.start_time)}</span>
+            <span>المدة ${dur(x.start_time,x.end_time)}</span>
+            ${scope ? `<span>النطاق: ${escapeHtml(x.scope)}${scope}</span>` : `<span>النطاق: ${escapeHtml(x.scope||'كلي')}</span>`}
+            <span class="history-status ${severityClass}">${escapeHtml(severity)}</span>
+          </div>
+        </div>
+        <div class="history-incident-actions">
+          <button class="history-details-btn" onclick="showDetails('${escapeAttr(x.id)}')">👁️ عرض التفاصيل</button>
+          ${admin ? `<button class="history-delete-btn" title="حذف البلاغ" onclick="deleteIncident('${escapeAttr(x.id)}')">🗑️</button>` : ''}
+        </div>
+      </div>`;
+  }).join('');
 }
-
 
 /* =====================================================
    SUMMARY
@@ -3825,30 +3822,11 @@ function formatMilliseconds(ms){
 
 function setupFacilityFilters(){
 
-  const select =
-    document.getElementById("reportFacility");
+  const select=document.getElementById("reportFacility");
+  if(!select) return;
 
-  if(!select)
-    return;
-
-
-  select.innerHTML =
-    '<option value="">جميع المنشآت</option>';
-
-
-  allFacilities.forEach(f=>{
-
-    const option =
-      document.createElement("option");
-
-    option.value=f;
-    option.textContent=f;
-
-    select.appendChild(option);
-
-  });
+  select.innerHTML='<option value="" selected>جميع المنشآت</option>';
 }
-
 
 function toggleCustomPeriod(){
 
@@ -3913,18 +3891,13 @@ function getReportDateRange(){
 
 
   if(period==="month"){
+    from=new Date(now.getFullYear(),now.getMonth(),1,0,0,0,0);
+    to=new Date(now);
+  }
 
-    from =
-      new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        1,
-        0,0,0,0
-      );
-
-    to =
-      new Date(now);
-
+  if(period==="year"){
+    from=new Date(now.getFullYear(),0,1,0,0,0,0);
+    to=new Date(now);
   }
 
 
@@ -3980,6 +3953,7 @@ function periodLabel(){
     day:"يومي",
     week:"أسبوعي",
     month:"شهري",
+    year:"سنوي",
     custom:"فترة مخصصة"
   }[period] || "";
 }
@@ -3988,94 +3962,52 @@ function periodLabel(){
 function generateReport(){
 
   if(!profile || profile.role!=="admin"){
-
     toast("❌ التقارير متاحة للإدارة المركزية فقط");
-
     return;
   }
-
 
   const range=getReportDateRange();
+  if(!range) return;
 
-  if(!range)
-    return;
+  const facilitySelect=document.getElementById("reportFacility");
+  const facilities=[];
+  const type=document.getElementById("reportType").value;
+  const incidentKind=document.getElementById("reportIncidentKind").value;
 
+  let rows=data.incidents.filter(x=>allFacilities.includes(x.facility));
 
-  const facility =
-    document.getElementById("reportFacility").value;
-
-  const type =
-    document.getElementById("reportType").value;
-
-
-  let rows =
-    data.incidents.filter(
-      x =>
-        allFacilities.includes(x.facility)
-    );
-
-
-  if(facility){
-
-    rows =
-      rows.filter(
-        x=>x.facility===facility
-      );
-
+  if(facilities.length){
+    rows=rows.filter(x=>facilities.includes(x.facility));
   }
-
 
   if(type){
-
-    rows =
-      rows.filter(
-        x=>currentType(x)===type
-      );
-
+    rows=rows.filter(x=>currentType(x)===type);
   }
 
-
-  rows =
-    rows.filter(x=>{
-
-      if(!x.start_time)
-        return false;
-
-      const d=new Date(x.start_time);
-
-      return d>=range.from && d<=range.to;
-
+  if(incidentKind){
+    rows=rows.filter(x=>{
+      const kind=x.incident_kind || x.case_type || x.incident_type || x.status_type || "";
+      return kind===incidentKind;
     });
+  }
 
-
-  rows =
-    rows.slice().sort(
-      (a,b)=>
-        new Date(a.start_time) -
-        new Date(b.start_time)
-    );
-
+  rows=rows.filter(x=>{
+    if(!x.start_time) return false;
+    const d=new Date(x.start_time);
+    return d>=range.from && d<=range.to;
+  }).slice().sort((a,b)=>new Date(a.start_time)-new Date(b.start_time));
 
   generatedReportRows=rows;
-
-
-  renderProfessionalReport(
-    rows,
-    range,
-    facility,
-    type
-  );
-
-
+  renderProfessionalReport(rows,range,facilities,type,incidentKind);
   toast("✅ تم إنشاء التقرير");
 }
-
 
 function renderProfessionalReport(
   rows,
   range,
-  facility,
-  type
+  facilities,
+  type,
+  incidentKind
 ){
 
   const total=rows.length;
@@ -4152,21 +4084,18 @@ function renderProfessionalReport(
         0;
 
 
-  const longest =
-    durations.length
-      ?
-        Math.max(...durations)
-      :
-        0;
+  const typeCounts={};
+  rows.forEach(x=>{
+    const t=currentType(x) || "أخرى";
+    typeCounts[t]=(typeCounts[t]||0)+1;
+  });
 
+  const mostRepeatedTypeEntry=Object.entries(typeCounts)
+    .sort((a,b)=>b[1]-a[1])[0];
 
-  const inpatientTotal =
-    rows.reduce(
-      (sum,x)=>
-        sum+
-        Number(x.inpatient_count || 0),
-      0
-    );
+  const mostRepeatedType=mostRepeatedTypeEntry
+    ? `${mostRepeatedTypeEntry[0]} (${mostRepeatedTypeEntry[1]})`
+    : "—";
 
 
   const internal =
@@ -4248,10 +4177,14 @@ function renderProfessionalReport(
           b[1].total-a[1].total
       );
 
+  const mostFacilities = facilityRows.length
+    ? `${facilityRows[0][0]} (${facilityRows[0][1].total})`
+    : "—";
+
 
   const reportTitle =
-    facility
-      ? facility
+    facilities && facilities.length
+      ? facilities.join("، ")
       : "جميع المنشآت";
 
 
@@ -4260,14 +4193,19 @@ function renderProfessionalReport(
       ? type
       : "جميع البلاغات";
 
+  const reportIncidentKind =
+    incidentKind
+      ? (incidentKind==="مفاجئ" ? "عطل / مفاجئ" : incidentKind)
+      : "كل الحالات";
+
 
   const html=`
 
     <div class="report-header">
-
-      <h2>
-        📊 تقرير جاهزية المنشآت الصحية
-      </h2>
+      <div class="report-brand">
+        <div class="report-brand-logo"><img src="https://www.health.sa/_next/image?q=75&url=https%3A%2F%2Fcmsapi.health.sa%2F19-ii6xyu.png&w=640" alt="شعار تجمع جازان الصحي"></div>
+        <div><div class="report-brand-kicker">تجمع جازان الصحي</div><h2>📊 تقرير جاهزية المنشآت الصحية</h2><div class="report-brand-sub">تقرير تشغيلي مركزي • إدارة الطوارئ والكوارث</div></div>
+      </div>
 
       <p>
         المنشأة: <b>${escapeHtml(reportTitle)}</b>
@@ -4278,10 +4216,10 @@ function renderProfessionalReport(
       </p>
 
       <p>
-        الفترة: <b>${periodLabel()}</b>
-        —
-        من ${fmtDate(range.from)}
-        إلى ${fmtDate(range.to)}
+        نوع الحالة: <b>${escapeHtml(reportIncidentKind)}</b>
+      </p>
+      <p>
+        الفترة: <b>${periodLabel()}</b> — من ${fmtDate(range.from)} إلى ${fmtDate(range.to)}
       </p>
 
 
@@ -4308,13 +4246,13 @@ function renderProfessionalReport(
         </div>
 
         <div class="report-mini">
-          <span>أطول مدة</span>
-          <b>${formatMilliseconds(longest)}</b>
+          <span>أكثر المنشآت</span>
+          <b>${escapeHtml(mostFacilities)}</b>
         </div>
 
         <div class="report-mini">
-          <span>إجمالي المنومين</span>
-          <b>${inpatientTotal}</b>
+          <span>أكثر البلاغات تكرارًا</span>
+          <b>${escapeHtml(mostRepeatedType)}</b>
         </div>
 
       </div>
@@ -4467,106 +4405,6 @@ function renderProfessionalReport(
     </div>
 
 
-    <div class="card" style="margin-top:10px">
-
-      <div class="title" style="font-size:14px">
-        📋 التفاصيل الكاملة للبلاغات
-      </div>
-
-      <div class="table-wrap">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>المنشأة</th>
-              <th>النوع</th>
-              <th>الحالة</th>
-              <th>النطاق</th>
-              <th>البداية</th>
-              <th>النهاية</th>
-              <th>المدة</th>
-              <th>المنومين</th>
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            ${
-              rows.length
-
-              ?
-
-              rows.map(x=>`
-
-                <tr>
-
-                  <td>
-                    ${escapeHtml(x.facility)}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(currentType(x))}
-                  </td>
-
-                  <td class="${x.end_time?'green':'red'}">
-                    ${x.end_time?'مغلق':'نشط'}
-                  </td>
-
-                  <td>
-                    ${escapeHtml(x.scope || "-")}
-                  </td>
-
-                  <td>
-                    ${fmtDate(x.start_time)}
-                  </td>
-
-                  <td>
-                    ${fmtDate(x.end_time)}
-                  </td>
-
-                  <td>
-                    ${
-                      x.end_time
-                      ?
-                      dur(
-                        x.start_time,
-                        x.end_time
-                      )
-                      :
-                      elapsed(x.start_time)
-                    }
-                  </td>
-
-                  <td>
-                    ${Number(x.inpatient_count || 0)}
-                  </td>
-
-                </tr>
-
-              `).join("")
-
-              :
-
-              `
-                <tr>
-                  <td colspan="8" class="empty">
-                    لا توجد بلاغات ضمن الفترة المحددة
-                  </td>
-                </tr>
-              `
-            }
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
   `;
 
 
@@ -4583,6 +4421,80 @@ function renderReportTableIfGenerated(){
     /* التقرير يبقى ظاهرًا كما تم إنشاؤه.
        لا نعيد توليده تلقائيًا أثناء التحديث. */
 
+  }
+}
+
+
+/* =====================================================
+   EXPORT REPORT
+===================================================== */
+
+function exportReport(){
+  if(!generatedReportRows.length){
+    toast("⚠️ أنشئ التقرير أولًا");
+    return;
+  }
+
+  try{
+    const report=document.getElementById("generatedReport").innerHTML;
+    const styles=[...document.querySelectorAll("style")].map(s=>s.outerHTML).join("\n");
+    const stamp=new Date().toISOString().slice(0,10);
+    const fileName=`تقرير_جاهزية_المنشآت_${stamp}.html`;
+    const html=`<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تقرير جاهزية المنشآت الصحية</title>
+${styles}
+<style>
+body{background:#f4f7fb;padding:24px;font-family:Tahoma,Arial,sans-serif}
+#generatedReport{max-width:1200px;margin:0 auto}
+@media print{body{padding:0;background:#fff}}
+</style>
+</head>
+<body>
+<div id="generatedReport">${report}</div>
+</body>
+</html>`;
+
+    const blob=new Blob(["\ufeff",html],{type:"text/html;charset=utf-8"});
+    const file=new File([blob],fileName,{type:"text/html"});
+
+    // iPhone/iPad: افتح قائمة المشاركة مباشرة ليتمكن المستخدم من "حفظ في الملفات".
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({title:"تقرير جاهزية المنشآت الصحية",text:"تقرير جاهزية المنشآت الصحية",files:[file]})
+        .then(()=>toast("✅ اختر «حفظ في الملفات» من قائمة المشاركة"))
+        .catch(err=>{ if(err && err.name!=="AbortError") fallbackDownload(blob,fileName); });
+      return;
+    }
+
+    fallbackDownload(blob,fileName);
+  }catch(e){
+    console.error(e);
+    toast("❌ تعذر تصدير التقرير");
+  }
+}
+
+function fallbackDownload(blob,fileName){
+  try{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download=fileName;
+    a.rel="noopener";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    toast("✅ بدأ تنزيل التقرير");
+  }catch(e){
+    console.error(e);
+    // آخر حل للأجهزة التي تمنع التنزيل المباشر: فتح الملف ليُحفظ يدويًا.
+    const url=URL.createObjectURL(blob);
+    window.open(url,"_blank");
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+    toast("ℹ️ افتح الملف ثم اختر مشاركة ← حفظ في الملفات");
   }
 }
 
@@ -4643,11 +4555,19 @@ function printReport(){
         }
 
         .report-header{
-          background:#2563eb;
+          background:linear-gradient(135deg,#0759a5,#0b76b7 55%,#159b9b);
           color:white;
-          padding:20px;
-          border-radius:12px
+          padding:22px;
+          border-radius:16px;
+          border:1px solid #0a6ca8;
+          box-shadow:0 8px 24px #0b4f7a22
         }
+        .report-brand{display:flex;align-items:center;gap:14px;padding-bottom:12px;border-bottom:1px solid #ffffff55;margin-bottom:12px}
+        .report-brand-logo{width:58px;height:58px;border-radius:14px;background:#fff;padding:6px;box-sizing:border-box}
+        .report-brand-logo img{width:100%;height:100%;object-fit:contain}
+        .report-brand-kicker{font-size:11px;font-weight:700;opacity:.9}
+        .report-brand h2{margin:2px 0;font-size:21px}
+        .report-brand-sub{font-size:10px;opacity:.85}
 
         .report-mini-grid{
           display:grid;
@@ -4867,7 +4787,47 @@ body.dark header{background:#101b2aec;border-color:#263b4c}.body.dark .brand-cen
 
 </style>
 
-    </head>
+    
+<style id="capacity-visual-upgrade">
+/* CAPACITY — premium operational visual treatment */
+.capacity-grid{gap:14px!important;align-items:stretch}
+.capacity-card{position:relative;overflow:hidden!important;border:1px solid #d9e7f2!important;border-radius:20px!important;background:linear-gradient(180deg,#ffffff 0%,#f8fbfe 100%)!important;box-shadow:0 10px 30px rgba(11,39,68,.07)!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.capacity-card:before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#2563eb,#14b8a6);opacity:.95}
+.capacity-card:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(11,39,68,.11)!important;border-color:#b9d6e8!important}
+.capacity-head{padding-top:3px!important;margin-bottom:12px!important}
+.capacity-facility{font-size:15px!important;color:#0b2744;letter-spacing:-.2px}
+.capacity-resource{color:#527087!important;font-weight:700}
+.capacity-items{gap:9px!important}
+.capacity-item{border:1px solid #e0eaf2!important;background:#f7fafc!important;border-radius:13px!important;padding:10px 11px!important}
+.capacity-item>span{color:#334e68!important}
+.capacity-item>strong{color:#0b2744!important;font-variant-numeric:tabular-nums;font-family:Inter,Segoe UI,Arial,sans-serif}
+.capacity-icu,.capacity-er{background:linear-gradient(135deg,#f7fbff,#eef7fc)!important;border-color:#cfe3f0!important}
+.capacity-icu-head,.capacity-er-head{color:#123b63!important}
+.capacity-er-badge{background:#e7f3fb!important;color:#2563a6!important;border:1px solid #cfe5f4}
+.capacity-icu-values,.capacity-er-values{gap:8px!important}
+.capacity-icu-values>div,.capacity-er-values>div{background:#fff;border:1px solid #e4edf4;border-radius:10px;padding:7px 6px;min-height:52px;justify-content:center}
+.capacity-icu-values small,.capacity-er-values small{color:#6b7f90!important;font-weight:700}
+.capacity-icu-values b,.capacity-er-values b{font-size:14px!important;color:#0b2744!important;font-variant-numeric:tabular-nums;font-family:Inter,Segoe UI,Arial,sans-serif}
+.capacity-progress{height:9px!important;background:#e7edf2!important;border-radius:999px!important;margin-top:8px!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}
+.capacity-progress>span{box-shadow:0 0 10px rgba(37,99,235,.18)}
+.capacity-status{padding:6px 9px!important;font-size:9px!important;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.capacity-status.green{background:#e9f9f0!important;color:#12834b!important;border:1px solid #c9efd9}
+.capacity-status.orange{background:#fff5e6!important;color:#c56b00!important;border:1px solid #ffe0ad}
+.capacity-status.red{background:#ffeded!important;color:#d12626!important;border:1px solid #ffcaca}
+.capacity-input{font-family:Inter,Segoe UI,Arial,sans-serif!important;font-variant-numeric:tabular-nums!important;direction:ltr!important;text-align:center!important;font-weight:900!important;font-size:13px!important;border:1px solid #cbdde9!important;background:#fff!important;color:#0b2744!important}
+.capacity-input:focus{border-color:#2684c6!important;box-shadow:0 0 0 3px rgba(38,132,198,.12)!important;outline:none}
+.capacity-icu-status{font-weight:800!important}
+.capacity-card .primary{border-radius:12px!important;background:linear-gradient(135deg,#1769aa,#1683b8)!important;box-shadow:0 6px 16px rgba(23,105,170,.18)}
+.capacity-note{font-size:9px!important;color:#6b7f90!important}
+body.dark .capacity-card{background:linear-gradient(180deg,#172033,#142033)!important;border-color:#2c4258!important}
+body.dark .capacity-facility,body.dark .capacity-item>strong,body.dark .capacity-icu-values b,body.dark .capacity-er-values b{color:#f1f5f9!important}
+body.dark .capacity-item{background:#17283a!important;border-color:#2c4258!important}
+body.dark .capacity-icu,body.dark .capacity-er{background:#162b40!important;border-color:#2c5069!important}
+body.dark .capacity-icu-values>div,body.dark .capacity-er-values>div{background:#18283a!important;border-color:#30465a!important}
+body.dark .capacity-input{background:#0f172a!important;color:#f1f5f9!important;border-color:#38516d!important}
+@media(max-width:700px){.capacity-card{border-radius:16px!important}.capacity-facility{font-size:13px!important}}
+</style>
+</head>
 
     <body>
 
@@ -6717,5 +6677,43 @@ body{background:linear-gradient(180deg,#f4fbff 0%,#ffffff 48%,#f7fbfd 100%)!impo
   .reference-hero .command-hero-content{height:auto!important;min-height:96px!important}
   .reference-hero .hero-scenery{min-width:140px!important;max-width:180px!important;height:62px!important}
   .reference-hero .command-copy > .blue-header-identity{min-width:150px!important}
+}
+
+/* =========================================================
+   INCIDENT HISTORY — COMPACT OPERATIONAL LIST
+========================================================= */
+.incident-history-list{display:grid;gap:9px;margin-top:12px}
+.history-incident-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;background:var(--card);border:1px solid var(--border-soft);border-radius:16px;box-shadow:0 5px 18px rgba(11,39,68,.045);transition:.18s ease}
+.history-incident-row:hover{transform:translateY(-1px);border-color:#b7d5e6;box-shadow:0 9px 24px rgba(11,39,68,.075)}
+.history-incident-main{min-width:0;flex:1}
+.history-incident-title{display:flex;align-items:center;gap:9px;min-width:0}
+.history-incident-title strong{font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-incident-icon{width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:#edf6fb;font-size:15px;flex:none}
+.history-incident-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px;color:var(--muted);font-size:8px;font-weight:700}
+.history-incident-meta>span{padding:4px 7px;background:var(--bg);border:1px solid var(--border-soft);border-radius:999px}
+.history-status{font-weight:900!important;border:0!important}
+.history-status.closed{background:#eef2f7!important;color:#64748b!important}
+.history-status.watch{background:#fff5e6!important;color:#b45309!important}
+.history-status.critical{background:#fff0f0!important;color:#dc2626!important}
+.history-incident-actions{display:flex;align-items:center;gap:6px;flex:none}
+.history-details-btn{border:1px solid #b9d9ea;background:#eef8fd;color:#075985;border-radius:10px;padding:9px 12px;font-size:9px;font-weight:900;cursor:pointer;white-space:nowrap;transition:.18s ease}
+.history-details-btn:hover{background:#e1f3fb;border-color:#8fc3dc;transform:translateY(-1px)}
+.history-delete-btn{width:34px;height:34px;border:1px solid #f1c8ce;background:#fff5f6;color:#be123c;border-radius:10px;cursor:pointer;font-size:13px}
+.history-empty,.history-loading{padding:25px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border-soft);border-radius:15px;font-size:10px}
+body.dark .history-incident-row{box-shadow:none;border-color:#263449}
+body.dark .history-incident-icon{background:#162b3d}
+body.dark .history-incident-meta>span{background:#182538;border-color:#263449}
+body.dark .history-details-btn{background:#123044;border-color:#28536d;color:#8fd5f4}
+body.dark .history-delete-btn{background:#321b22;border-color:#5d2935}
+@media(max-width:700px){
+  .history-incident-row{align-items:flex-start;padding:12px;gap:10px}
+  .history-incident-title strong{font-size:10px;white-space:normal}
+  .history-incident-meta{gap:5px}
+  .history-details-btn{padding:8px 9px;font-size:8px}
+  .history-delete-btn{width:31px;height:31px}
+}
+@media(max-width:480px){
+  .history-incident-row{display:block}
+  .history-incident-actions{margin-top:10px;justify-content:flex-start}
 }
 </style>
