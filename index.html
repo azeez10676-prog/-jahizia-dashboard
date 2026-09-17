@@ -1232,14 +1232,80 @@ body.dark .capacity-input{background:#0f172a!important;color:#f1f5f9!important;b
 </style>
 
 <style id="approved-home-cleanup">
-/* الصفحة الرئيسية المعتمدة: الملخص + آخر البلاغات + الجاهزية + الطقس + الطاقة الاستيعابية فقط */
-#homeMapSummary, #homeActiveOnlySummary { display:none !important; }
+/* الرئيسية: العناصر المعتمدة فقط — مع إبقاء خريطة/حالة المنشآت ومربع البلاغات النشطة ظاهرين */
+#homeMapSummary, #homeActiveOnlySummary { display:block !important; }
+</style>
+
+<style id="homepage-facilities-active-fix">
+/* الرئيسية: عرض المنشآت وحالتها + آخر البلاغات النشطة بشكل واضح ومضغوط */
+#homeFacilitiesList{display:flex;flex-direction:column;gap:4px;max-height:360px;overflow:auto;padding:2px 4px 4px;}
+#homeFacilitiesList .facility-mini-row{display:grid;grid-template-columns:10px 1fr auto;align-items:center;gap:8px;padding:7px 6px;border-bottom:1px solid var(--line,#e5e7eb);border-radius:8px;}
+#homeFacilitiesList .facility-mini-row b{font-size:12px;}
+#homeFacilitiesList .facility-mini-row span{font-size:10px;padding:4px 8px;border-radius:999px;font-weight:800;}
+#homeFacilitiesList .facility-mini-row span.green{background:#e9f8ef;color:#16834b;}
+#homeFacilitiesList .facility-mini-row span.orange{background:#fff4df;color:#a96500;}
+#homeFacilitiesList .facility-mini-row span.red{background:#ffe9eb;color:#c62835;}
+#homeOpenIncidents{max-height:360px;overflow:auto;}
+body.dark #homeFacilitiesList .facility-mini-row{border-color:#26384b;}
+body.dark #homeFacilitiesList .facility-mini-row span.green{background:#103a2a;color:#7ee2a7;}
+body.dark #homeFacilitiesList .facility-mini-row span.orange{background:#453315;color:#ffd27a;}
+body.dark #homeFacilitiesList .facility-mini-row span.red{background:#451d22;color:#ff9aa2;}
 </style>
 
 <style id="homepage-strict-visibility">
 /* الصفحة الرئيسية: عرض الملخص المعتمد فقط، وإخفاء صفحات التفاصيل من نفس الشاشة */
 body.home-dashboard-mode .section:not(.dashboard-home){display:none !important;}
 body.home-dashboard-mode .dashboard-home{display:block !important;}
+</style>
+
+<style id="homepage-final-layout">
+.home-stat-row{grid-template-columns:repeat(3,minmax(0,1fr));}
+.clickable-stat{cursor:pointer;}
+.clickable-stat:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:2px;}
+.readiness-bars{display:flex;flex-direction:column;gap:12px;padding:4px 2px;}
+.readiness-line{display:grid;grid-template-columns:150px 42px 1fr;align-items:center;gap:10px;}
+.readiness-line span{font-size:11px;font-weight:900;}
+.readiness-line b{font-size:18px;text-align:center;font-variant-numeric:tabular-nums;}
+.readiness-line i{height:9px;background:var(--line,#e5e7eb);border-radius:99px;overflow:hidden;display:block;}
+.readiness-line em{display:block;height:100%;border-radius:99px;}
+.readiness-line.green b{color:#16834b}.readiness-line.green em{background:#22c55e}
+.readiness-line.yellow b{color:#a96500}.readiness-line.yellow em{background:#f59e0b}
+.readiness-line.red b{color:#c62835}.readiness-line.red em{background:#ef4444}
+.pro-latest,.pro-active-final{min-height:0;}
+#homeOpenIncidents,#homeActiveOnlyContent{max-height:300px;overflow:auto;}
+@media(max-width:900px){.home-stat-row{grid-template-columns:repeat(3,1fr)}.readiness-line{grid-template-columns:130px 38px 1fr}}
+@media(max-width:620px){.home-stat-row{grid-template-columns:1fr}.readiness-line{grid-template-columns:125px 38px 1fr}}
+body.dark .readiness-line i{background:#26384b;}
+</style>
+
+<style id="homepage-operations-v4">
+/* تحسين الواجهة الرئيسية للشاشات الكبيرة */
+.professional-home-grid{
+  grid-template-columns:1.15fr 1.15fr 1fr!important;
+  grid-template-areas:"weather readiness capacity" "active active alerts" "facilities facilities facilities"!important;
+  gap:16px!important;
+  margin-top:4px!important;
+}
+.pro-panel{min-height:270px!important;}
+.pro-active-final,.pro-command-alerts{min-height:285px!important;}
+.pro-active-final .pro-content,.pro-command-alerts .pro-content{max-height:245px!important;overflow:auto!important;}
+.pro-command-alerts .command-alert-list{gap:10px!important;}
+.pro-command-alerts .command-alert-item{min-height:54px!important;}
+.priority-facilities-row .num{font-size:17px!important;}
+.priority-facility{display:inline-block;margin:2px 3px;padding:3px 6px;border-radius:7px;background:#fff4df;color:#8b5a00;font-size:8px;font-weight:850;}
+.priority-clear{font-size:8px;color:#16834b;font-weight:850;}
+@media(min-width:1400px){
+ .professional-home-grid{gap:18px!important;}
+ .pro-panel{min-height:285px!important;padding:16px!important;}
+ .pro-active-final,.pro-command-alerts{min-height:305px!important;}
+ .pro-panel-head b{font-size:16px!important;}
+ .pro-panel-head span{font-size:10px!important;}
+ .pro-incident-row{padding:10px 0!important;}
+ .pro-incident-row b{font-size:11px!important;}
+ .pro-incident-row span:not(.pro-status),.pro-incident-row time{font-size:9px!important;}
+}
+@media(max-width:1150px){.professional-home-grid{grid-template-areas:"weather readiness" "capacity active" "alerts alerts" "facilities facilities"!important;}}
+@media(max-width:800px){.professional-home-grid{grid-template-areas:"weather" "readiness" "capacity" "active" "alerts" "facilities"!important;}}
 </style>
 </head>
 
@@ -1300,7 +1366,7 @@ body.home-dashboard-mode .dashboard-home{display:block !important;}
   <button class="side-link" data-nav="capacity" onclick="showCapacityPage();setActiveNav('capacity')"><span class="ico">▱</span><span>الطاقة الاستيعابية</span></button>
   <button class="side-link" data-nav="weather" onclick="showWeatherPage();setActiveNav('weather')"><span class="ico">☁</span><span>الحالة المطرية</span></button>
   <button class="side-link" data-nav="reports" onclick="showSectionPage('reportsPage','reports')"><span class="ico">▥</span><span>التقارير والإحصائيات</span></button>
-  <button class="side-link" data-nav="audit" onclick="showSectionPage('auditPage','audit')"><span class="ico">▤</span><span>سجل التدقيق</span></button>
+  <button class="side-link" data-nav="audit" onclick="showAuditPage()"><span class="ico">▤</span><span>سجل التدقيق</span></button>
 
   <div class="side-spacer"></div>
   <button class="side-link side-settings" onclick="toggleTheme()"><span class="ico">⚙</span><span>الإعدادات</span></button>
@@ -1345,10 +1411,10 @@ body.home-dashboard-mode .dashboard-home{display:block !important;}
     <div class="dashboard-live"><span></span> متابعة مباشرة</div>
   </div>
 
-  <div class="executive-stats reference-stats">
+  <div class="executive-stats reference-stats home-stat-row">
     <div class="exec-stat total-stat"><div class="exec-icon">▦</div><div><span>إجمالي المنشآت</span><b id="total">0</b></div><small>منشأة صحية ضمن نطاق المتابعة</small></div>
     <div class="exec-stat ready-stat"><div class="exec-icon">✓</div><div><span>جاهزة</span><b id="normal">0</b></div><small>منشأة تعمل بكفاءة</small></div>
-    <div class="exec-stat incident-stat"><div class="exec-icon">⚠</div><div><span>البلاغات النشطة</span><b id="openTotal">0</b></div><small>بلاغ تحت المتابعة الآن</small></div>
+    <div class="exec-stat incident-stat clickable-stat" role="button" tabindex="0" onclick="showSectionPage('incidentsPage','incidents')" onkeydown="if(event.key==='Enter'||event.key===' ')showSectionPage('incidentsPage','incidents')"><div class="exec-icon">⚠</div><div><span>البلاغات النشطة</span><b id="openTotal">0</b></div><small>اضغط لعرض البلاغات النشطة ←</small></div>
   </div>
 
   <!-- مؤشرات المتابعة القديمة محفوظة وظيفيًا في DOM حتى لا تتأثر الحسابات الداخلية -->
@@ -1356,22 +1422,37 @@ body.home-dashboard-mode .dashboard-home{display:block !important;}
   <span id="highPriority" style="display:none">0</span>
 
   <div class="professional-home-grid" id="professionalHomeGrid">
-    <div class="pro-panel pro-incidents" id="homeIncidentsSummary">
-      <div class="pro-panel-head"><div><b>آخر البلاغات</b><span>النشطة أولاً ثم المغلقة</span></div><button onclick="document.getElementById('openIncidents').scrollIntoView({behavior:'smooth'})">عرض الكل ←</button></div>
-      <div id="homeOpenIncidents" class="pro-content"><div class="mini-empty">جاري تحميل البلاغات...</div></div>
-    </div>
-    <div class="pro-panel pro-readiness" id="homeFacilitiesSummary">
-      <div class="pro-panel-head"><div><b>حالة الجاهزية التشغيلية</b><span>توزيع المنشآت حسب مستوى المتابعة</span></div><button onclick="document.getElementById('facilities').scrollIntoView({behavior:'smooth'})">التفاصيل ←</button></div>
-      <div id="homeFacilitiesList" class="pro-content"><div class="mini-empty">جاري تحميل الحالة...</div></div>
-    </div>
-    <div class="pro-panel pro-capacity" id="homeCapacitySummary">
-      <div class="pro-panel-head"><div><b>الطاقة الاستيعابية</b><span>ملخص طاقة الطوارئ على مستوى المنطقة</span></div><button onclick="showCapacityPage();setActiveNav('capacity')">التفاصيل ←</button></div>
-      <div id="homeCapacityContent" class="pro-content"><div class="mini-empty">جاري تحميل الطاقة الاستيعابية...</div></div>
-    </div>
+
     <div class="pro-panel pro-weather" id="homeWeatherSummary">
-      <div class="pro-panel-head"><div><b>طقس منطقة جازان</b><span>الحالة الجوية الحالية والتحديث اليومي</span></div><span class="panel-live">● مباشر</span></div>
+      <div class="pro-panel-head"><div><b>طقس منطقة جازان</b><span>الحالة الجوية الحالية المرتبطة بالمنطقة</span></div><span class="panel-live">● مباشر</span></div>
       <div id="homeWeatherContent" class="pro-content"><div class="mini-empty">جاري تحميل الطقس...</div></div>
     </div>
+
+    <div class="pro-panel home-readiness-overview" id="homeReadinessSummary">
+      <div class="pro-panel-head"><div><b>حالة الجاهزية التشغيلية</b><span>توزيع المنشآت حسب مستوى المتابعة</span></div><button onclick="showSectionPage('facilitiesPage','facilities')">عرض المنشآت ←</button></div>
+      <div id="homeReadinessContent" class="pro-content"><div class="mini-empty">جاري حساب الجاهزية...</div></div>
+    </div>
+
+    <div class="pro-panel pro-capacity" id="homeCapacitySummary">
+      <div class="pro-panel-head"><div><b>الطاقة الاستيعابية</b><span>أسرة الطوارئ على مستوى المنطقة</span></div><button onclick="showCapacityPage();setActiveNav('capacity')">التفاصيل ←</button></div>
+      <div id="homeCapacityContent" class="pro-content"><div class="mini-empty">جاري تحميل الطاقة الاستيعابية...</div></div>
+    </div>
+
+    <div class="pro-panel pro-latest" id="homeLatestReportsSummary">
+      <div class="pro-panel-head"><div><b>آخر خمس بلاغات</b><span>أحدث البلاغات المسجلة في النظام</span></div><button onclick="showAuditPage()">السجل ←</button></div>
+      <div id="homeOpenIncidents" class="pro-content"><div class="mini-empty">جاري تحميل البلاغات...</div></div>
+    </div>
+
+    <div class="pro-panel pro-readiness" id="homeFacilitiesSummary">
+      <div class="pro-panel-head"><div><b>المنشآت الصحية وحالتها</b><span>متابعة مباشرة لحالة جميع المنشآت</span></div><button onclick="showSectionPage('facilitiesPage','facilities')">التفاصيل ←</button></div>
+      <div id="homeFacilitiesList" class="pro-content"><div class="mini-empty">جاري تحميل الحالة...</div></div>
+    </div>
+
+    <div class="pro-panel pro-active-final" id="homeActiveOnlySummary">
+      <div class="pro-panel-head"><div><b>البلاغات الأخيرة النشطة</b><span>البلاغات المفتوحة حاليًا والأعلى أولوية</span></div><button onclick="showSectionPage('incidentsPage','incidents')">عرض البلاغات ←</button></div>
+      <div id="homeActiveOnlyContent" class="pro-content"><div class="mini-empty">جاري تحميل البلاغات النشطة...</div></div>
+    </div>
+
   </div>
 
 </div>
@@ -3014,19 +3095,21 @@ function renderHomeSummaries(){
   const homeFac=document.getElementById('homeFacilitiesList');
   const homeWeather=document.getElementById('homeWeatherContent');
   const homeCap=document.getElementById('homeCapacityContent');
-  const homeMap=document.getElementById('homeMapContent');
+  const homeReadiness=document.getElementById('homeReadinessContent');
   const homeActiveOnly=document.getElementById('homeActiveOnlyContent');
-  if(!homeInc||!homeFac||!homeWeather||!homeCap)return;
+  if(!homeInc||!homeFac||!homeWeather||!homeCap||!homeReadiness)return;
 
   const incidents=(data.incidents||[]).filter(x=>facilities.includes(x.facility));
   const active=incidents.filter(x=>!x.end_time).sort((a,b)=>severityRank(a)-severityRank(b)||new Date(a.start_time)-new Date(b.start_time));
-  const closed=incidents.filter(x=>x.end_time).sort((a,b)=>new Date(b.end_time||b.start_time)-new Date(a.end_time||a.start_time));
-  const latest=[...active,...closed].slice(0,5);
-  homeInc.innerHTML=latest.length?latest.map(x=>{const active=!x.end_time;const high=incidentSeverity(x)==='يحتاج متابعة عالية';return `<div class="pro-incident-row"><span class="pro-status ${active?(high?'red':'orange'):'closed'}">${active?(high?'عالية':'متابعة'):'مغلق'}</span><div><b>${escapeHtml(x.facility)} • ${icon(currentType(x))} ${escapeHtml(currentType(x))}</b><span>${active?'نشط الآن':'أُغلق '+fmtDate(x.end_time)}</span></div><time>${fmtDate(x.start_time)}</time></div>`}).join(''):'<div class="pro-empty">🟢 لا توجد بلاغات حالية</div>';
+  const latestFive=[...incidents].sort((a,b)=>new Date(b.start_time)-new Date(a.start_time)).slice(0,5);
+  homeInc.innerHTML=latestFive.length?latestFive.map(x=>{const activeNow=!x.end_time;const high=incidentSeverity(x)==='يحتاج متابعة عالية';const status=activeNow?(high?'عالية':'نشطة'):'مغلقة';const cls=activeNow?(high?'red':'orange'):'green';return `<div class="pro-incident-row"><span class="pro-status ${cls}">${activeNow?(high?'عالية':'نشطة'):'مغلقة'}</span><div><b>${escapeHtml(x.facility)} • ${icon(currentType(x))} ${escapeHtml(currentType(x))}</b><span>${activeNow?'نشط الآن':'أُغلق'} • ${fmtDate(x.start_time)}</span></div><time>${activeNow?elapsed(x.start_time):fmtDate(x.end_time)}</time></div>`}).join(''):'<div class="pro-empty">لا توجد بلاغات مسجلة</div>';
 
-  const counts={ready:0,watch:0,high:0}; facilities.forEach(f=>{const st=state(f); if(st==='جاهزة')counts.ready++; else if(st==='تحتاج متابعة عالية')counts.high++; else counts.watch++;});
-  const total=facilities.length||1;
-  homeFac.innerHTML=[['ready','جاهزة',counts.ready,'green'],['watch','تحتاج متابعة',counts.watch,'orange'],['high','تحتاج متابعة عالية',counts.high,'red']].map(x=>`<div class="pro-stat-line"><div><i class="pro-dot ${x[3]}"></i><b>${x[1]}</b><strong>${x[2]}</strong></div><div class="pro-bar"><i class="${x[3]}" style="width:${Math.round(x[2]/total*100)}%"></i></div><small>${Math.round(x[2]/total*100)}٪ من المنشآت</small></div>`).join('');
+  const readyCount=facilities.filter(f=>state(f)==='جاهزة').length;
+  const followCount=facilities.filter(f=>state(f)==='تحتاج متابعة').length;
+  const highCount=facilities.filter(f=>state(f)==='تحتاج متابعة عالية').length;
+  homeReadiness.innerHTML=`<div class="readiness-bars"><div class="readiness-line green"><span>🟢 جاهزة</span><b>${readyCount.toLocaleString('en-US')}</b><i><em style="width:${facilities.length?Math.round(readyCount/facilities.length*100):0}%"></em></i></div><div class="readiness-line yellow"><span>🟡 تحتاج متابعة</span><b>${followCount.toLocaleString('en-US')}</b><i><em style="width:${facilities.length?Math.round(followCount/facilities.length*100):0}%"></em></i></div><div class="readiness-line red"><span>🔴 تحتاج متابعة عالية</span><b>${highCount.toLocaleString('en-US')}</b><i><em style="width:${facilities.length?Math.round(highCount/facilities.length*100):0}%"></em></i></div></div>`;
+
+  homeFac.innerHTML=facilities.map(f=>{const st=state(f);const c=st==='جاهزة'?'green':st==='تحتاج متابعة عالية'?'red':'orange';return `<div class="facility-mini-row"><i class="dot ${c}"></i><b>${escapeHtml(f)}</b><span class="${c}">${escapeHtml(st)}</span></div>`}).join('');
 
   const byType=new Map((capacityRows||[]).filter(r=>facilities.includes(r.facility)).map(r=>[`${r.facility}|${r.resource_type}`,r]));
   let erTotal=0,erCurrent=0; facilities.forEach(f=>{const r=byType.get(`${f}|أسرة الطوارئ`);erTotal+=Number(r?.total_capacity||0);erCurrent+=Number(r?.current_count||0);});
@@ -3036,10 +3119,6 @@ function renderHomeSummaries(){
   const rw=window.regionalWeatherState;
   homeWeather.innerHTML=rw?`<div class="regional-weather"><div class="weather-icon-pro">${rw.icon}</div><div><b>${escapeHtml(rw.label)}</b><span>منطقة جازان • ${rw.temp}°م • المحسوسة ${rw.feels}°م</span><small>الرطوبة ${rw.humidity}% • الرياح ${rw.wind} كم/س</small></div></div><div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
 
-  if(homeMap){
-    const pos=[['شفا 1',48,18],['شفا 2',61,27],['شفا 3',55,42],['شفا 4',39,34],['شفا 5',70,47],['شفا 6',29,52],['شفا 7',48,58],['شفا 8',62,65],['شفا 9',39,68],['شفا 10',54,76],['شفا 11',73,73],['شفا 12',27,78],['شفا 13',45,87],['شفا 14',64,88],['شفا 15',78,56],['شفا 16',20,66],['شفا 17',58,34],['شفا 18',34,45],['شفا 19',67,37],['شفا 20',31,23],['شفا 21',51,14]];
-    homeMap.innerHTML=`<div class="readiness-map"><div class="map-silhouette"></div>${pos.map(p=>{const st=state(p[0]);const c=st==='جاهزة'?'green':st==='تحتاج متابعة عالية'?'red':'orange';return `<i class="map-dot ${c}" style="left:${p[1]}%;top:${p[2]}%" title="${escapeHtml(p[0])} — ${escapeHtml(st)}"></i>`}).join('')}<span class="map-north">N<br>▲</span><span class="map-label">منطقة جازان</span></div><div class="map-legend"><span><i class="green"></i> جاهزة</span><span><i class="orange"></i> تحتاج متابعة</span><span><i class="red"></i> متابعة عالية</span></div>`;
-  }
   if(homeActiveOnly){
     const activeOnly=active.slice(0,5);
     homeActiveOnly.innerHTML=activeOnly.length?activeOnly.map(x=>{const high=incidentSeverity(x)==='يحتاج متابعة عالية';return `<div class="pro-incident-row"><span class="pro-status ${high?'red':'orange'}">${high?'عالية':'متابعة'}</span><div><b>${escapeHtml(x.facility)} • ${icon(currentType(x))} ${escapeHtml(currentType(x))}</b><span>${escapeHtml(x.description||'بلاغ نشط تحت المتابعة')}</span></div><time>${fmtDate(x.start_time)}</time></div>`}).join(''):'<div class="pro-empty">🟢 لا توجد بلاغات نشطة</div>';
@@ -3237,10 +3316,35 @@ const ICU_TOTALS={
 };
 let capacityRows=[];
 function showCapacityPage(){
-  document.querySelectorAll('.section').forEach(el=>{if(el.id!=='capacityPage') el.style.display='none';});
-  document.getElementById('capacityPage').style.display='block';
-  document.getElementById('capacitySubtitle').textContent=profile&&profile.role==='admin'?'عرض مركزي للطاقة الاستيعابية المحدثة من المنشآت • الإدارة المركزية لا تعدّل البيانات.':`تحديث الطاقة الاستيعابية لـ ${profile.facility}`;
-  loadCapacity(); loadUpdateRequests(); window.scrollTo({top:0,behavior:'smooth'});
+  try{
+    document.body.classList.remove('home-dashboard-mode');
+    document.querySelectorAll('.section').forEach(el=>{ el.style.display='none'; });
+    const page=document.getElementById('capacityPage');
+    if(!page) return;
+    page.style.display='block';
+    const sub=document.getElementById('capacitySubtitle');
+    if(sub){
+      sub.textContent=(profile&&profile.role==='admin')
+        ? 'عرض مركزي للطاقة الاستيعابية المحدثة من المنشآت • الإدارة المركزية لا تعدّل البيانات.'
+        : `تحديث الطاقة الاستيعابية لـ ${(profile&&profile.facility)||''}`;
+    }
+    setActiveNav('capacity');
+    loadCapacity();
+    if(typeof loadUpdateRequests==='function') loadUpdateRequests();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){ console.error('showCapacityPage:',e); }
+}
+function showAuditPage(){
+  try{
+    document.body.classList.remove('home-dashboard-mode');
+    document.querySelectorAll('.section').forEach(el=>{ el.style.display='none'; });
+    const page=document.getElementById('auditPage');
+    if(!page) return;
+    page.style.display='block';
+    setActiveNav('audit');
+    if(typeof loadHistory==='function') loadHistory();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){ console.error('showAuditPage:',e); }
 }
 function showDashboardPage(){
   document.body.classList.add('home-dashboard-mode');
@@ -3267,8 +3371,7 @@ function showSectionPage(sectionId, navKey){
     if(page) page.style.display='block';
   }
 
-  const cp=document.getElementById('capacityPage');
-  if(cp) cp.style.display='none';
+  // لا نخفي صفحة الطاقة هنا؛ فهي صفحة مستقلة ويجب أن تبقى ظاهرة عند اختيارها من القائمة.
   setActiveNav(navKey);
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -4785,6 +4888,40 @@ body.dark header{background:#101b2aec;border-color:#263b4c}.body.dark .brand-cen
   .incidents-panel,.readiness-panel-home{min-height:390px}
 }
 
+
+/* SIX HOME PANELS — balanced command-center layout */
+@media(min-width:1181px){
+  .home-summary-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    grid-template-areas:
+      "readiness active weather"
+      "capacity latest facilities" !important;
+    gap:14px !important;
+  }
+  .home-panel,
+  .incidents-panel,
+  .readiness-panel-home{
+    min-height:255px !important;
+    height:100% !important;
+  }
+}
+@media(min-width:1600px){
+  .home-summary-grid{gap:16px !important;}
+  .home-panel,
+  .incidents-panel,
+  .readiness-panel-home{min-height:275px !important;}
+}
+@media(max-width:1180px) and (min-width:901px){
+  .home-summary-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    grid-template-areas:
+      "readiness active"
+      "weather capacity"
+      "latest facilities" !important;
+    gap:12px !important;
+  }
+  .home-panel,.incidents-panel,.readiness-panel-home{min-height:220px !important;}
+}
 </style>
 
     
@@ -4865,13 +5002,13 @@ body{background:linear-gradient(180deg,#f4fbff 0%,#ffffff 48%,#f7fbfd 100%)!impo
 .reference-stats .total-stat b{color:#0b5a8d!important}
 .reference-stats .ready-stat b{color:#0a8b68!important}
 .reference-stats .incident-stat b{color:#df313b!important}
-.professional-home-grid{display:grid!important;grid-template-columns:1.05fr 1fr 1.05fr!important;grid-template-areas:"weather readiness capacity" "incidents map active"!important;gap:14px!important;margin-top:0!important;align-items:stretch!important}
+.professional-home-grid{display:grid!important;grid-template-columns:1.1fr 1.1fr 1fr!important;grid-template-areas:"weather readiness capacity" "active active alerts" "facilities facilities facilities"!important;gap:14px!important;margin-top:0!important;align-items:stretch!important}
 .pro-panel{min-height:255px!important;padding:14px!important;border-radius:13px!important;background:#fff!important;border:1px solid #d9eaf5!important;box-shadow:0 5px 20px rgba(9,66,99,.055)!important}
 .pro-panel-head{padding-bottom:10px!important;border-bottom:1px solid #e3eef5!important;align-items:center!important}
 .pro-panel-head b{font-size:15px!important;color:#0a4f7d!important}
 .pro-panel-head span{font-size:9px!important;color:#66879a!important;margin-top:3px!important}
 .pro-panel-head button{font-size:9px!important;color:#0874bd!important}
-.pro-weather{grid-area:weather} .pro-readiness{grid-area:readiness} .pro-capacity{grid-area:capacity} .pro-incidents{grid-area:incidents} .pro-map{grid-area:map} .pro-active-only{grid-area:active}
+.pro-weather{grid-area:weather} .home-readiness-overview{grid-area:readiness} .pro-capacity{grid-area:capacity} .pro-incidents{grid-area:incidents} .pro-map{grid-area:map} .pro-active-final{grid-area:active} .pro-command-alerts{grid-area:alerts} .pro-readiness{grid-area:facilities}
 .pro-content{padding-top:8px!important}
 .pro-incident-row{padding:8px 0!important;grid-template-columns:auto 1fr auto!important;gap:8px!important;border-bottom:1px solid #edf3f7!important}
 .pro-incident-row b{font-size:10px!important;color:#0b4f7c!important} .pro-incident-row span:not(.pro-status){font-size:8px!important;margin-top:3px!important} .pro-incident-row time{font-size:8px!important}
@@ -4885,9 +5022,9 @@ body{background:linear-gradient(180deg,#f4fbff 0%,#ffffff 48%,#f7fbfd 100%)!impo
 .map-dot.green,.map-legend i.green{background:#0b966f} .map-dot.orange,.map-legend i.orange{background:#f7942e} .map-dot.red,.map-legend i.red{background:#e6313c}
 .map-north{position:absolute;left:4%;bottom:10px;font-size:8px;font-weight:900;color:#0b4f7b;text-align:center;line-height:1.1} .map-label{position:absolute;left:13%;bottom:2px;font-size:10px;font-weight:900;color:#0b4f7b}
 .map-legend{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;border-top:1px solid #edf3f7;padding-top:8px;font-size:8px;color:#4e7287} .map-legend span{display:flex;align-items:center;gap:4px} .map-legend i{width:7px;height:7px;border-radius:50%;display:inline-block}
-.panel-live{font-size:8px!important;background:#e9faf2!important;border:1px solid #c7f0dc!important;padding:5px 7px!important;border-radius:99px!important}
-@media(max-width:1150px){.professional-home-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:"weather readiness" "capacity map" "incidents active"!important}}
-@media(max-width:800px){.reference-hero{min-height:150px!important}.reference-hero .command-hero-content{min-height:150px!important;padding:16px!important}.reference-hero .command-copy h2{font-size:24px!important}.reference-hero .blue-header-actions button{width:36px!important;height:36px!important}.reference-hero .blue-header-actions .blue-logout{display:none!important}.reference-stats{grid-template-columns:1fr!important}.professional-home-grid{grid-template-columns:1fr!important;grid-template-areas:"weather" "readiness" "capacity" "incidents" "map" "active"!important}.pro-panel{min-height:235px!important}}
+.pro-command-alerts .command-alert-list{display:flex;flex-direction:column;gap:8px;padding-top:2px}.pro-command-alerts .command-alert-item{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:8px;padding:9px 6px;border:1px solid #edf3f7;border-radius:10px;background:#fbfdff}.pro-command-alerts .command-alert-item .num{font-size:18px;font-weight:950;text-align:center;color:#0b5a86}.pro-command-alerts .command-alert-item .label{font-size:10px;font-weight:850;color:#174f70}.pro-command-alerts .command-alert-item small{display:block;font-size:8px;color:#66879a;margin-top:2px}.pro-command-alerts .command-alert-item .tag{font-size:8px;font-weight:900;padding:4px 7px;border-radius:999px}.pro-command-alerts .tag.red{background:#ffe9eb;color:#c62835}.pro-command-alerts .tag.orange{background:#fff4df;color:#a96500}.pro-command-alerts .tag.blue{background:#eaf5fb;color:#0b5a86}.pro-command-alerts .command-alert-note{font-size:8px;color:#66879a;padding-top:6px;text-align:center}.panel-live{font-size:8px!important;background:#e9faf2!important;border:1px solid #c7f0dc!important;padding:5px 7px!important;border-radius:99px!important}
+@media(max-width:1150px){.professional-home-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:"weather readiness" "capacity active" "alerts alerts" "facilities facilities"!important}}
+@media(max-width:800px){.reference-hero{min-height:150px!important}.reference-hero .command-hero-content{min-height:150px!important;padding:16px!important}.reference-hero .command-copy h2{font-size:24px!important}.reference-hero .blue-header-actions button{width:36px!important;height:36px!important}.reference-hero .blue-header-actions .blue-logout{display:none!important}.reference-stats{grid-template-columns:1fr!important}.professional-home-grid{grid-template-columns:1fr!important;grid-template-areas:"weather" "readiness" "capacity" "active" "alerts" "facilities"!important}.pro-panel{min-height:235px!important}}
 </style>
 
 <style id="jazan-brand-polish-v1">
