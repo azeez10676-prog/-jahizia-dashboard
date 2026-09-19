@@ -1621,6 +1621,11 @@ body.dark .readiness-line i{background:#26384b;}
 }
 </style>
 
+<style id="incident-operations-enhancements">
+.incident-receipt-box{margin-top:12px;padding:12px;border-radius:12px;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;font-size:11px;line-height:1.9}
+.incident-update-box{margin-top:10px;padding:12px;border-radius:12px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:11px;line-height:1.9}
+.incident-update-alert{position:fixed;right:16px;left:16px;bottom:16px;z-index:25;max-width:520px;margin:auto;box-shadow:0 14px 40px #0003;border:2px solid #2563eb}
+</style>
 </head>
 
 <body>
@@ -2447,6 +2452,33 @@ body.dark .readiness-line i{background:#26384b;}
 </div>
 
 
+
+
+<div class="overlay" id="facilityUpdateModal">
+  <div class="modal">
+    <h2>🔄 تحديث البلاغ</h2>
+    <div id="facilityUpdateIncidentTitle" class="subline"></div>
+    <div class="field">
+      <label class="required">حالة البلاغ</label>
+      <select id="facilityUpdateChoice" onchange="handleFacilityUpdateChoice()">
+        <option>ما زالت المشكلة قائمة</option>
+        <option>تم حل المشكلة</option>
+        <option>إضافة ملاحظة</option>
+      </select>
+    </div>
+    <div class="field hidden" id="facilityUpdateNoteWrap">
+      <label class="required">الملاحظة</label>
+      <textarea id="facilityUpdateNote" rows="4" placeholder="اكتب الملاحظة"></textarea>
+    </div>
+    <div class="ma">
+      <button class="primary" onclick="sendFacilityUpdate()">إرسال التحديث</button>
+      <button class="neutral" onclick="closeFacilityUpdate()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="facilityUpdateNotice"></div>
+
 <div class="toast" id="toast"></div>
 
 
@@ -2494,6 +2526,11 @@ let knownIncidentIds=new Set();
 
 let audioContext=null;
 let audioUnlocked=false;
+let incidentAlertTimer=null;
+let pendingIncidentAlertIds=new Set();
+let incidentReceiptMap=new Map();
+let incidentUpdateChannel=null;
+let pendingFacilityUpdates=new Map();
 
 let realtimeChannel=null;
 let capacityRealtimeChannel=null;
@@ -2621,89 +2658,48 @@ function unlockAudio(){
 
 function playNotificationSound(){
 
-  if(!profile || profile.role!=="admin")
-    return;
-
-  if(!audioUnlocked)
-    return;
+  if(!profile || profile.role!=="admin") return;
+  if(!audioUnlocked) return;
 
   try{
-
     const ctx=audioContext;
-
+    if(ctx.state==="suspended") ctx.resume();
     const now=ctx.currentTime;
 
-    const osc1=ctx.createOscillator();
-    const gain1=ctx.createGain();
+    // نغمة عمليات أعلى وأكثر وضوحًا: ثلاث نبضات متتابعة.
+    [880,660,988].forEach((freq,idx)=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      const t=now+(idx*.18);
+      osc.type="square";
+      osc.frequency.setValueAtTime(freq,t);
+      gain.gain.setValueAtTime(.0001,t);
+      gain.gain.exponentialRampToValueAtTime(.52,t+.025);
+      gain.gain.exponentialRampToValueAtTime(.0001,t+.14);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t+.16);
+    });
+  }catch(e){ console.log("Notification sound error",e); }
+}
 
-    osc1.type="sine";
-    osc1.frequency.setValueAtTime(
-      880,
-      now
-    );
+function startIncidentAlertLoop(id){
+  if(!profile || profile.role!=="admin") return;
+  const key=String(id);
+  pendingIncidentAlertIds.add(key);
+  playNotificationSound();
+  if(incidentAlertTimer) return;
+  incidentAlertTimer=setInterval(()=>{
+    if(!pendingIncidentAlertIds.size){
+      clearInterval(incidentAlertTimer); incidentAlertTimer=null; return;
+    }
+    playNotificationSound();
+  },2200);
+}
 
-    osc1.frequency.setValueAtTime(
-      660,
-      now+.16
-    );
-
-    gain1.gain.setValueAtTime(
-      .0001,
-      now
-    );
-
-    gain1.gain.exponentialRampToValueAtTime(
-      .18,
-      now+.02
-    );
-
-    gain1.gain.exponentialRampToValueAtTime(
-      .0001,
-      now+.45
-    );
-
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-
-    osc1.start(now);
-    osc1.stop(now+.5);
-
-
-    const osc2=ctx.createOscillator();
-    const gain2=ctx.createGain();
-
-    osc2.type="sine";
-
-    osc2.frequency.setValueAtTime(
-      988,
-      now+.22
-    );
-
-    gain2.gain.setValueAtTime(
-      .0001,
-      now+.22
-    );
-
-    gain2.gain.exponentialRampToValueAtTime(
-      .15,
-      now+.25
-    );
-
-    gain2.gain.exponentialRampToValueAtTime(
-      .0001,
-      now+.65
-    );
-
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-
-    osc2.start(now+.22);
-    osc2.stop(now+.7);
-
-  }catch(e){
-
-    console.log("Notification sound error",e);
-
+function stopIncidentAlert(id){
+  pendingIncidentAlertIds.delete(String(id));
+  if(!pendingIncidentAlertIds.size && incidentAlertTimer){
+    clearInterval(incidentAlertTimer); incidentAlertTimer=null;
   }
 }
 
@@ -2771,6 +2767,7 @@ async function login(){
 async function logout(){
 
   stopIncidentRealtime();
+  stopIncidentUpdateRealtime();
   stopCapacityRealtime();
   stopWeatherRealtime();
 
@@ -2903,6 +2900,7 @@ async function startApp(){
   startCapacityRealtime();
   startWeatherRealtime();
   startUpdateRequestRealtime();
+  startIncidentUpdateRealtime();
 }
 
 
@@ -2952,7 +2950,7 @@ function addIncidentNotification(x){
   notifications=notifications.slice(0,20);
   unreadNotifications++;
   updateNotificationBadge();
-  playNotificationSound();
+  startIncidentAlertLoop(item.id);
   toast(`🚨 بلاغ جديد • ${escapeHtml(item.facility)} • ${escapeHtml(item.type)}`);
 }
 
@@ -3005,6 +3003,102 @@ function stopIncidentRealtime(){
     try{ supabaseClient.removeChannel(realtimeChannel); }catch(e){ console.log(e); }
     realtimeChannel=null;
   }
+}
+
+/* =====================================================
+   EPHEMERAL INCIDENT UPDATES - NO DATABASE STORAGE
+===================================================== */
+function startIncidentUpdateRealtime(){
+  if(!profile) return;
+  stopIncidentUpdateRealtime();
+  incidentUpdateChannel=supabaseClient.channel("jahizia-incident-live-updates");
+  incidentUpdateChannel.on("broadcast",{event:"incident_update_request"},payload=>{
+    const p=payload.payload||{};
+    if(profile.role!=="admin" && p.facility===profile.facility){
+      pendingFacilityUpdates.set(String(p.incidentId),{incidentId:String(p.incidentId),type:p.type||"الكهرباء",facility:p.facility});
+      renderFacilityUpdateNotice();
+      toast("🔄 الإدارة المركزية تطلب تحديثًا على البلاغ");
+    }
+  });
+  incidentUpdateChannel.on("broadcast",{event:"incident_update_response"},payload=>{
+    const p=payload.payload||{};
+    if(profile.role==="admin" && p.incidentId){
+      pendingFacilityUpdates.set(String(p.incidentId),{...p});
+      const x=data.incidents.find(i=>String(i.id)===String(p.incidentId));
+      toast(`✅ تم استلام تحديث من ${escapeHtml(p.facility||x?.facility||"المنشأة")}`);
+      render();
+    }
+  });
+  incidentUpdateChannel.subscribe(status=>console.log("Incident live updates:",status));
+}
+
+function stopIncidentUpdateRealtime(){
+  if(incidentUpdateChannel){
+    try{ supabaseClient.removeChannel(incidentUpdateChannel); }catch(e){}
+    incidentUpdateChannel=null;
+  }
+}
+
+function requestIncidentUpdate(id){
+  if(!profile || profile.role!=="admin") return;
+  const x=data.incidents.find(i=>String(i.id)===String(id));
+  if(!x || !incidentUpdateChannel) return;
+  incidentUpdateChannel.send({type:"broadcast",event:"incident_update_request",payload:{incidentId:String(id),facility:x.facility,type:currentType(x)}});
+  pendingFacilityUpdates.set(String(id),{incidentId:String(id),facility:x.facility,status:"بانتظار رد المنشأة"});
+  toast("🔄 تم إرسال طلب التحديث للمنشأة");
+  showDetails(id);
+}
+
+function openFacilityUpdate(id){
+  if(!profile || profile.role==="admin") return;
+  const x=data.incidents.find(i=>String(i.id)===String(id));
+  if(!x) return;
+  window.pendingUpdateIncidentId=String(id);
+  document.getElementById("facilityUpdateIncidentTitle").textContent=`${x.facility} • ${currentType(x)}`;
+  document.getElementById("facilityUpdateChoice").value="ما زالت المشكلة قائمة";
+  document.getElementById("facilityUpdateNoteWrap").classList.add("hidden");
+  document.getElementById("facilityUpdateNote").value="";
+  document.getElementById("facilityUpdateModal").style.display="flex";
+}
+function handleFacilityUpdateChoice(){
+  const v=document.getElementById("facilityUpdateChoice").value;
+  document.getElementById("facilityUpdateNoteWrap").classList.toggle("hidden",v!=="إضافة ملاحظة");
+}
+function closeFacilityUpdate(){ document.getElementById("facilityUpdateModal").style.display="none"; window.pendingUpdateIncidentId=null; }
+function sendFacilityUpdate(){
+  const id=window.pendingUpdateIncidentId;
+  const choice=document.getElementById("facilityUpdateChoice").value;
+  const note=document.getElementById("facilityUpdateNote").value.trim();
+  if(choice==="إضافة ملاحظة" && !note){ toast("⚠️ اكتب الملاحظة"); return; }
+  if(!id || !incidentUpdateChannel) return;
+  incidentUpdateChannel.send({type:"broadcast",event:"incident_update_response",payload:{incidentId:String(id),facility:profile.facility,status:choice,note:choice==="إضافة ملاحظة"?note:null}});
+  pendingFacilityUpdates.delete(String(id));
+  closeFacilityUpdate();
+  toast("✅ تم إرسال التحديث للإدارة المركزية");
+  renderFacilityUpdateNotice();
+}
+function renderFacilityUpdateNotice(){
+  const box=document.getElementById("facilityUpdateNotice");
+  if(!box) return;
+  const first=[...pendingFacilityUpdates.values()][0];
+  if(profile?.role==="admin" || !first){box.innerHTML="";return;}
+  box.innerHTML=`<div class="card incident-update-alert"><b>🔄 طلب تحديث من الإدارة المركزية</b><div style="font-size:11px;margin-top:5px">${escapeHtml(first.facility||profile.facility)} • ${escapeHtml(first.type||"")}</div><button class="primary" style="margin-top:9px;width:100%" onclick="openFacilityUpdate('${escapeAttr(first.incidentId)}')">تحديث البلاغ</button></div>`;
+}
+
+async function acknowledgeIncident(id){
+  if(!profile || profile.role!=="admin") return;
+  const name=prompt("اكتب اسم مستلم البلاغ:");
+  if(name===null) return;
+  const receiver=name.trim();
+  if(!receiver){toast("⚠️ اكتب اسم مستلم البلاغ");return;}
+  const {error}=await supabaseClient.from("incident_audit_log").insert([{incident_id:id,user_id:currentUser?.id||null,action:"استلام البلاغ",changed_fields:{receiver_name:receiver}}]);
+  if(error){toast("❌ تعذر تسجيل اسم مستلم البلاغ: "+error.message);console.error(error);return;}
+  incidentReceiptMap.set(String(id),{name:receiver,time:new Date().toISOString()});
+  stopIncidentAlert(id);
+  notifications=notifications.filter(n=>String(n.id)!==String(id));
+  unreadNotifications=Math.max(0,unreadNotifications-1); updateNotificationBadge();
+  toast(`✅ تم استلام البلاغ بواسطة ${escapeHtml(receiver)}`);
+  showDetails(id);
 }
 
 
@@ -6264,6 +6358,8 @@ async function showDetails(id){
 
       </div>
 
+      ${incidentReceiptMap.has(String(id)) ? `<div class="incident-receipt-box">📥 <b>تم استلام البلاغ</b><br>مستلم البلاغ: <b>${escapeHtml(incidentReceiptMap.get(String(id)).name)}</b><br>وقت الاستلام: ${fmtDate(incidentReceiptMap.get(String(id)).time)}</div>` : ""}
+      ${pendingFacilityUpdates.has(String(id)) ? `<div class="incident-update-box">🔄 <b>${escapeHtml(pendingFacilityUpdates.get(String(id)).status||"آخر تحديث")}</b>${pendingFacilityUpdates.get(String(id)).note?`<br>${escapeHtml(pendingFacilityUpdates.get(String(id)).note)}`:""}</div>` : ""}
       <div id="auditLogContent" class="audit-box">
         <div class="audit-title">✏️ سجل تعديلات بيانات البلاغ الرئيسي</div>
         <div style="color:var(--muted);font-size:10px">جاري تحميل سجل التعديلات...</div>
@@ -6284,6 +6380,8 @@ async function showDetails(id){
   const actions=document.getElementById("detailsActions");
   if(actions){
     actions.innerHTML=`
+      ${profile && profile.role==="admin" && !incidentReceiptMap.has(String(id)) ? `<button class="primary" onclick="acknowledgeIncident('${escapeAttr(id)}')">📥 استلام البلاغ</button>` : ""}
+      ${profile && profile.role==="admin" ? `<button class="secondary" onclick="requestIncidentUpdate('${escapeAttr(id)}')">🔄 طلب تحديث من المنشأة</button>` : ""}
       ${profile && profile.role==="admin" ? `<button class="admin-button" onclick="closeDetails();openEdit('${escapeAttr(id)}')">✏️ تعديل البلاغ</button>` : ""}
       ${profile && profile.role==="admin" ? `<button class="neutral" onclick="closeDetails();openEscalation('${escapeAttr(id)}')">⬆️ تصعيد البلاغ</button>` : ""}
       ${!x.end_time ? `<button class="danger" onclick="closeDetails();openEnd('${escapeAttr(id)}')">إنهاء البلاغ</button>` : ""}
@@ -6890,6 +6988,7 @@ supabaseClient.auth.onAuthStateChange(
     if(event==="SIGNED_OUT"){
 
       stopIncidentRealtime();
+      stopIncidentUpdateRealtime();
 
       currentUser=null;
 
