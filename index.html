@@ -2491,6 +2491,11 @@ const supabaseClient =
     SUPABASE_KEY
   );
 
+/* وضع التصحيح: اجعلها true أثناء التطوير فقط */
+const DEBUG=false;
+function dbg(...args){ if(DEBUG) console.info(...args); }
+
+
 
 /* =====================================================
    GLOBAL
@@ -2618,122 +2623,6 @@ function updateThemeButton(){
 /* =====================================================
    AUDIO
 ===================================================== */
-
-function unlockAudio(){
-
-  try{
-
-    if(!audioContext){
-
-      audioContext =
-        new (
-          window.AudioContext ||
-          window.webkitAudioContext
-        )();
-
-    }
-
-    if(audioContext.state==="suspended")
-      audioContext.resume();
-
-    audioUnlocked=true;
-
-  }catch(e){
-
-    console.log("Audio unavailable",e);
-
-  }
-}
-
-
-function playNotificationSound(){
-
-  if(!profile || profile.role!=="admin")
-    return;
-
-  if(!audioUnlocked)
-    return;
-
-  try{
-
-    const ctx=audioContext;
-
-    const now=ctx.currentTime;
-
-    const osc1=ctx.createOscillator();
-    const gain1=ctx.createGain();
-
-    osc1.type="sine";
-    osc1.frequency.setValueAtTime(
-      880,
-      now
-    );
-
-    osc1.frequency.setValueAtTime(
-      660,
-      now+.16
-    );
-
-    gain1.gain.setValueAtTime(
-      .0001,
-      now
-    );
-
-    gain1.gain.exponentialRampToValueAtTime(
-      .18,
-      now+.02
-    );
-
-    gain1.gain.exponentialRampToValueAtTime(
-      .0001,
-      now+.45
-    );
-
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-
-    osc1.start(now);
-    osc1.stop(now+.5);
-
-
-    const osc2=ctx.createOscillator();
-    const gain2=ctx.createGain();
-
-    osc2.type="sine";
-
-    osc2.frequency.setValueAtTime(
-      988,
-      now+.22
-    );
-
-    gain2.gain.setValueAtTime(
-      .0001,
-      now+.22
-    );
-
-    gain2.gain.exponentialRampToValueAtTime(
-      .15,
-      now+.25
-    );
-
-    gain2.gain.exponentialRampToValueAtTime(
-      .0001,
-      now+.65
-    );
-
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-
-    osc2.start(now+.22);
-    osc2.stop(now+.7);
-
-  }catch(e){
-
-    console.log("Notification sound error",e);
-
-  }
-}
-
 
 /* =====================================================
    LOGIN
@@ -2973,7 +2862,7 @@ function unlockAudio(){
     if(!audioContext) audioContext=new (window.AudioContext||window.webkitAudioContext)();
     if(audioContext.state==="suspended") audioContext.resume();
     audioUnlocked=true;
-  }catch(e){console.log("Audio unavailable",e);}
+  }catch(e){dbg("Audio unavailable",e);}
 }
 function playNotificationSound(){
   if(!profile || profile.role!=="admin" || !audioUnlocked || !audioContext) return;
@@ -2988,7 +2877,7 @@ function playNotificationSound(){
       g.gain.exponentialRampToValueAtTime(.0001,now+n.t+n.d);
       o.connect(g);g.connect(ctx.destination);o.start(now+n.t);o.stop(now+n.t+n.d+.03);
     });
-  }catch(e){console.log("Notification sound error",e);}
+  }catch(e){dbg("Notification sound error",e);}
 }
 function stopNotificationSound(){if(notificationSoundTimer){clearInterval(notificationSoundTimer);notificationSoundTimer=null;}}
 function startNotificationSound(){
@@ -3050,7 +2939,7 @@ function addIncidentNotification(x){
   unreadNotifications++;
   updateNotificationBadge();
   renderIncomingAlert();
-  toast(`🚨 بلاغ جديد • ${escapeHtml(item.facility)} • ${escapeHtml(item.type)}`);
+  toast(`🚨 بلاغ جديد • ${item.facility} • ${item.type}`);
 }
 function showNotifications(){
   if(!profile || profile.role!=="admin") return;
@@ -3070,10 +2959,10 @@ function startIncidentRealtime(){
       const id=String(x.id);
       if(knownIncidentIds.has(id)) return;
       knownIncidentIds.add(id); data.incidents.push(x); render(); addIncidentNotification(x);
-    }).subscribe(status=>console.log("Incident realtime:",status));
+    }).subscribe(status=>dbg("Incident realtime:",status));
 }
 function stopIncidentRealtime(){
-  if(realtimeChannel){try{supabaseClient.removeChannel(realtimeChannel);}catch(e){console.log(e);}realtimeChannel=null;}
+  if(realtimeChannel){try{supabaseClient.removeChannel(realtimeChannel);}catch(e){dbg(e);}realtimeChannel=null;}
 }
 
 /* =====================================================
@@ -3114,7 +3003,7 @@ function startCapacityRealtime(){
         if(page && page.style.display!=="none") loadCapacity();
       },250);
     })
-    .subscribe(status=>console.log("Capacity realtime:",status));
+    .subscribe(status=>dbg("Capacity realtime:",status));
 }
 
 
@@ -3122,7 +3011,7 @@ function stopCapacityRealtime(){
   clearTimeout(capacityRealtimeRefreshTimer);
   capacityRealtimeRefreshTimer=null;
   if(capacityRealtimeChannel){
-    try{ supabaseClient.removeChannel(capacityRealtimeChannel); }catch(e){ console.log(e); }
+    try{ supabaseClient.removeChannel(capacityRealtimeChannel); }catch(e){ dbg(e); }
     capacityRealtimeChannel=null;
   }
 }
@@ -3152,13 +3041,13 @@ function startWeatherRealtime(){
       clearTimeout(weatherRealtimeRefreshTimer);
       weatherRealtimeRefreshTimer=setTimeout(()=>loadWeather(),250);
     })
-    .subscribe(status=>console.log("Weather realtime:",status));
+    .subscribe(status=>dbg("Weather realtime:",status));
 }
 function stopWeatherRealtime(){
   clearTimeout(weatherRealtimeRefreshTimer);
   weatherRealtimeRefreshTimer=null;
   if(weatherRealtimeChannel){
-    try{ supabaseClient.removeChannel(weatherRealtimeChannel); }catch(e){ console.log(e); }
+    try{ supabaseClient.removeChannel(weatherRealtimeChannel); }catch(e){ dbg(e); }
     weatherRealtimeChannel=null;
   }
 }
@@ -3181,7 +3070,7 @@ function requestPanelHtml(type){
 async function loadUpdateRequests(){
   if(!profile) return;
   const {data:requests,error}=await supabaseClient.from('update_requests').select('*').order('created_at',{ascending:false});
-  if(error){console.log('Update requests load:',error.message);return;}
+  if(error){dbg('Update requests load:',error.message);return;}
   activeUpdateRequests={capacity:null,weather:null};
   (requests||[]).filter(r=>r.status==='active').forEach(r=>{if(!activeUpdateRequests[r.request_type])activeUpdateRequests[r.request_type]=r;});
   const cp=document.getElementById('capacityRequestPanel');if(cp)cp.innerHTML=requestPanelHtml('capacity');
@@ -3212,7 +3101,7 @@ function startUpdateRequestRealtime(){
   if(updateRequestRealtimeChannel){try{supabaseClient.removeChannel(updateRequestRealtimeChannel)}catch(e){}updateRequestRealtimeChannel=null;}
   updateRequestRealtimeChannel=supabaseClient.channel('jahizia-update-requests-realtime')
     .on('postgres_changes',{event:'*',schema:'public',table:'update_requests'},()=>loadUpdateRequests())
-    .subscribe(status=>console.log('Update requests realtime:',status));
+    .subscribe(status=>dbg('Update requests realtime:',status));
 }
 function stopUpdateRequestRealtime(){if(updateRequestRealtimeChannel){try{supabaseClient.removeChannel(updateRequestRealtimeChannel)}catch(e){}updateRequestRealtimeChannel=null;}
 }
@@ -3227,7 +3116,7 @@ function renderWeatherPage(){
   const facilities=profile.role==='admin'?allFacilities:[profile.facility];
   const map={'لا توجد أمطار':'clear','أمطار خفيفة':'light','أمطار متوسطة':'moderate','أمطار غزيرة':'heavy'};
   const sorted=[...facilities].sort((a,b)=>(weatherUpdatedAtMap.get(b)?new Date(weatherUpdatedAtMap.get(b)):0)-(weatherUpdatedAtMap.get(a)?new Date(weatherUpdatedAtMap.get(a)):0));
-  el.innerHTML='<div class="capacity-grid">'+sorted.map(f=>{const wr0=weatherRows.find(x=>x.facility===f)||{weather_status:'لا توجد أمطار',updated_at:null};const value=map[wr0.weather_status]||wr0.value||'clear';const wi=weatherInfo(value);const editable=profile.role!=='admin'&&profile.facility===f;const updated=weatherRecentlyUpdated.has(f);return `<div class="capacity-card ${updated?'weather-card-updated':''}" data-weather-facility="${escapeAttr(f)}"><div class="capacity-head"><div><div class="capacity-facility">${escapeHtml(f)}</div><div class="capacity-resource">🌦️ الحالة المطرية</div></div><span class="weather-current">${wi.icon} ${wi.label}</span></div>${editable?weatherSelect(value):`<div class="capacity-note">آخر تحديث: ${wr0.updated_at?fmtDate(wr0.updated_at):'لم يتم التحديث'}</div>`}</div>`;}).join('')+'</div>';
+  el.innerHTML='<div class="capacity-grid">'+sorted.map(f=>{const wr0=weatherRows.find(x=>x.facility===f)||{weather_status:'لا توجد أمطار',updated_at:null};const value=map[wr0.weather_status]||wr0.value||'clear';const wi=weatherInfo(value);const editable=profile.role!=='admin'&&profile.facility===f;const updated=weatherRecentlyUpdated.has(f);return `<div class="capacity-card ${updated?'weather-card-updated':''}" data-weather-facility="${escapeHtml(f)}"><div class="capacity-head"><div><div class="capacity-facility">${escapeHtml(f)}</div><div class="capacity-resource">🌦️ الحالة المطرية</div></div><span class="weather-current">${wi.icon} ${wi.label}</span></div>${editable?weatherSelect(value):`<div class="capacity-note">آخر تحديث: ${wr0.updated_at?fmtDate(wr0.updated_at):'لم يتم التحديث'}</div>`}</div>`;}).join('')+'</div>';
 }
 
 /* =====================================================
@@ -3625,25 +3514,25 @@ function render(){
 
             <button
               class="secondary"
-              onclick="showDetails('${x.id}')">
+              onclick="showDetails('${escapeAttr(x.id)}')">
               فتح التفاصيل
             </button>
 
             ${
               profile && profile.role==="admin"
-              ? `<button class="admin-button" onclick="openEdit('${x.id}')">✏️ تعديل</button>`
+              ? `<button class="admin-button" onclick="openEdit('${escapeAttr(x.id)}')">✏️ تعديل</button>`
               : ""
             }
 
             ${
               profile && profile.role==="admin"
-              ? `<button class="neutral" onclick="openEscalation('${x.id}')">⬆️ تصعيد</button>`
+              ? `<button class="neutral" onclick="openEscalation('${escapeAttr(x.id)}')">⬆️ تصعيد</button>`
               : ""
             }
 
             <button
               class="danger"
-              onclick="openEnd('${x.id}')">
+              onclick="openEnd('${escapeAttr(x.id)}')">
               إنهاء البلاغ
             </button>
 
@@ -3790,7 +3679,7 @@ function capacityCard(rows,facility){
   const st=erCapacityStatus(erTotal,erOccupied),pct=st.pct.toFixed(0),key=escapeAttr(facility);
   const input=(id,val)=>editable?`<input class="capacity-input" id="${id}" type="number" min="0" step="1" value="${Number(val||0)}">`:`<b>${Number(val||0).toLocaleString('en-US')}</b>`;
   const recentlyUpdated=capacityRecentlyUpdated.has(facility);
-  return `<div class="capacity-card${recentlyUpdated?' capacity-updated':''}" data-capacity-facility="${escapeAttr(facility)}">
+  return `<div class="capacity-card${recentlyUpdated?' capacity-updated':''}" data-capacity-facility="${escapeHtml(facility)}">
     <div class="capacity-head">
       <div><div class="capacity-facility">${escapeHtml(facility)}</div><div class="capacity-resource">🛏️ الطاقة الاستيعابية</div>${recentlyUpdated?'<div class="capacity-updated-label">🔔 تم التحديث الآن</div>':''}</div>
       <span class="capacity-status ${st.cls}">${st.cls==='green'?'🟢':st.cls==='orange'?'🟠':'🔴'} ${st.label}</span>
@@ -3889,7 +3778,7 @@ async function loadWeather(){
   let weatherQuery=supabaseClient.from('facility_weather').select('*');
   if(profile.role!=='admin') weatherQuery=weatherQuery.eq('facility',profile.facility);
   const {data:rows,error}=await weatherQuery;
-  if(error){ console.log('Weather load:',error.message); return; }
+  if(error){ dbg('Weather load:',error.message); return; }
   weatherRows=rows||[];
   weatherRows.forEach(r=>{
     if(r.updated_at){
@@ -4068,7 +3957,7 @@ function renderFacilities(){
           const wi=weatherInfo(wr.value);
           const updated=weatherRecentlyUpdated.has(f);
           const editable=!!(profile && profile.role!=='admin' && profile.facility===f);
-          return `<div class="weather-box ${updated?'weather-card-updated':''}" data-weather-facility="${escapeAttr(f)}">
+          return `<div class="weather-box ${updated?'weather-card-updated':''}" data-weather-facility="${escapeHtml(f)}">
             <div class="weather-head">
               <span class="weather-title">🌦️ الحالة المطرية</span>
               <span class="weather-current">${wi.icon} ${wi.label}</span>
@@ -4102,15 +3991,15 @@ function renderFacilities(){
 
             <button
               class="secondary"
-              onclick="showDetails('${last.id}')">
+              onclick="showDetails('${escapeAttr(last.id)}')">
               فتح التفاصيل
             </button>
 
-            ${profile && profile.role==="admin" ? `<button class="neutral" onclick="openEscalation('${last.id}')">⬆️ تصعيد</button>` : ""}
+            ${profile && profile.role==="admin" ? `<button class="neutral" onclick="openEscalation('${escapeAttr(last.id)}')">⬆️ تصعيد</button>` : ""}
 
             <button
               class="danger"
-              onclick="openEnd('${last.id}')">
+              onclick="openEnd('${escapeAttr(last.id)}')">
               إنهاء البلاغ
             </button>
 
@@ -5304,7 +5193,7 @@ body.dark header{background:#101b2aec;border-color:#263b4c}.body.dark .brand-cen
 </style>
 
     
-<style id="capacity-visual-upgrade">
+<style id="capacity-visual-upgrade-2">
 /* CAPACITY — premium operational visual treatment */
 .capacity-grid{gap:14px!important;align-items:stretch}
 .capacity-card{position:relative;overflow:hidden!important;border:1px solid #d9e7f2!important;border-radius:20px!important;background:linear-gradient(180deg,#ffffff 0%,#f8fbfe 100%)!important;box-shadow:0 10px 30px rgba(11,39,68,.07)!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
@@ -6960,6 +6849,10 @@ supabaseClient.auth.onAuthStateChange(
    AUTO REFRESH
 ===================================================== */
 
+/* Realtime يدفع التغييرات فورًا؛ هذا التحديث الدوري احتياطي فقط.
+   لو Realtime غير مفعّل على جدول incidents في Supabase قلّل القيمة (مثلاً 10000). */
+const POLL_INTERVAL_MS=30000;
+
 setInterval(
   async ()=>{
 
@@ -6978,7 +6871,7 @@ setInterval(
     }
 
   },
-  10000
+  POLL_INTERVAL_MS
 );
 
 
@@ -7013,11 +6906,11 @@ checkSession();
 <script>
 window.regionalWeatherState=null;
 function weatherCodeInfo(c){if(c===0)return{label:'مشمسة وصافية',icon:'☀️'};if([1,2,3].includes(c))return{label:'غائم جزئياً',icon:'⛅'};if([51,53,55,56,57].includes(c))return{label:'رذاذ وأمطار خفيفة',icon:'🌦️'};if([61,63,65,66,67].includes(c))return{label:'أمطار',icon:'🌧️'};if([80,81,82].includes(c))return{label:'زخات مطرية',icon:'🌦️'};if([95,96,99].includes(c))return{label:'عواصف رعدية',icon:'⛈️'};return{label:'حالة جوية متغيرة',icon:'🌤️'}}
-async function loadRegionalWeather(){try{const u='https://api.open-meteo.com/v1/forecast?latitude=16.88917&longitude=42.55111&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FRiyadh';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather');const d=await r.json(),c=d.current,wi=weatherCodeInfo(c.weather_code);window.regionalWeatherState={label:wi.label,icon:wi.icon,temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),humidity:Math.round(c.relative_humidity_2m),wind:Math.round(c.wind_speed_10m),updated:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})};renderHomeSummaries()}catch(e){console.log('Regional weather unavailable',e)}}
+async function loadRegionalWeather(){try{const u='https://api.open-meteo.com/v1/forecast?latitude=16.88917&longitude=42.55111&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FRiyadh';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather');const d=await r.json(),c=d.current,wi=weatherCodeInfo(c.weather_code);window.regionalWeatherState={label:wi.label,icon:wi.icon,temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),humidity:Math.round(c.relative_humidity_2m),wind:Math.round(c.wind_speed_10m),updated:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})};renderHomeSummaries()}catch(e){dbg('Regional weather unavailable',e)}}
 loadRegionalWeather();setInterval(loadRegionalWeather,86400000);
 </script>
 
-<style id="reference-design-v100">
+<style id="reference-design-v100-2">
 /* ===== REFERENCE DESIGN V100 — single blue header, RTL command center ===== */
 body{background:linear-gradient(180deg,#f4fbff 0%,#ffffff 48%,#f7fbfd 100%)!important;color:#0d4773}
 .app>header, body>header{display:none!important}
@@ -7127,7 +7020,7 @@ body{background:linear-gradient(180deg,#f4fbff 0%,#ffffff 48%,#f7fbfd 100%)!impo
 }
 </style>
 
-<style id="operational-identity-final-layout">
+<style id="operational-identity-final-layout-2">
 .reference-hero .command-copy{display:flex!important;align-items:center!important;gap:24px!important;min-width:0!important;}
 .reference-hero .hero-title-stack{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;gap:0!important;min-width:0!important;}
 .reference-hero .hero-title-stack h2{margin:0!important;line-height:1.2!important;}
