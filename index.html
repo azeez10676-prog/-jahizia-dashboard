@@ -7223,6 +7223,9 @@ body.tv-mode .pro-empty,body.tv-mode .mini-empty{font-size:clamp(14px,1.1vw,23px
   function tick(){var c=document.getElementById('tvClock');if(c)c.textContent=new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});}
   tick(); setInterval(tick,20000);
   window.setTvMode=function(on,fs){
+    var was=document.body.classList.contains('tv-mode');
+    if(on&&!was){window._tvPrevDark=document.body.classList.contains('dark');document.body.classList.add('dark');}
+    if(!on&&was&&window._tvPrevDark===false){document.body.classList.remove('dark');}
     document.body.classList.toggle('tv-mode',!!on);
     try{
       if(on&&fs&&!document.fullscreenElement&&document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
@@ -7236,6 +7239,40 @@ body.tv-mode .pro-empty,body.tv-mode .mini-empty{font-size:clamp(14px,1.1vw,23px
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('tv-mode'))setTvMode(false);});
   document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&document.body.classList.contains('tv-mode'))setTvMode(false);});
   var saved=null;try{saved=localStorage.getItem('jahizia_tv');}catch(e){}
-  if(new URLSearchParams(location.search).get('tv')==='1'||saved==='1') document.body.classList.add('tv-mode');
+  if(new URLSearchParams(location.search).get('tv')==='1'||saved==='1'){window._tvPrevDark=document.body.classList.contains('dark');document.body.classList.add('dark','tv-mode');}
 })();
 </script>
+
+<style id="tv-mode-v2">
+/* ===== وضع العرض: مظهر غرفة العمليات (داكن، توهّج للحالات، أرقام كبيرة) ===== */
+body.tv-mode{background:radial-gradient(1100px 520px at 85% -8%,#16406e66,transparent 70%),#08111f!important;--card:#0f1c31;--line:#1f3a5f;--text:#eef4fb;--muted:#9fb3cc}
+body.tv-mode .pro-panel{background:linear-gradient(180deg,#112340,#0d1a2f)!important;border:1px solid #1f3a5f!important;
+  border-radius:22px!important;box-shadow:0 0 0 1px #ffffff08 inset,0 12px 40px #00000066!important}
+body.tv-mode .pro-panel-head{border-bottom:1px solid #1f3a5f!important;padding-bottom:10px!important}
+body.tv-mode .pro-panel-head b{color:#fff}
+body.tv-mode .panel-live{color:#34d399!important;animation:tvBlink 2.4s ease-in-out infinite}
+@keyframes tvBlink{50%{opacity:.45}}
+
+/* بطاقات المؤشرات العلوية */
+body.tv-mode .executive-stats .exec-stat{background:linear-gradient(180deg,#112340,#0d1a2f)!important;border:1px solid #1f3a5f!important;border-radius:20px!important}
+body.tv-mode .executive-stats b{color:#fff;text-shadow:0 0 22px #60a5fa66}
+body.tv-mode .ready-stat b{color:#34d399;text-shadow:0 0 24px #34d39966}
+body.tv-mode .incident-stat b{color:#f87171;text-shadow:0 0 24px #f8717166}
+
+/* المنشآت: بطاقات مضيئة حسب الحالة */
+body.tv-mode #homeFacilitiesList .facility-mini-row{background:#0b182b!important;border:1px solid #1f3a5f!important;transition:none}
+body.tv-mode #homeFacilitiesList .facility-mini-row:has(span.green){border-color:#1d7a55!important;box-shadow:0 0 14px #34d39922}
+body.tv-mode #homeFacilitiesList .facility-mini-row:has(span.orange){border-color:#d99a1f!important;box-shadow:0 0 16px #fbbf2455}
+body.tv-mode #homeFacilitiesList .facility-mini-row:has(span.red){border-color:#ef4444!important;box-shadow:0 0 20px #ef444488;animation:tvPulse 1.6s ease-in-out infinite}
+@keyframes tvPulse{50%{box-shadow:0 0 6px #ef444433}}
+body.tv-mode .pro-status.red{animation:tvPulse 1.6s ease-in-out infinite}
+
+/* أشرطة الجاهزية أسمك وأوضح */
+body.tv-mode .readiness-line i{height:clamp(12px,1vw,20px)!important;background:#1a2d4a!important}
+body.tv-mode .pro-incident-row{border-bottom-color:#1f3a5f!important}
+body.tv-mode .capacity-three div{background:#0b182b!important;border:1px solid #1f3a5f}
+body.tv-mode .capacity-ring i{background:#0f1c31!important}
+
+/* شريط الساعة: أوضح على الشاشة الكبيرة */
+#tvBar{font-size:clamp(14px,1.1vw,22px)!important;opacity:.7;background:#0b2a4af0!important;border:1px solid #1f3a5f}
+</style>
