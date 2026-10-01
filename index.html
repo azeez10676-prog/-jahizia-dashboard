@@ -6,6 +6,9 @@
 <title>جاهزية المنشآت الصحية</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -1687,6 +1690,7 @@ body.dark .readiness-line i{background:#26384b;}
   <button class="side-link" data-nav="audit" onclick="showAuditPage()"><span class="ico">▤</span><span>سجل التدقيق</span></button>
 
   <div class="side-spacer"></div>
+  <button class="side-link" onclick="toggleTvMode()"><span class="ico">🖥</span><span>وضع شاشة العرض</span></button>
   <button class="side-link side-settings" onclick="toggleTheme()"><span class="ico">⚙</span><span>الإعدادات</span></button>
   <button class="side-link side-logout" onclick="logout()"><span class="ico">⇥</span><span>تسجيل الخروج</span></button>
 </aside>
@@ -7126,3 +7130,112 @@ body.dark .history-delete-btn{background:#321b22;border-color:#5d2935}
   .history-incident-actions{margin-top:10px;justify-content:flex-start}
 }
 </style>
+
+<style id="ui-polish-v1">
+/* ===== تحسين الواجهة (طبقة أخيرة؛ احذف هذه الكتلة للرجوع للشكل السابق) ===== */
+:root{--ui-font:"IBM Plex Sans Arabic","Tajawal","Segoe UI",Tahoma,Arial,sans-serif}
+html body,html body *{font-family:var(--ui-font)!important}
+.pro-panel-head b{font-size:17px!important}
+.pro-panel-head span,.pro-panel-head button{font-size:12.5px!important}
+.pro-incident-row b{font-size:14px!important;line-height:1.5}
+.pro-incident-row span:not(.pro-status){font-size:12.5px!important;line-height:1.5}
+.pro-incident-row time{font-size:12px!important}
+.pro-status{font-size:11.5px!important;padding:5px 10px!important}
+.pro-stat-line{font-size:13.5px}
+.pro-stat-line small,.capacity-three span,.weather-update-pro,
+.regional-weather small,.regional-weather span{font-size:12px!important}
+.pro-empty,.mini-empty{font-size:13.5px!important}
+.facility-dot-item span{font-size:11px!important}
+.exec-stat small{font-size:12px!important}
+.side-link span:not(.ico){font-size:14px!important}
+.side-label,.side-brand span{font-size:12px!important}
+.professional-home-grid{gap:20px!important}
+.pro-panel{border-radius:20px!important;padding:22px!important}
+.pro-incident-row{padding:12px 0!important}
+button:focus-visible,[role="button"]:focus-visible,a:focus-visible,
+select:focus-visible,input:focus-visible{outline:3px solid #2563eb66!important;outline-offset:2px}
+@media(max-width:700px){
+  .pro-panel-head button{min-height:40px;padding:0 6px!important}
+  .pro-panel{padding:18px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+
+<style id="tv-mode-v1">
+/* ===== وضع شاشة العرض: صفحة واحدة بلا تمرير، خطوط كبيرة، بلا قائمة جانبية ===== */
+#tvBar{display:none;position:fixed;bottom:12px;left:14px;z-index:60;align-items:center;gap:12px;
+  background:#0b2a4acc;color:#fff;border-radius:999px;padding:6px 8px 6px 14px;font-size:14px;opacity:.45;transition:opacity .2s}
+#tvBar:hover{opacity:1}
+#tvBar button{border:0;border-radius:999px;background:#ffffff26;color:#fff;padding:6px 14px;font-size:13px}
+body.tv-mode #tvBar{display:flex}
+
+body.tv-mode .side-nav,body.tv-mode .dashboard-heading,body.tv-mode .mobile-new-incident{display:none!important}
+body.tv-mode .app{margin:0!important;max-width:none!important;width:100%!important;height:100vh;box-sizing:border-box;
+  padding:10px 18px 12px!important;overflow:hidden;display:flex;flex-direction:column}
+body.tv-mode .dashboard-home:not([style*="none"]){display:flex!important;flex-direction:column;flex:1;min-height:0;gap:10px;padding:0!important}
+body.tv-mode .executive-stats .exec-stat{min-height:0!important;padding:10px 16px!important}
+body.tv-mode .executive-stats b{font-size:clamp(28px,2.6vw,54px)!important;line-height:1.1}
+body.tv-mode .executive-stats .exec-stat>div>span,body.tv-mode .executive-stats span{font-size:clamp(13px,1vw,21px)!important}
+
+body.tv-mode .professional-home-grid{flex:1;min-height:0;display:grid!important;margin:0!important;gap:12px!important;
+  grid-template-areas:none!important;grid-template-columns:1.15fr 1.25fr .9fr!important;grid-template-rows:repeat(3,minmax(0,1fr))!important}
+body.tv-mode .pro-panel{min-height:0!important;padding:12px 16px!important;display:flex;flex-direction:column;overflow:hidden}
+body.tv-mode .pro-content{flex:1;min-height:0;max-height:none!important;overflow:hidden!important;padding-top:8px!important}
+body.tv-mode #homeFacilitiesSummary{grid-column:1!important;grid-row:1/4!important}
+body.tv-mode #homeActiveOnlySummary{grid-column:2!important;grid-row:1/3!important}
+body.tv-mode #homeLatestReportsSummary{grid-column:2!important;grid-row:3!important}
+body.tv-mode #homeWeatherSummary{grid-column:3!important;grid-row:1!important}
+body.tv-mode #homeReadinessSummary{grid-column:3!important;grid-row:2!important}
+body.tv-mode #homeCapacitySummary{grid-column:3!important;grid-row:3!important}
+
+body.tv-mode #homeFacilitiesList{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-auto-rows:1fr;gap:6px!important;max-height:none!important;overflow:hidden!important}
+body.tv-mode #homeFacilitiesList .facility-mini-row{padding:4px 8px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:var(--card)}
+body.tv-mode #homeFacilitiesList .facility-mini-row b{font-size:clamp(14px,1.1vw,23px)!important}
+body.tv-mode #homeFacilitiesList .facility-mini-row span{font-size:clamp(11px,.85vw,18px)!important}
+
+body.tv-mode .pro-panel-head b{font-size:clamp(17px,1.3vw,27px)!important}
+body.tv-mode .pro-panel-head span,body.tv-mode .pro-panel-head button{font-size:clamp(11px,.8vw,17px)!important}
+body.tv-mode .pro-incident-row b{font-size:clamp(14px,1.1vw,23px)!important}
+body.tv-mode .pro-incident-row span:not(.pro-status),body.tv-mode .pro-incident-row time{font-size:clamp(11px,.85vw,18px)!important}
+body.tv-mode .pro-status{font-size:clamp(11px,.85vw,17px)!important}
+body.tv-mode .readiness-line span,body.tv-mode .readiness-line b{font-size:clamp(14px,1.1vw,23px)!important}
+body.tv-mode .capacity-hero>b{font-size:clamp(30px,3vw,60px)!important}
+body.tv-mode .capacity-hero>span,body.tv-mode .capacity-three span{font-size:clamp(12px,.9vw,19px)!important}
+body.tv-mode .capacity-three{margin-top:10px!important}
+body.tv-mode .capacity-three b{font-size:clamp(18px,1.6vw,34px)!important}
+body.tv-mode .regional-weather{padding:6px 4px!important}
+body.tv-mode .regional-weather b{font-size:clamp(17px,1.4vw,30px)!important}
+body.tv-mode .regional-weather span,body.tv-mode .regional-weather small,body.tv-mode .weather-update-pro{font-size:clamp(11px,.85vw,18px)!important}
+body.tv-mode .weather-icon-pro{font-size:clamp(36px,3.2vw,64px)!important}
+body.tv-mode .pro-empty,body.tv-mode .mini-empty{font-size:clamp(14px,1.1vw,23px)!important;padding:16px 8px!important}
+</style>
+<script>
+/* وضع شاشة العرض: زر في القائمة الجانبية، أو ?tv=1 في الرابط. للخروج: Esc أو زر الخروج */
+(function(){
+  var bar=document.createElement('div');
+  bar.id='tvBar';
+  bar.innerHTML='<span id="tvClock"></span><button type="button" id="tvExit">✕ خروج من وضع العرض</button>';
+  document.body.appendChild(bar);
+  function tick(){var c=document.getElementById('tvClock');if(c)c.textContent=new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});}
+  tick(); setInterval(tick,20000);
+  window.setTvMode=function(on,fs){
+    document.body.classList.toggle('tv-mode',!!on);
+    try{
+      if(on&&fs&&!document.fullscreenElement&&document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      if(!on&&document.fullscreenElement&&document.exitFullscreen) document.exitFullscreen();
+    }catch(e){}
+    try{localStorage.setItem('jahizia_tv',on?'1':'0');}catch(e){}
+    if(on&&typeof showDashboardPage==='function'&&typeof profile!=='undefined'&&profile) showDashboardPage();
+  };
+  window.toggleTvMode=function(){setTvMode(!document.body.classList.contains('tv-mode'),true);};
+  document.getElementById('tvExit').onclick=function(){setTvMode(false);};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('tv-mode'))setTvMode(false);});
+  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&document.body.classList.contains('tv-mode'))setTvMode(false);});
+  var saved=null;try{saved=localStorage.getItem('jahizia_tv');}catch(e){}
+  if(new URLSearchParams(location.search).get('tv')==='1'||saved==='1') document.body.classList.add('tv-mode');
+})();
+</script>
