@@ -7466,3 +7466,121 @@ body.tv-mode .kpi-types em{font-size:clamp(14px,1.1vw,23px)}
 })();
 </script>
 
+<style id="update-request-alert-v1">
+#reqOverlay{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:99999;width:min(760px,94vw);display:none;flex-direction:column;gap:10px;direction:rtl;pointer-events:none}
+#reqOverlay.show{display:flex}
+.req-card{pointer-events:auto;display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#e5484d,#f59e0b);border:2px solid #fff;box-shadow:0 14px 40px #0006;animation:reqPulse 1.1s ease-in-out infinite}
+.req-card.weather{background:linear-gradient(135deg,#0b6fa8,#e5484d)}
+.req-ico{flex:none;font-size:38px;line-height:1;animation:reqShake .9s ease-in-out infinite}
+.req-copy{flex:1;min-width:0}
+.req-copy b{display:block;font-size:20px;line-height:1.4}
+.req-copy span{display:block;font-size:14px;opacity:.95;margin-top:2px}
+.req-copy em{display:block;font-style:normal;font-size:12px;margin-top:4px;background:#0003;border-radius:8px;padding:3px 8px;width:fit-content}
+.req-actions{flex:none;display:flex;flex-direction:column;gap:8px}
+.req-actions button{border:0;border-radius:12px;padding:10px 16px;font:inherit;font-size:14px;font-weight:900;cursor:pointer;white-space:nowrap}
+.req-go{background:#fff;color:#b42318}
+.req-mute{background:#0004;color:#fff}
+@keyframes reqPulse{50%{box-shadow:0 0 0 8px #f59e0b55,0 14px 40px #0006;transform:scale(1.015)}}
+@keyframes reqShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+@media(max-width:600px){.req-card{flex-direction:column;align-items:stretch;text-align:center}.req-actions{flex-direction:row}.req-actions button{flex:1}}
+@media(prefers-reduced-motion:reduce){.req-card,.req-ico{animation:none}}
+</style>
+<script>
+/* تنبيه طلبات التحديث (الطاقة الاستيعابية / الحالة المطرية) للمنشآت: لافتة واضحة + صوت متكرر */
+(function(){
+  var alerted=new Set(), muted=new Set(), soundTimer=null, titleTimer=null, baseTitle=document.title, box=null;
+  function ensureBox(){
+    if(box) return box;
+    box=document.createElement('div'); box.id='reqOverlay'; box.setAttribute('role','alert'); box.setAttribute('aria-live','assertive');
+    document.body.appendChild(box); return box;
+  }
+  function isDone(type,req){
+    try{
+      if(satisfiedUpdateRequests.has(String(req.id))) return true;
+      var t=new Date(req.created_at).getTime(); if(!isFinite(t)) return false;
+      if(type==='capacity'){
+        return (capacityRows||[]).some(function(r){return r.facility===profile.facility && new Date(r.updated_at).getTime()>=t;});
+      }
+      var w=weatherUpdatedAtMap&&weatherUpdatedAtMap.get(profile.facility);
+      return !!w && new Date(w).getTime()>=t;
+    }catch(e){return false;}
+  }
+  function pending(){
+    if(typeof profile==='undefined'||!profile||profile.role==='admin') return [];
+    var out=[];
+    ['capacity','weather'].forEach(function(t){
+      var r=activeUpdateRequests&&activeUpdateRequests[t];
+      if(r&&!isDone(t,r)) out.push({type:t,req:r});
+    });
+    return out;
+  }
+  function chime(){
+    try{
+      if(!audioContext||!audioUnlocked) return;
+      var ctx=audioContext, now=ctx.currentTime;
+      if(ctx.state==='suspended') ctx.resume();
+      [{f:988,t:0},{f:1319,t:.22},{f:988,t:.44},{f:1319,t:.66},{f:1568,t:.9}].forEach(function(n){
+        var o=ctx.createOscillator(), g=ctx.createGain();
+        o.type='triangle'; o.frequency.setValueAtTime(n.f,now+n.t);
+        g.gain.setValueAtTime(.0001,now+n.t);
+        g.gain.exponentialRampToValueAtTime(.5,now+n.t+.03);
+        g.gain.exponentialRampToValueAtTime(.0001,now+n.t+.2);
+        o.connect(g); g.connect(ctx.destination); o.start(now+n.t); o.stop(now+n.t+.25);
+      });
+      if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    }catch(e){}
+  }
+  function loud(list){return list.filter(function(p){return !muted.has(String(p.req.id));});}
+  function sync(){
+    var list=pending(), el=ensureBox();
+    if(!list.length){
+      el.className=''; el.innerHTML='';
+      if(soundTimer){clearInterval(soundTimer);soundTimer=null;}
+      if(titleTimer){clearInterval(titleTimer);titleTimer=null;document.title=baseTitle;}
+      alerted.forEach(function(id){ if(!list.some(function(p){return String(p.req.id)===id;})) alerted.delete(id); });
+      return;
+    }
+    var isNew=false;
+    list.forEach(function(p){var id=String(p.req.id); if(!alerted.has(id)){alerted.add(id); muted.delete(id); isNew=true;}});
+    el.className='show';
+    el.innerHTML=list.map(function(p){
+      var m=muted.has(String(p.req.id));
+      return '<div class="req-card '+p.type+'"><div class="req-ico">'+requestIcon(p.type)+'</div>'+
+        '<div class="req-copy"><b>📣 مطلوب تحديث '+requestTypeLabel(p.type)+'</b><span>طلب من عمليات تجمع جازان الصحي لمنشأتك</span>'+
+        (!audioUnlocked?'<em>🔊 اضغط في أي مكان لتفعيل الصوت</em>':'')+'</div>'+
+        '<div class="req-actions"><button class="req-go" onclick="reqAlertGo(\''+p.type+'\')">تحديث الآن</button>'+
+        (m?'':'<button class="req-mute" onclick="reqAlertMute()">🔕 كتم الصوت</button>')+'</div></div>';
+    }).join('');
+    if(isNew){ chime(); try{toast('📣 وصلك طلب تحديث من العمليات');}catch(e){} }
+    if(!soundTimer) soundTimer=setInterval(function(){ if(loud(pending()).length) chime(); },5000);
+    if(!titleTimer){
+      var on=false; titleTimer=setInterval(function(){on=!on; document.title=on?'📣 مطلوب تحديث بياناتك!':baseTitle;},1200);
+    }
+  }
+  window.reqAlertGo=function(type){
+    try{
+      if(type==='capacity'){showCapacityPage();setActiveNav('capacity');}
+      else{showWeatherPage();}
+    }catch(e){}
+  };
+  window.reqAlertMute=function(){
+    pending().forEach(function(p){muted.add(String(p.req.id));});
+    sync();
+  };
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){
+    document.addEventListener(ev,function(){ var was=audioUnlocked; try{unlockAudio();}catch(e){} if(!was&&audioUnlocked) sync(); },{passive:true});
+  });
+  var orig=window.renderHomeUpdateRequestAlert;
+  if(typeof orig==='function'){
+    window.renderHomeUpdateRequestAlert=function(){var r=orig.apply(this,arguments); sync(); return r;};
+  }
+  /* عند تحديث الطاقة/الطقس تُعاد المزامنة لإخفاء اللافتة فور الحفظ */
+  var origCap=window.loadCapacity;
+  if(typeof origCap==='function'){window.loadCapacity=async function(){var r=await origCap.apply(this,arguments); sync(); return r;};}
+  var origW=window.loadWeather;
+  if(typeof origW==='function'){window.loadWeather=async function(){var r=await origW.apply(this,arguments); sync(); return r;};}
+  /* عند تسجيل الخروج */
+  var origOut=window.logout;
+  if(typeof origOut==='function'){window.logout=async function(){var r=await origOut.apply(this,arguments); try{sync();}catch(e){} return r;};}
+})();
+</script>
