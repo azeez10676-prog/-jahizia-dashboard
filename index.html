@@ -1781,6 +1781,21 @@ body.dark .readiness-line i{background:#26384b;}
 
   </div>
 
+  <div class="kpi-strip" id="homeKpiStrip">
+    <div class="kpi-card kpi-time">
+      <div class="kpi-ico">⏱</div>
+      <div class="kpi-body"><span class="kpi-label">متوسط زمن إغلاق البلاغات</span><b id="kpiAvgClose">—</b><small id="kpiAvgCloseNote">آخر 30 يومًا</small></div>
+    </div>
+    <div class="kpi-card kpi-week">
+      <div class="kpi-ico">▤</div>
+      <div class="kpi-body"><span class="kpi-label">عدد بلاغات هذا الأسبوع</span><b id="kpiWeekCount">0</b><small id="kpiWeekDelta">آخر 7 أيام</small></div>
+    </div>
+    <div class="kpi-card kpi-top">
+      <div class="kpi-ico">★</div>
+      <div class="kpi-body"><span class="kpi-label">أكثر البلاغات هذا الأسبوع</span><div id="kpiTopTypes" class="kpi-types"><em>—</em></div></div>
+    </div>
+  </div>
+
 </div>
 
 
@@ -7364,4 +7379,90 @@ body.tv-mode .pro-empty,body.tv-mode .mini-empty{font-size:clamp(14px,1.1vw,23px
 })();
 </script>
 
+<style id="kpi-strip-v1">
+.kpi-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}
+.kpi-card{display:flex;align-items:center;gap:14px;background:var(--card,#fff);border:1px solid #cddcec;border-radius:20px;padding:14px 18px;box-shadow:0 6px 22px #0d47731a;min-width:0;overflow:hidden;position:relative}
+.kpi-card:after{content:"";position:absolute;right:0;top:0;bottom:0;width:4px;background:#0b6fa8}
+.kpi-week:after{background:#f59e0b}.kpi-top:after{background:#e5484d}
+.kpi-ico{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:20px;background:#eaf4fb;color:#0b6fa8}
+.kpi-week .kpi-ico{background:#fff6e7;color:#d97706}.kpi-top .kpi-ico{background:#fff0f0;color:#dc2626}
+.kpi-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px}
+.kpi-label{font-size:13px;font-weight:800;color:#5b7b92}
+.kpi-body b{font-size:30px;line-height:1.1;color:#0a4f7d}
+.kpi-body small{font-size:12px;font-weight:700;color:#6b8799}
+.kpi-body small.up{color:#dc2626}.kpi-body small.down{color:#16a34a}
+.kpi-types{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+.kpi-types em{font-style:normal;font-size:14px;font-weight:800;color:#16a34a}
+.kpi-type-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;font-size:13px;font-weight:800;color:#0a4f7d}
+.kpi-type-row i{display:block;height:8px;border-radius:99px;background:#e4eef5;overflow:hidden}
+.kpi-type-row i u{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f59e0b,#e5484d)}
+.kpi-type-row strong{font-size:15px}
+@media(max-width:900px){.kpi-strip{grid-template-columns:1fr}}
+body.dark .kpi-card{border-color:#263449;box-shadow:none}
+body.dark .kpi-body b,body.dark .kpi-type-row{color:#dbeafe}
+body.dark .kpi-label,body.dark .kpi-body small{color:#9db2c6}
+/* وضع شاشة العرض: شريط بارتفاع ثابت أسفل المربعات، وخطوط كبيرة تُقرأ من بعيد */
+body.tv-mode .kpi-strip{flex:none;margin:0!important;gap:12px;height:clamp(96px,13vh,150px)}
+body.tv-mode .kpi-card{padding:clamp(8px,1.2vh,14px) 20px;border-radius:22px;gap:clamp(10px,1vw,20px)}
+body.tv-mode .kpi-ico{width:clamp(44px,3.8vw,72px);height:clamp(44px,3.8vw,72px);font-size:clamp(20px,1.8vw,34px);border-radius:18px}
+body.tv-mode .kpi-label{font-size:clamp(13px,1vw,21px)}
+body.tv-mode .kpi-body b{font-size:clamp(28px,2.8vw,58px)}
+body.tv-mode .kpi-body small{font-size:clamp(11px,.85vw,18px)}
+body.tv-mode .kpi-types{gap:clamp(2px,.5vh,6px)}
+body.tv-mode .kpi-type-row{font-size:clamp(12px,.95vw,20px)}
+body.tv-mode .kpi-type-row strong{font-size:clamp(14px,1.1vw,23px)}
+body.tv-mode .kpi-type-row i{height:clamp(6px,.8vh,10px)}
+body.tv-mode .kpi-types em{font-size:clamp(14px,1.1vw,23px)}
+</style>
+<script>
+/* مؤشرات سريعة: متوسط زمن الإغلاق + بلاغات الأسبوع + أكثر الأنواع */
+(function(){
+  var DAY=864e5, fmtN=function(n){return Number(n).toLocaleString('en-US');};
+  function fmtDur(min){
+    min=Math.round(min);
+    if(min<60) return fmtN(min)+' د';
+    var h=Math.floor(min/60), m=min%60;
+    if(h<24) return fmtN(h)+' س'+(m?' '+fmtN(m)+' د':'');
+    var d=Math.floor(h/24), hh=h%24;
+    return fmtN(d)+' يوم'+(hh?' '+fmtN(hh)+' س':'');
+  }
+  window.renderKpiStrip=function(){
+    try{
+      var avgEl=document.getElementById('kpiAvgClose'); if(!avgEl) return;
+      var facs=visibleFacilities();
+      var inc=(data.incidents||[]).filter(function(x){return facs.indexOf(x.facility)>-1;});
+      var now=Date.now();
+      var st=function(x){return new Date(x.start_time).getTime();};
+
+      // متوسط زمن الإغلاق (البلاغات المغلقة خلال آخر 30 يومًا)
+      var durs=inc.filter(function(x){return x.end_time && st(x)>=now-30*DAY;})
+        .map(function(x){return (new Date(x.end_time).getTime()-st(x))/60000;})
+        .filter(function(m){return isFinite(m)&&m>=0;});
+      avgEl.textContent=durs.length?fmtDur(durs.reduce(function(a,b){return a+b;},0)/durs.length):'—';
+      document.getElementById('kpiAvgCloseNote').textContent=durs.length?('من '+fmtN(durs.length)+' بلاغ مغلق • آخر 30 يومًا'):'لا توجد بلاغات مغلقة بعد';
+
+      // بلاغات هذا الأسبوع (آخر 7 أيام) ومقارنتها بالأسبوع السابق
+      var wk=inc.filter(function(x){var s=st(x);return s>=now-7*DAY&&s<=now+DAY;});
+      var prev=inc.filter(function(x){var s=st(x);return s>=now-14*DAY&&s<now-7*DAY;});
+      document.getElementById('kpiWeekCount').textContent=fmtN(wk.length);
+      var dl=document.getElementById('kpiWeekDelta'), diff=wk.length-prev.length;
+      dl.className=diff>0?'up':diff<0?'down':'';
+      dl.textContent=diff>0?('▲ '+fmtN(diff)+' أكثر من الأسبوع الماضي'):diff<0?('▼ '+fmtN(-diff)+' أقل من الأسبوع الماضي'):'مماثل للأسبوع الماضي';
+
+      // أكثر الأنواع هذا الأسبوع (أعلى 3)
+      var counts={}; wk.forEach(function(x){var k=currentType(x); counts[k]=(counts[k]||0)+1;});
+      var top=Object.keys(counts).map(function(k){return [k,counts[k]];}).sort(function(a,b){return b[1]-a[1];}).slice(0,3);
+      var box=document.getElementById('kpiTopTypes');
+      box.innerHTML=top.length?top.map(function(r){
+        return '<div class="kpi-type-row"><span>'+icon(r[0])+' '+escapeHtml(r[0])+'</span><i><u style="width:'+Math.round(r[1]/top[0][1]*100)+'%"></u></i><strong>'+fmtN(r[1])+'</strong></div>';
+      }).join(''):'<em>✓ لا توجد بلاغات هذا الأسبوع</em>';
+    }catch(e){ try{dbg(e);}catch(_){} }
+  };
+  // ربط الشريط بدورة العرض الحالية دون تعديل الدالة الأصلية
+  var orig=window.renderHomeSummaries;
+  if(typeof orig==='function'){
+    window.renderHomeSummaries=function(){var r=orig.apply(this,arguments); renderKpiStrip(); return r;};
+  }
+})();
+</script>
 
