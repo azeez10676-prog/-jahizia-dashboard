@@ -2411,19 +2411,13 @@ body.dark .readiness-line i{background:#26384b;}
 
     <div class="field">
       <label class="required">الجهة المراد التصعيد إليها</label>
-      <select id="escalationTarget" onchange="toggleOtherEscalation()">
+      <select id="escalationTarget">
         <option value="">اختر الجهة</option>
-        <option>تجمع جازان الصحي</option>
-        <option>وزارة الصحة</option>
-        <option>مركز العمليات</option>
-        <option>إدارة الطوارئ والكوارث</option>
-        <option>أخرى</option>
+        <option>الرئيس التنفيذي لتجمع جازان الصحي</option>
+        <option>مدير إدارة الطوارئ والكوارث لتجمع جازان الصحي</option>
+        <option>الصحة الإلكترونية لتجمع جازان الصحي</option>
+        <option id="escalationHospitalOption" value="">مدير المستشفى</option>
       </select>
-    </div>
-
-    <div class="field hidden" id="otherEscalationWrap">
-      <label class="required">اسم الجهة</label>
-      <input id="otherEscalation" placeholder="اكتب اسم الجهة المراد التصعيد إليها">
     </div>
 
     <div class="ma">
@@ -2571,12 +2565,15 @@ let incomingReceiveId=null;
 let escalationId=null;
 
 const ESCALATION_TARGETS=[
-  "تجمع جازان الصحي",
-  "وزارة الصحة",
-  "مركز العمليات",
-  "إدارة الطوارئ والكوارث",
-  "أخرى"
+  "الرئيس التنفيذي لتجمع جازان الصحي",
+  "مدير إدارة الطوارئ والكوارث لتجمع جازان الصحي",
+  "الصحة الإلكترونية لتجمع جازان الصحي"
 ];
+
+/* خيار مدير المستشفى يخص منشأة البلاغ نفسها فقط */
+function hospitalManagerTarget(facility){
+  return `مدير مستشفى ${facility||""}`.trim();
+}
 
 
 /* =====================================================
@@ -3556,7 +3553,7 @@ function render(){
 
             ${
               profile && profile.role==="admin"
-              ? `<button class="neutral" onclick="openEscalation('${escapeAttr(x.id)}')">⬆️ تصعيد</button>`
+              ? `<button class="neutral" onclick="openEscalation('${escapeAttr(x.id)}')">⬆️ تصعيد</button><button class="neutral" onclick="requestIncidentUpdate('${escapeAttr(x.id)}')">📣 طلب تحديث</button>`
               : ""
             }
 
@@ -4026,6 +4023,7 @@ function renderFacilities(){
             </button>
 
             ${profile && profile.role==="admin" ? `<button class="neutral" onclick="openEscalation('${escapeAttr(last.id)}')">⬆️ تصعيد</button>` : ""}
+            ${profile && profile.role==="admin" ? `<button class="neutral" onclick="requestIncidentUpdate('${escapeAttr(last.id)}')">📣 طلب تحديث</button>` : ""}
 
             <button
               class="danger"
@@ -6230,6 +6228,8 @@ async function showDetails(id){
 
       </div>
 
+      <div id="incidentUpdatesContent"></div>
+
       <div id="auditLogContent" class="audit-box">
         <div class="audit-title">✏️ سجل تعديلات بيانات البلاغ الرئيسي</div>
         <div style="color:var(--muted);font-size:10px">جاري تحميل سجل التعديلات...</div>
@@ -6252,11 +6252,13 @@ async function showDetails(id){
     actions.innerHTML=`
       ${profile && profile.role==="admin" ? `<button class="admin-button" onclick="closeDetails();openEdit('${escapeAttr(id)}')">✏️ تعديل البلاغ</button>` : ""}
       ${profile && profile.role==="admin" ? `<button class="neutral" onclick="closeDetails();openEscalation('${escapeAttr(id)}')">⬆️ تصعيد البلاغ</button>` : ""}
+      ${profile && profile.role==="admin" && !x.end_time ? `<button class="neutral" onclick="closeDetails();requestIncidentUpdate('${escapeAttr(id)}')">📣 طلب تحديث</button>` : ""}
       ${!x.end_time ? `<button class="danger" onclick="closeDetails();openEnd('${escapeAttr(id)}')">إنهاء البلاغ</button>` : ""}
       <button class="neutral" onclick="closeDetails()">إغلاق</button>`;
   }
 
   loadIncidentAudit(id);
+  if(typeof renderIncidentUpdateHistory==='function') renderIncidentUpdateHistory(id);
 }
 
 
@@ -6305,15 +6307,14 @@ function openEscalation(id){
   const x=data.incidents.find(i=>String(i.id)===String(id));
   if(!x) return;
   escalationId=id;
-  document.getElementById("escalationTarget").value=x.escalated_to || "";
-  document.getElementById("otherEscalation").value=ESCALATION_TARGETS.includes(x.escalated_to) ? "" : (x.escalated_to || "");
-  toggleOtherEscalation();
+  const hospitalTarget=hospitalManagerTarget(x.facility);
+  const hospitalOpt=document.getElementById("escalationHospitalOption");
+  hospitalOpt.value=hospitalTarget;
+  hospitalOpt.textContent=hospitalTarget;
+  const sel=document.getElementById("escalationTarget");
+  sel.value=x.escalated_to || "";
+  if(sel.value!==(x.escalated_to||"")) sel.value="";
   document.getElementById("escalationModal").style.display="flex";
-}
-
-function toggleOtherEscalation(){
-  const other=document.getElementById("escalationTarget").value==="أخرى";
-  document.getElementById("otherEscalationWrap").classList.toggle("hidden",!other);
 }
 
 function closeEscalationModal(){
@@ -6324,8 +6325,7 @@ function closeEscalationModal(){
 async function saveEscalation(){
   if(!profile || profile.role!=="admin"){ toast("❌ التصعيد متاح للإدارة المركزية فقط"); return; }
   if(!escalationId) return;
-  let target=document.getElementById("escalationTarget").value;
-  if(target==="أخرى") target=document.getElementById("otherEscalation").value.trim();
+  const target=document.getElementById("escalationTarget").value;
   if(!target){ toast("⚠️ اختر الجهة المراد التصعيد إليها"); return; }
 
   const {data:updated,error}=await supabaseClient
@@ -7582,5 +7582,330 @@ body.tv-mode .kpi-types em{font-size:clamp(14px,1.1vw,23px)}
   /* عند تسجيل الخروج */
   var origOut=window.logout;
   if(typeof origOut==='function'){window.logout=async function(){var r=await origOut.apply(this,arguments); try{sync();}catch(e){} return r;};}
+})();
+</script>
+
+<style id="incident-update-request-v1">
+#incReqOverlay{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:99998;width:min(760px,94vw);display:none;flex-direction:column;gap:10px;direction:rtl;pointer-events:none}
+#incReqOverlay.show{display:flex}
+.increq-card{pointer-events:auto;display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#b42318,#e5484d 55%,#f59e0b);border:2px solid #fff;box-shadow:0 14px 40px #0006;animation:incReqPulse 1.6s ease-in-out infinite}
+.increq-ico{flex:none;font-size:34px;line-height:1;animation:incReqShake .9s ease-in-out infinite}
+.increq-copy{flex:1;min-width:0}
+.increq-copy b{display:block;font-size:18px;line-height:1.4}
+.increq-copy span{display:block;font-size:13px;opacity:.95;margin-top:2px}
+.increq-copy em{display:block;font-style:normal;font-size:12px;margin-top:4px;background:#0003;border-radius:8px;padding:3px 8px;width:fit-content}
+.increq-actions{flex:none;display:flex;flex-direction:column;gap:8px}
+.increq-actions button{border:0;border-radius:12px;padding:10px 16px;font:inherit;font-size:14px;font-weight:900;cursor:pointer;white-space:nowrap}
+.increq-go{background:#fff;color:#b42318}
+.increq-mute{background:#0004;color:#fff}
+@keyframes incReqPulse{50%{box-shadow:0 0 0 8px #f59e0b55,0 14px 40px #0006}}
+@keyframes incReqShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+@media(max-width:600px){.increq-card{flex-direction:column;align-items:stretch;text-align:center}.increq-actions{flex-direction:row}.increq-actions button{flex:1}}
+@media(prefers-reduced-motion:reduce){.increq-card,.increq-ico{animation:none}}
+.incupd-info{font-size:12px;color:var(--muted);margin-bottom:6px}
+.incupd-opts{display:flex;flex-direction:column;gap:8px}
+.incupd-opt{display:flex;align-items:center;gap:10px;width:100%;padding:12px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font:inherit;font-size:14px;font-weight:800;cursor:pointer;text-align:right}
+.incupd-opt.sel{border-color:#0b6fa8;background:#0b6fa81a}
+.incupd-opt .ic{font-size:20px}
+.incupd-box{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--bg)}
+.incupd-title{font-size:12px;font-weight:900;margin-bottom:6px}
+.incupd-item{padding:8px 0;border-top:1px dashed var(--line);font-size:12px}
+.incupd-item:first-of-type{border-top:0}
+.incupd-item .meta{color:var(--muted);font-size:10px;margin-top:2px}
+.incupd-item .act{margin-top:4px;padding:6px 8px;border-radius:8px;background:var(--card);border:1px solid var(--line)}
+.incupd-chip{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:900;background:#f59e0b26;color:#b45309}
+.incupd-chip.ok{background:#16a34a26;color:#15803d}
+.incupd-chip.bad{background:#e5484d26;color:#b42318}
+.incupd-chip.gray{background:#64748b26;color:#475569}
+.incupd-btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:4px 10px;font:inherit;font-size:11px;font-weight:800;cursor:pointer;margin-inline-start:6px}
+#incUpdAdminPanel{display:none;margin:0 0 14px;padding:12px;border:1px solid #bfdbfe;border-radius:15px;background:var(--card)}
+#incUpdAdminPanel.show{display:block}
+#incUpdAdminPanel .incupd-title{font-size:13px}
+</style>
+
+<div class="overlay" id="incUpdModal">
+  <div class="modal">
+    <h2>📣 طلب تحديث على البلاغ</h2>
+    <div class="incupd-info" id="incUpdInfo"></div>
+    <div class="field">
+      <label class="required">حالة البلاغ الآن</label>
+      <div class="incupd-opts" id="incUpdOpts"></div>
+    </div>
+    <div class="field hidden" id="incUpdActionWrap">
+      <label class="required">الإجراء المتخذ</label>
+      <textarea id="incUpdAction" rows="3" maxlength="500" placeholder="اكتب الإجراء الذي تم اتخاذه"></textarea>
+    </div>
+    <div class="ma">
+      <button class="primary" id="incUpdSend" onclick="incUpdSubmit()">إرسال الرد</button>
+      <button class="neutral" onclick="incUpdCloseReply()">لاحقًا</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* طلب تحديث على بلاغ محدد: الإدارة المركزية تطلب، والمنشأة المبلِّغة ترد بثلاثة خيارات */
+(function(){
+  var TBL='incident_update_requests';
+  var OPT_OPEN='مازالت المشكلة قائمة', OPT_SOLVED='تم حل المشكلة', OPT_ACTION='تم عمل إجراء';
+  var OPTS=[{v:OPT_OPEN,ic:'🔴'},{v:OPT_SOLVED,ic:'✅'},{v:OPT_ACTION,ic:'🛠️'}];
+  var DISMISS_KEY='jahizia_incupd_dismissed_v1';
+  var rows=[], chan=null, alerted=new Set(), muted=new Set(), soundTimer=null;
+  var ovl=null, lastOvlHtml='', lastAdminHtml='', histId=null, replyId=null, selStatus=null, sending=false;
+
+  function isAdmin(){return !!(profile&&profile.role==='admin');}
+  function cid(v){return String(v).replace(/[^0-9a-zA-Z_-]/g,'');}
+  function findInc(id){return (data.incidents||[]).find(function(i){return String(i.id)===String(id);});}
+  function incLabel(r){var x=findInc(r.incident_id);return (r.facility||'-')+' • '+(x?currentType(x):('بلاغ #'+r.incident_id));}
+  function dismissed(){try{return JSON.parse(localStorage.getItem(DISMISS_KEY)||'{}')||{};}catch(e){return {};}}
+  function saveDismissed(o){try{localStorage.setItem(DISMISS_KEY,JSON.stringify(o));}catch(e){}}
+
+  async function load(){
+    if(typeof profile==='undefined'||!profile) return;
+    try{
+      var q=supabaseClient.from(TBL).select('*').order('requested_at',{ascending:false}).limit(200);
+      if(!isAdmin()) q=q.eq('facility',profile.facility);
+      var res=await q;
+      if(res.error){try{dbg('Incident update requests:',res.error.message);}catch(e){}return;}
+      rows=res.data||[];
+      sync();
+    }catch(e){try{dbg(e);}catch(_){}}
+  }
+
+  /* ===== جهة المنشأة: طلبات بانتظار الرد ===== */
+  function pendingForFacility(){
+    if(typeof profile==='undefined'||!profile||isAdmin()) return [];
+    return rows.filter(function(r){
+      if(r.status!=='pending'||r.facility!==profile.facility) return false;
+      var x=findInc(r.incident_id);
+      return !(x&&x.end_time);
+    });
+  }
+  function ensureOvl(){
+    if(ovl) return ovl;
+    ovl=document.createElement('div'); ovl.id='incReqOverlay'; ovl.setAttribute('role','alert'); ovl.setAttribute('aria-live','assertive');
+    document.body.appendChild(ovl); return ovl;
+  }
+  function chime(){
+    try{
+      if(!audioContext||!audioUnlocked) return;
+      var ctx=audioContext, now=ctx.currentTime;
+      if(ctx.state==='suspended') ctx.resume();
+      [{f:784,t:0},{f:1047,t:.2},{f:784,t:.4},{f:1047,t:.6},{f:1319,t:.85}].forEach(function(n){
+        var o=ctx.createOscillator(), g=ctx.createGain();
+        o.type='triangle'; o.frequency.setValueAtTime(n.f,now+n.t);
+        g.gain.setValueAtTime(.0001,now+n.t);
+        g.gain.exponentialRampToValueAtTime(.5,now+n.t+.03);
+        g.gain.exponentialRampToValueAtTime(.0001,now+n.t+.2);
+        o.connect(g); g.connect(ctx.destination); o.start(now+n.t); o.stop(now+n.t+.25);
+      });
+      if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    }catch(e){}
+  }
+  function renderFacility(){
+    var list=pendingForFacility(), el=ensureOvl();
+    if(!list.length){
+      el.className=''; el.innerHTML=''; lastOvlHtml='';
+      if(soundTimer){clearInterval(soundTimer);soundTimer=null;}
+      return;
+    }
+    var isNew=false;
+    list.forEach(function(r){var id=String(r.id); if(!alerted.has(id)){alerted.add(id); muted.delete(id); isNew=true;}});
+    var html=list.map(function(r){
+      var x=findInc(r.incident_id), m=muted.has(String(r.id));
+      return '<div class="increq-card"><div class="increq-ico">📣</div>'+
+        '<div class="increq-copy"><b>مطلوب تحديث على البلاغ</b>'+
+        '<span>'+escapeHtml(x?currentType(x):('بلاغ #'+r.incident_id))+(x?' • '+fmtDate(x.start_time):'')+' • طلب من عمليات تجمع جازان الصحي</span>'+
+        (!audioUnlocked?'<em>🔊 اضغط في أي مكان لتفعيل الصوت</em>':'')+'</div>'+
+        '<div class="increq-actions"><button class="increq-go" onclick="incUpdOpenReply(\''+cid(r.id)+'\')">الرد الآن</button>'+
+        (m?'':'<button class="increq-mute" onclick="incUpdMute()">🔕 كتم الصوت</button>')+'</div></div>';
+    }).join('');
+    if(html!==lastOvlHtml){el.innerHTML=html; lastOvlHtml=html;}
+    el.className='show';
+    if(isNew){chime(); try{toast('📣 وصلك طلب تحديث على بلاغ من العمليات');}catch(e){}}
+    if(!soundTimer) soundTimer=setInterval(function(){
+      var l=pendingForFacility().filter(function(r){return !muted.has(String(r.id));});
+      if(l.length) chime();
+    },5000);
+  }
+  window.incUpdMute=function(){pendingForFacility().forEach(function(r){muted.add(String(r.id));}); lastOvlHtml=''; renderFacility();};
+
+  /* ===== نافذة الرد ===== */
+  function drawOpts(){
+    var box=document.getElementById('incUpdOpts'); if(!box) return;
+    box.innerHTML=OPTS.map(function(o,i){
+      return '<button type="button" class="incupd-opt'+(selStatus===o.v?' sel':'')+'" onclick="incUpdPick('+i+')"><span class="ic">'+o.ic+'</span><span>'+o.v+'</span></button>';
+    }).join('');
+    var w=document.getElementById('incUpdActionWrap'); if(w) w.classList.toggle('hidden',selStatus!==OPT_ACTION);
+  }
+  window.incUpdOpenReply=function(id){
+    var r=rows.find(function(x){return String(x.id)===String(id);}); if(!r||r.status!=='pending') return;
+    replyId=String(r.id); selStatus=null; sending=false;
+    var x=findInc(r.incident_id);
+    document.getElementById('incUpdInfo').textContent=incLabel(r)+(x?' • '+fmtDate(x.start_time):'');
+    document.getElementById('incUpdAction').value='';
+    var b=document.getElementById('incUpdSend'); if(b) b.disabled=false;
+    drawOpts();
+    document.getElementById('incUpdModal').style.display='flex';
+  };
+  window.incUpdPick=function(i){
+    selStatus=OPTS[i].v; drawOpts();
+    if(selStatus===OPT_ACTION) setTimeout(function(){var t=document.getElementById('incUpdAction'); if(t) t.focus();},50);
+  };
+  window.incUpdCloseReply=function(){
+    replyId=null; selStatus=null;
+    var m=document.getElementById('incUpdModal'); if(m) m.style.display='none';
+  };
+  window.incUpdSubmit=async function(){
+    if(sending||!replyId) return;
+    if(!selStatus){toast('⚠️ اختر حالة البلاغ');return;}
+    var txt=(document.getElementById('incUpdAction').value||'').trim();
+    if(selStatus===OPT_ACTION&&!txt){toast('⚠️ اكتب الإجراء المتخذ');document.getElementById('incUpdAction').focus();return;}
+    sending=true; var btn=document.getElementById('incUpdSend'); if(btn) btn.disabled=true;
+    var res=await supabaseClient.from(TBL).update({
+      status:'answered',
+      response_status:selStatus,
+      action_taken:selStatus===OPT_ACTION?txt:null,
+      responded_by:currentUser?currentUser.id:null,
+      responded_at:new Date().toISOString()
+    }).eq('id',replyId).eq('status','pending').select();
+    sending=false; if(btn) btn.disabled=false;
+    if(res.error){toast('❌ تعذر إرسال الرد: '+res.error.message);return;}
+    if(!res.data||!res.data.length){toast('⚠️ لم يعد هذا الطلب متاحًا للرد');incUpdCloseReply();await load();return;}
+    incUpdCloseReply();
+    toast('✅ تم إرسال ردك إلى عمليات التجمع');
+    await load();
+  };
+
+  /* ===== جهة الإدارة المركزية ===== */
+  window.requestIncidentUpdate=async function(id){
+    if(!isAdmin()){toast('❌ طلب التحديث متاح للإدارة المركزية فقط');return;}
+    var x=findInc(id); if(!x) return;
+    if(x.end_time){toast('⚠️ البلاغ منتهٍ ولا يحتاج تحديثًا');return;}
+    if(rows.some(function(r){return r.status==='pending'&&String(r.incident_id)===String(id);})){
+      toast('⚠️ يوجد طلب تحديث بانتظار الرد على هذا البلاغ'); return;
+    }
+    var res=await supabaseClient.from(TBL).insert({
+      incident_id:Number(id), facility:x.facility, status:'pending', requested_by:currentUser?currentUser.id:null
+    }).select().single();
+    if(res.error){toast('❌ تعذر إرسال طلب التحديث: '+res.error.message);return;}
+    toast('📣 تم إرسال طلب التحديث إلى '+x.facility);
+    await load();
+  };
+  window.incUpdCancel=async function(id){
+    if(!isAdmin()) return;
+    var res=await supabaseClient.from(TBL).update({status:'cancelled'}).eq('id',id).eq('status','pending').select();
+    if(res.error){toast('❌ تعذر إلغاء الطلب: '+res.error.message);return;}
+    toast('🚫 تم إلغاء طلب التحديث');
+    await load();
+  };
+  window.incUpdDismiss=function(id){var d=dismissed(); d[String(id)]=1; saveDismissed(d); lastAdminHtml=''; sync();};
+  window.incUpdOpenIncident=function(id){try{openDetails(String(id));}catch(e){}};
+
+  function respChip(r){
+    if(r.response_status===OPT_SOLVED) return '<span class="incupd-chip ok">✅ '+escapeHtml(r.response_status)+'</span>';
+    if(r.response_status===OPT_ACTION) return '<span class="incupd-chip">🛠️ '+escapeHtml(r.response_status)+'</span>';
+    return '<span class="incupd-chip bad">🔴 '+escapeHtml(r.response_status||'-')+'</span>';
+  }
+  function renderAdmin(){
+    var anchor=document.getElementById('homeUpdateRequestAlert');
+    var el=document.getElementById('incUpdAdminPanel');
+    if(!el){
+      if(!anchor||!anchor.parentNode) return;
+      el=document.createElement('div'); el.id='incUpdAdminPanel';
+      anchor.parentNode.insertBefore(el,anchor.nextSibling);
+    }
+    if(!isAdmin()){el.className='';el.innerHTML='';lastAdminHtml='';return;}
+    var d=dismissed(), since=Date.now()-24*3600*1000;
+    var pend=rows.filter(function(r){return r.status==='pending';});
+    var done=rows.filter(function(r){return r.status==='answered'&&!d[String(r.id)]&&new Date(r.responded_at).getTime()>=since;});
+    var items=pend.concat(done).slice(0,8);
+    if(!items.length){el.className='';el.innerHTML='';lastAdminHtml='';return;}
+    var html='<div class="incupd-title">📩 طلبات التحديث على البلاغات</div>'+items.map(function(r){
+      var id=cid(r.id), iid=cid(r.incident_id);
+      if(r.status==='pending'){
+        return '<div class="incupd-item"><span class="incupd-chip gray">⏳ بانتظار الرد</span> <b>'+escapeHtml(incLabel(r))+'</b>'+
+          '<div class="meta">منذ '+escapeHtml(elapsed(r.requested_at))+'</div>'+
+          '<div style="margin-top:5px"><button class="incupd-btn" style="margin-inline-start:0" onclick="incUpdOpenIncident(\''+iid+'\')">فتح البلاغ</button>'+
+          '<button class="incupd-btn" onclick="incUpdCancel(\''+id+'\')">إلغاء الطلب</button></div></div>';
+      }
+      return '<div class="incupd-item">'+respChip(r)+' <b>'+escapeHtml(incLabel(r))+'</b>'+
+        (r.action_taken?'<div class="act">'+escapeHtml(r.action_taken)+'</div>':'')+
+        '<div class="meta">'+fmtDate(r.responded_at)+'</div>'+
+        '<div style="margin-top:5px"><button class="incupd-btn" style="margin-inline-start:0" onclick="incUpdOpenIncident(\''+iid+'\')">فتح البلاغ</button>'+
+        '<button class="incupd-btn" onclick="incUpdDismiss(\''+id+'\')">إخفاء</button></div></div>';
+    }).join('');
+    if(html!==lastAdminHtml){el.innerHTML=html;lastAdminHtml=html;}
+    el.className='show';
+  }
+
+  /* ===== سجل طلبات التحديث داخل تفاصيل البلاغ ===== */
+  function drawHistory(){
+    if(!histId) return;
+    var box=document.getElementById('incidentUpdatesContent'); if(!box){histId=null;return;}
+    var list=rows.filter(function(r){return String(r.incident_id)===String(histId);});
+    if(!list.length){box.innerHTML='';return;}
+    box.innerHTML='<div class="incupd-box"><div class="incupd-title">📣 طلبات التحديث على هذا البلاغ</div>'+list.map(function(r){
+      if(r.status==='pending'){
+        return '<div class="incupd-item"><span class="incupd-chip gray">⏳ بانتظار رد المنشأة</span>'+
+          (isAdmin()?'<button class="incupd-btn" onclick="incUpdCancel(\''+cid(r.id)+'\')">إلغاء الطلب</button>':'')+
+          '<div class="meta">طُلب: '+fmtDate(r.requested_at)+'</div></div>';
+      }
+      if(r.status==='cancelled'){
+        return '<div class="incupd-item"><span class="incupd-chip gray">🚫 أُلغي الطلب</span><div class="meta">طُلب: '+fmtDate(r.requested_at)+'</div></div>';
+      }
+      return '<div class="incupd-item">'+respChip(r)+
+        (r.action_taken?'<div class="act">'+escapeHtml(r.action_taken)+'</div>':'')+
+        '<div class="meta">طُلب: '+fmtDate(r.requested_at)+' • رد المنشأة: '+fmtDate(r.responded_at)+'</div></div>';
+    }).join('')+'</div>';
+  }
+  window.renderIncidentUpdateHistory=function(id){histId=id; drawHistory(); load();};
+
+  function sync(){
+    if(typeof profile==='undefined'||!profile){
+      rows=[]; if(ovl){ovl.className='';ovl.innerHTML='';lastOvlHtml='';}
+      if(soundTimer){clearInterval(soundTimer);soundTimer=null;}
+      var p=document.getElementById('incUpdAdminPanel'); if(p){p.className='';p.innerHTML='';lastAdminHtml='';}
+      return;
+    }
+    if(isAdmin()){renderAdmin(); if(ovl){ovl.className='';ovl.innerHTML='';lastOvlHtml='';}}
+    else{renderFacility(); var p2=document.getElementById('incUpdAdminPanel'); if(p2){p2.className='';p2.innerHTML='';}}
+    drawHistory();
+  }
+
+  /* ===== التحديث اللحظي ===== */
+  function start(){
+    if(!profile) return; stop();
+    chan=supabaseClient.channel('jahizia-incident-update-requests-realtime')
+      .on('postgres_changes',{event:'*',schema:'public',table:TBL},function(payload){
+        try{
+          var n=payload&&payload.new;
+          if(isAdmin()&&payload.eventType==='UPDATE'&&n&&n.status==='answered'){
+            toast('📩 رد من '+(n.facility||'منشأة')+': '+(n.response_status||''));
+            try{playNotificationSound();}catch(e){}
+          }
+        }catch(e){}
+        load();
+      }).subscribe(function(s){try{dbg('Incident update requests realtime:',s);}catch(e){}});
+  }
+  function stop(){if(chan){try{supabaseClient.removeChannel(chan);}catch(e){}chan=null;}}
+
+  /* ===== ربط بالدوال الحالية دون تعديلها ===== */
+  var oStart=window.startUpdateRequestRealtime;
+  if(typeof oStart==='function') window.startUpdateRequestRealtime=function(){var r=oStart.apply(this,arguments); start(); return r;};
+  var oStop=window.stopUpdateRequestRealtime;
+  if(typeof oStop==='function') window.stopUpdateRequestRealtime=function(){var r=oStop.apply(this,arguments); stop(); return r;};
+  var oLoad=window.loadUpdateRequests;
+  if(typeof oLoad==='function') window.loadUpdateRequests=async function(){var r=await oLoad.apply(this,arguments); load(); return r;};
+  var oHome=window.renderHomeUpdateRequestAlert;
+  if(typeof oHome==='function') window.renderHomeUpdateRequestAlert=function(){var r=oHome.apply(this,arguments); sync(); return r;};
+  var oOut=window.logout;
+  if(typeof oOut==='function') window.logout=async function(){
+    stop(); rows=[]; alerted.clear(); muted.clear(); histId=null;
+    try{window.incUpdCloseReply();}catch(e){}
+    var r=await oOut.apply(this,arguments); try{sync();}catch(e){} return r;
+  };
+  ['pointerdown','keydown','touchstart'].forEach(function(ev){
+    document.addEventListener(ev,function(){var was=audioUnlocked; try{unlockAudio();}catch(e){} if(!was&&audioUnlocked) sync();},{passive:true});
+  });
 })();
 </script>
