@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>جاهزية المنشآت الصحية</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.106.1" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
@@ -2560,7 +2560,8 @@ const WEATHER_OPTIONS=[
 let notifications=[];
 let unreadNotifications=0;
 let notificationSoundTimer=null;
-const incidentReceiptStorageKey="jahizia_incident_receipts_v1";
+let incidentReceipts={};
+let receivingNow=false;
 let incomingReceiveId=null;
 let escalationId=null;
 
@@ -2696,6 +2697,7 @@ async function login(){
 
 
   currentUser=authData.user;
+  touchActivity();
 
   await startApp();
 }
@@ -2860,10 +2862,19 @@ function visibleFacilities(){
    REALTIME NOTIFICATIONS - CENTRAL ADMIN ONLY
 ===================================================== */
 
-function getIncidentReceipts(){
-  try{return JSON.parse(localStorage.getItem(incidentReceiptStorageKey)||"{}");}catch(e){return {};}
+function getIncidentReceipts(){return incidentReceipts;}
+function isIncidentReceived(id){return !!incidentReceipts[String(id)];}
+async function loadIncidentReceipts(){
+  try{localStorage.removeItem("jahizia_incident_receipts_v1");}catch(e){}
+  const {data:rows,error}=await supabaseClient
+    .from("incident_receipts")
+    .select("incident_id,facility,received_by_name,received_at");
+  if(error){dbg("receipts load error",error);return false;}
+  const m={};
+  (rows||[]).forEach(r=>{m[String(r.incident_id)]=r;});
+  incidentReceipts=m;
+  return true;
 }
-function isIncidentReceived(id){return !!getIncidentReceipts()[String(id)];}
 function pendingIncomingIncidents(){
   if(!profile || profile.role!=="admin") return [];
   const ids=new Set(notifications.map(n=>String(n.id)));
@@ -2933,22 +2944,37 @@ function closeReceiveIncident(){
   incomingReceiveId=null;
   const m=document.getElementById("receiveIncidentModal"); if(m)m.style.display="none";
 }
-function confirmReceiveIncident(){
-  if(!incomingReceiveId) return;
+async function confirmReceiveIncident(){
+  if(!incomingReceiveId||receivingNow) return;
   const nameEl=document.getElementById("receiveIncidentName");
   const receiver=(nameEl?.value||"").trim();
   if(!receiver){toast("⚠️ اكتب اسم مستلم البلاغ");nameEl?.focus();return;}
-  const receipts=getIncidentReceipts();
-  receipts[incomingReceiveId]={name:receiver,received_at:new Date().toISOString()};
-  localStorage.setItem(incidentReceiptStorageKey,JSON.stringify(receipts));
-  notifications=notifications.filter(n=>String(n.id)!==String(incomingReceiveId));
+  if(receiver.length<2||receiver.length>100){toast("⚠️ الاسم يجب أن يكون بين 2 و100 حرف");nameEl?.focus();return;}
+  const id=incomingReceiveId;
+  const x=(data.incidents||[]).find(i=>String(i.id)===String(id));
+  if(!x){toast("⚠️ البلاغ غير موجود");closeReceiveIncident();return;}
+  receivingNow=true;
+  const {data:row,error}=await supabaseClient
+    .from("incident_receipts")
+    .insert({incident_id:x.id,facility:x.facility,received_by_name:receiver})
+    .select()
+    .single();
+  receivingNow=false;
+  let alreadyReceived=false;
+  if(error){
+    if(error.code==="23505"){alreadyReceived=true;await loadIncidentReceipts();}
+    else{dbg("receipt save error",error);toast("❌ تعذر حفظ الاستلام، حاول مرة أخرى");return;}
+  }else{
+    incidentReceipts[String(id)]=row;
+  }
+  notifications=notifications.filter(n=>String(n.id)!==String(id));
   unreadNotifications=Math.max(0,unreadNotifications-1);
   updateNotificationBadge();
   closeReceiveIncident();
   stopNotificationSound();
   renderIncomingAlert();
   render();
-  toast(`✅ تم استلام البلاغ بواسطة ${receiver}`);
+  toast(alreadyReceived?"ℹ️ سبق استلام هذا البلاغ من مستخدم آخر":`✅ تم استلام البلاغ بواسطة ${receiver}`);
 }
 function addIncidentNotification(x){
   if(!x || !profile || profile.role!=="admin") return;
@@ -2978,7 +3004,16 @@ function startIncidentRealtime(){
       const id=String(x.id);
       if(knownIncidentIds.has(id)) return;
       knownIncidentIds.add(id); data.incidents.push(x); render(); addIncidentNotification(x);
-    }).subscribe(status=>dbg("Incident realtime:",status));
+    })
+    .on("postgres_changes",{event:"INSERT",schema:"public",table:"incident_receipts"},payload=>{
+      const r=payload.new; if(!r) return;
+      incidentReceipts[String(r.incident_id)]=r;
+      const before=notifications.length;
+      notifications=notifications.filter(n=>String(n.id)!==String(r.incident_id));
+      unreadNotifications=Math.max(0,unreadNotifications-(before-notifications.length));
+      updateNotificationBadge(); renderIncomingAlert();
+    })
+    .subscribe(status=>dbg("Incident realtime:",status));
 }
 function stopIncidentRealtime(){
   if(realtimeChannel){try{supabaseClient.removeChannel(realtimeChannel);}catch(e){dbg(e);}realtimeChannel=null;}
@@ -3175,6 +3210,8 @@ async function loadData(){
     return false;
   }
 
+
+  await loadIncidentReceipts();
 
   const newRows=rows || [];
 
@@ -6228,6 +6265,13 @@ async function showDetails(id){
 
       </div>
 
+      ${(()=>{
+        const r=incidentReceipts[String(x.id)];
+        return r
+          ? `<div style="margin-top:12px;padding:8px 10px;border-radius:10px;border:1px solid rgba(34,197,94,.45);background:rgba(34,197,94,.10);font-size:12px">✅ استلمه من العمليات المركزية: <b>${escapeHtml(r.received_by_name)}</b> • ${escapeHtml(fmtDate(r.received_at))}</div>`
+          : `<div style="margin-top:12px;padding:8px 10px;border-radius:10px;border:1px solid rgba(128,128,128,.35);font-size:12px;color:var(--muted)">⏳ لم يُستلم بعد من العمليات المركزية</div>`;
+      })()}
+
       <div id="incidentUpdatesContent"></div>
 
       <div id="auditLogContent" class="audit-box">
@@ -6820,6 +6864,21 @@ function escapeHtml(value){
    SESSION
 ===================================================== */
 
+/* مدة الخمول المسموحة قبل طلب الدخول من جديد (تُحفظ في المتصفح حتى تعمل بعد إغلاق الصفحة) */
+const IDLE_LIMIT_MS=30*60*1000;
+const ACTIVITY_KEY="jahizia_last_activity";
+function touchActivity(){try{localStorage.setItem(ACTIVITY_KEY,String(Date.now()));}catch(e){}}
+function tvExempt(){
+  try{return new URLSearchParams(location.search).get("tv")==="1"||localStorage.getItem("jahizia_tv")==="1";}
+  catch(e){return false;}
+}
+function sessionIsStale(){
+  if(tvExempt()) return false;
+  let last=0;
+  try{last=Number(localStorage.getItem(ACTIVITY_KEY)||0);}catch(e){}
+  return !last||(Date.now()-last)>IDLE_LIMIT_MS;
+}
+
 async function checkSession(){
 
   applySavedTheme();
@@ -6831,9 +6890,21 @@ async function checkSession(){
     await supabaseClient.auth.getSession();
 
 
+  if(data.session && sessionIsStale()){
+
+    try{await supabaseClient.auth.signOut();}catch(e){dbg(e);}
+
+    document.getElementById("loginPage").style.display="flex";
+    document.getElementById("app").style.display="none";
+
+    return;
+  }
+
   if(data.session){
 
     currentUser=data.session.user;
+
+    touchActivity();
 
     await startApp();
 
@@ -7907,5 +7978,30 @@ body.tv-mode .kpi-types em{font-size:clamp(14px,1.1vw,23px)}
   ['pointerdown','keydown','touchstart'].forEach(function(ev){
     document.addEventListener(ev,function(){var was=audioUnlocked; try{unlockAudio();}catch(e){} if(!was&&audioUnlocked) sync();},{passive:true});
   });
+})();
+</script>
+
+<script>
+/* تسجيل خروج تلقائي عند عدم النشاط - يعتمد على وقت آخر نشاط المحفوظ في المتصفح، ولا يعمل في وضع الشاشة (TV) */
+(function(){
+  var lastWrite=0;
+  function bump(){
+    var n=Date.now();
+    if(n-lastWrite>15000){lastWrite=n; if(typeof currentUser!=='undefined'&&currentUser) touchActivity();}
+  }
+  ['pointerdown','keydown','touchstart','scroll','mousemove'].forEach(function(ev){
+    document.addEventListener(ev,bump,{passive:true,capture:true});
+  });
+  setInterval(async function(){
+    try{
+      if(!currentUser) return;
+      if(tvExempt()||document.body.classList.contains('tv-mode')){touchActivity();return;}
+      var last=0; try{last=Number(localStorage.getItem(ACTIVITY_KEY)||0);}catch(e){}
+      if(last&&Date.now()-last>=IDLE_LIMIT_MS){
+        await logout();
+        toast('🔒 تم تسجيل الخروج تلقائيًا بسبب عدم النشاط');
+      }
+    }catch(e){dbg(e);}
+  },30000);
 })();
 </script>
