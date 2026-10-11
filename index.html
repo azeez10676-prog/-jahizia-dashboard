@@ -1757,44 +1757,6 @@ body.dark .kpi-type-row i{background:hsl(205,21%,16%)!important;color:#e5ecf4!im
 body.dark .req-go{background:hsl(0,0%,16%)!important;color:hsl(4,54%,78%)!important}
 body.dark .increq-go{background:hsl(0,0%,16%)!important;color:hsl(4,54%,78%)!important}
 </style>
-<style id="capacity-polish-v2">
-/* تحسين واجهة الطاقة الاستيعابية: يغيّر الشكل فقط بدون أي تغيير في المنطق */
-#capacityPage{--cap-tile:#f4f8fb;--cap-panel:#eef6fb;--cap-line:#dbe7f0;--cap-ink:#0b2744;--cap-sub:#5b7388}
-body.dark #capacityPage{--cap-tile:#0f172a;--cap-panel:#1b2a3d;--cap-line:#2c4258;--cap-ink:#f1f5f9;--cap-sub:#94a3b8}
-#capacityPage .capacity-grid{grid-template-columns:repeat(auto-fill,minmax(310px,1fr))!important;gap:18px!important}
-#capacityPage .capacity-card{padding:20px!important;border-radius:24px!important;box-shadow:0 10px 30px rgba(11,39,68,.08)!important}
-#capacityPage .capacity-card:before{height:6px!important}
-#capacityPage .capacity-card:has(.capacity-status.green):before{background:linear-gradient(90deg,#16a34a,#4ade80)!important}
-#capacityPage .capacity-card:has(.capacity-status.orange):before{background:linear-gradient(90deg,#f59e0b,#fbbf24)!important}
-#capacityPage .capacity-card:has(.capacity-status.red):before{background:linear-gradient(90deg,#dc2626,#f87171)!important}
-#capacityPage .capacity-head{align-items:center!important;margin:6px 0 16px!important}
-#capacityPage .capacity-facility{font-size:19px!important;color:var(--cap-ink)!important}
-#capacityPage .capacity-resource{font-size:12.5px!important;color:var(--cap-sub)!important}
-#capacityPage .capacity-status{font-size:12.5px!important;padding:7px 12px!important}
-#capacityPage .capacity-items{display:grid!important;grid-template-columns:1fr 1fr;gap:12px!important}
-#capacityPage .capacity-item{flex-direction:column;align-items:flex-start!important;justify-content:center;gap:6px!important;padding:14px!important;background:var(--cap-tile)!important;border:1px solid var(--cap-line)!important;border-radius:16px!important}
-#capacityPage .capacity-item:nth-child(1){order:1}
-#capacityPage .capacity-item:nth-child(3){order:2}
-#capacityPage .capacity-icu{order:3}
-#capacityPage .capacity-er{order:4}
-#capacityPage .capacity-icu,#capacityPage .capacity-er{grid-column:1/-1;padding:16px!important;background:var(--cap-panel)!important;border:1px solid var(--cap-line)!important;border-radius:18px!important}
-#capacityPage .capacity-icu{border-inline-start:5px solid #7c3aed!important}
-#capacityPage .capacity-er{border-inline-start:5px solid #f59e0b!important}
-#capacityPage .capacity-item>span{font-size:13px!important;color:var(--cap-sub)!important;font-weight:700!important}
-#capacityPage .capacity-item>strong{width:100%!important;font-size:24px!important;color:var(--cap-ink)!important}
-#capacityPage .capacity-item>strong b{font-size:26px}
-#capacityPage .capacity-icu-head,#capacityPage .capacity-er-head{font-size:15px!important;margin-bottom:12px!important;color:var(--cap-ink)!important}
-#capacityPage .capacity-er-badge{font-size:11px!important;padding:4px 10px!important}
-#capacityPage .capacity-icu-values,#capacityPage .capacity-er-values{gap:10px!important}
-#capacityPage .capacity-icu-values>div,#capacityPage .capacity-er-values>div{align-items:center;text-align:center;background:var(--cap-tile)!important;border:1px solid var(--cap-line)!important;border-radius:14px!important;padding:10px 6px!important;min-height:68px}
-#capacityPage .capacity-icu-values small,#capacityPage .capacity-er-values small{font-size:11.5px!important;color:var(--cap-sub)!important}
-#capacityPage .capacity-icu-values b,#capacityPage .capacity-er-values b{font-size:22px!important;color:var(--cap-ink)!important}
-#capacityPage .capacity-input{font-size:20px!important;font-weight:800!important;text-align:center!important;padding:9px 6px!important;border-radius:12px!important;background:var(--cap-tile)!important;color:var(--cap-ink)!important;border:1px solid var(--cap-line)!important}
-#capacityPage .capacity-progress{height:14px!important;margin-top:14px!important;background:var(--cap-line)!important}
-#capacityPage .capacity-icu-status{font-size:13px!important;margin-top:10px!important;color:var(--cap-sub)!important}
-#capacityPage .capacity-card .primary{margin-top:16px!important;padding:13px!important;font-size:15px!important;border-radius:14px!important}
-#capacityPage .capacity-note{font-size:12px!important;margin-top:14px!important;text-align:center}
-</style>
 </head>
 
 <body>
@@ -3617,18 +3579,10 @@ function renderHomeSummaries(){
   const byType=new Map((capacityRows||[]).filter(r=>facilities.includes(r.facility)).map(r=>[`${r.facility}|${r.resource_type}`,r]));
   let erTotal=0,erCurrent=0; facilities.forEach(f=>{const r=byType.get(`${f}|أسرة الطوارئ`);erTotal+=Number(r?.total_capacity||0);erCurrent+=Number(r?.current_count||0);});
   const erAvailable=Math.max(0,erTotal-erCurrent), pct=erTotal?Math.round(erAvailable/erTotal*100):0;
-  let icuTotal=0,icuCur=0; facilities.forEach(f=>{const r=byType.get(`${f}|أسرة العناية المركزة`);icuTotal+=Number((typeof ICU_TOTALS!=='undefined'&&ICU_TOTALS[f])??r?.total_capacity??0);icuCur+=Number(r?.current_count||0);});
-  const icuAvail=Math.max(0,icuTotal-icuCur), icuPct=icuTotal?Math.round(icuAvail/icuTotal*100):0, erOccPct=erTotal?100-pct:0;
-  const capTile=(cls,ico,label,val,p)=>`<div class="cap-tile ${cls}"><div class="cap-tile-ico">${ico}</div><span>${label}</span><b>${Number(val).toLocaleString('en-US')}</b>${p===null?'<small>على مستوى المنطقة</small>':`<div class="cap-tile-bar"><i style="width:${p}%"></i></div><small>${p}٪</small>`}</div>`;
-  const capCls=pct>=50?'green':pct>=20?'orange':'red', capLbl=pct>=50?'جاهزية جيدة':pct>=20?'تحتاج متابعة':'متابعة عالية';
-  homeCap.innerHTML=`<div class="cap-meter ${capCls}"><div class="cap-meter-head"><span>نسبة توفر أسرة الطوارئ</span><b>${pct}٪</b><em>${capLbl}</em></div><div class="cap-meter-bar"><i style="width:${pct}%"></i></div></div><div class="cap-tiles">${capTile('blue','🛏️','إجمالي الطوارئ',erTotal,null)}${capTile('green','✅','المتاحة',erAvailable,pct)}${capTile('orange','🧍','المشغولة',erCurrent,erOccPct)}${capTile('purple','🏥','عناية مركزة متاحة',icuAvail,icuPct)}</div>`;
+  homeCap.innerHTML=`<div class="capacity-hero"><b>${erAvailable.toLocaleString('en-US')}</b><span>أسرة طوارئ متاحة</span><div class="capacity-ring"><i style="--p:${pct}%"></i><strong>${pct}٪</strong></div></div><div class="capacity-three"><div><b>${erTotal.toLocaleString('en-US')}</b><span>الإجمالي</span></div><div><b>${erCurrent.toLocaleString('en-US')}</b><span>مشغولة</span></div><div><b>${erAvailable.toLocaleString('en-US')}</b><span>متاحة</span></div></div>`;
 
   const rw=window.regionalWeatherState;
-  const weekHtml=(rw&&rw.days&&rw.days.length)?'<div class="weather-week" aria-label="توقعات الأسبوع">'+rw.days.map(function(d,i){
-    var nm=i===0?'اليوم':i===1?'غدًا':new Date(d.date+'T12:00:00').toLocaleDateString('ar-SA',{weekday:'long'});
-    return '<div class="wk-day'+(i===0?' today':'')+'" title="'+escapeHtml(d.label)+'"><span class="wk-name">'+escapeHtml(nm)+'</span><i class="wk-ico">'+d.icon+'</i><b class="wk-max">'+d.max+'°</b><em class="wk-min">'+d.min+'°</em>'+(d.rain>=20?'<small class="wk-rain">💧 '+d.rain+'%</small>':'')+'</div>';
-  }).join('')+'</div>':'';
-  homeWeather.innerHTML=rw?`<div class="wx-hero"><div class="wx-main"><div class="wx-icon">${rw.icon}</div><div><div class="wx-temp">${rw.temp}°<small>م</small></div><div class="wx-label">${escapeHtml(rw.label)}</div><div class="wx-loc">منطقة جازان</div></div></div><div class="wx-chips"><div class="wx-chip"><span>المحسوسة</span><b>${rw.feels}°</b></div><div class="wx-chip"><span>الرطوبة</span><b>${rw.humidity}%</b></div><div class="wx-chip"><span>الرياح</span><b>${rw.wind} كم/س</b></div></div></div>${weekHtml}<div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
+  homeWeather.innerHTML=rw?`<div class="regional-weather"><div class="weather-icon-pro">${rw.icon}</div><div><b>${escapeHtml(rw.label)}</b><span>منطقة جازان • ${rw.temp}°م • المحسوسة ${rw.feels}°م</span><small>الرطوبة ${rw.humidity}% • الرياح ${rw.wind} كم/س</small></div></div><div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
 
   if(homeActiveOnly){
     const activeOnly=active.slice(0,5);
@@ -7188,8 +7142,8 @@ checkSession();
 <script>
 window.regionalWeatherState=null;
 function weatherCodeInfo(c){if(c===0)return{label:'مشمسة وصافية',icon:'☀️'};if([1,2,3].includes(c))return{label:'غائم جزئياً',icon:'⛅'};if([51,53,55,56,57].includes(c))return{label:'رذاذ وأمطار خفيفة',icon:'🌦️'};if([61,63,65,66,67].includes(c))return{label:'أمطار',icon:'🌧️'};if([80,81,82].includes(c))return{label:'زخات مطرية',icon:'🌦️'};if([95,96,99].includes(c))return{label:'عواصف رعدية',icon:'⛈️'};return{label:'حالة جوية متغيرة',icon:'🌤️'}}
-async function loadRegionalWeather(){try{const u='https://api.open-meteo.com/v1/forecast?latitude=16.88917&longitude=42.55111&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=Asia%2FRiyadh';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather');const d=await r.json(),c=d.current,wi=weatherCodeInfo(c.weather_code);window.regionalWeatherState={label:wi.label,icon:wi.icon,temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),humidity:Math.round(c.relative_humidity_2m),wind:Math.round(c.wind_speed_10m),updated:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'}),days:(d.daily&&d.daily.time?d.daily.time.map(function(dt,i){var w=weatherCodeInfo(d.daily.weather_code[i]);return{date:dt,icon:w.icon,label:w.label,max:Math.round(d.daily.temperature_2m_max[i]),min:Math.round(d.daily.temperature_2m_min[i]),rain:Math.round((d.daily.precipitation_probability_max||[])[i]||0)}}):[])};renderHomeSummaries()}catch(e){dbg('Regional weather unavailable',e)}}
-loadRegionalWeather();setInterval(loadRegionalWeather,10800000);
+async function loadRegionalWeather(){try{const u='https://api.open-meteo.com/v1/forecast?latitude=16.88917&longitude=42.55111&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=Asia%2FRiyadh';const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error('weather');const d=await r.json(),c=d.current,wi=weatherCodeInfo(c.weather_code);window.regionalWeatherState={label:wi.label,icon:wi.icon,temp:Math.round(c.temperature_2m),feels:Math.round(c.apparent_temperature),humidity:Math.round(c.relative_humidity_2m),wind:Math.round(c.wind_speed_10m),updated:new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'})};renderHomeSummaries()}catch(e){dbg('Regional weather unavailable',e)}}
+loadRegionalWeather();setInterval(loadRegionalWeather,86400000);
 </script>
 
 <style id="reference-design-v100-2">
@@ -8184,216 +8138,5 @@ body.tv-mode .kpi-types em{font-size:clamp(14px,1.1vw,23px)}
       }
     }catch(e){dbg(e);}
   },30000);
-})();
-</script>
-
-<style id="reference-look-v1">
-/* لمسة التصميم المرجعي: ألوان وبطاقات وقائمة جانبية - تنسيق فقط، بدون تغيير الشعار أو المنطق */
-html body:not(.dark):not(.tv-mode){background:linear-gradient(180deg,#eaf2f8 0%,#f5f9fc 55%,#eef4f9 100%)!important}
-html body #app .side-nav{background:linear-gradient(180deg,#0b3a5c 0%,#07263f 100%)!important;box-shadow:-8px 0 30px rgba(6,38,63,.25)!important}
-html body #app .side-nav .side-link{border-radius:14px!important;color:#dbe8f2!important;font-weight:700!important;padding:12px 14px!important;transition:background .15s}
-html body #app .side-nav .side-link:hover{background:rgba(255,255,255,.08)!important}
-html body #app .side-nav .side-link.active{background:linear-gradient(90deg,#0e9b91,#0b7a9a)!important;color:#fff!important;box-shadow:0 6px 16px rgba(14,155,145,.35)!important}
-html body #app .side-nav .side-logout{border-top:1px solid rgba(255,255,255,.12);border-radius:0 0 14px 14px!important}
-html body #app .exec-stat{border-radius:22px!important;padding:18px 20px!important;box-shadow:0 8px 24px rgba(11,39,68,.08)!important;border-width:1.5px!important;transition:transform .15s,box-shadow .15s}
-html body #app .exec-stat:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(11,39,68,.13)!important}
-html body #app .exec-stat .exec-icon{width:54px!important;height:54px!important;border-radius:50%!important;display:flex!important;align-items:center;justify-content:center;font-size:24px!important;color:#fff!important;box-shadow:0 6px 14px rgba(0,0,0,.15)}
-html body #app .exec-stat.total-stat .exec-icon{background:#1d4ed8!important}
-html body #app .exec-stat.ready-stat .exec-icon{background:#16a34a!important}
-html body #app .exec-stat.incident-stat .exec-icon{background:#dc2626!important}
-html body #app .exec-stat b{font-size:40px!important;line-height:1!important;font-weight:800!important}
-html body #app .pro-panel{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:22px!important;box-shadow:0 8px 24px rgba(11,39,68,.07)!important;padding:18px!important}
-html body #app .pro-panel-head{padding-bottom:12px!important;margin-bottom:12px!important;border-bottom:1px solid var(--line)!important}
-html body #app .pro-panel-head b{font-size:17px!important;font-weight:800!important}
-html body #app .pro-panel-head span{font-size:12px!important;color:var(--muted)!important}
-html body #app .kpi-card{border-radius:20px!important;border:1px solid var(--line)!important;box-shadow:0 8px 22px rgba(11,39,68,.07)!important}
-html body #app .kpi-card .kpi-ico{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0e9b91,#0b7a9a)!important;color:#fff!important}
-
-.cap-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.cap-tile{border-radius:18px;padding:14px;border:1px solid;display:flex;flex-direction:column;gap:6px;min-width:0}
-.cap-tile-ico{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.08)}
-.cap-tile span{font-size:12.5px;font-weight:700;color:#475b6e}
-.cap-tile b{font-size:28px;font-weight:800;line-height:1.1;color:#0b2744;font-variant-numeric:tabular-nums}
-.cap-tile small{font-size:12px;color:#5b7388;font-weight:700}
-.cap-tile-bar{height:8px;border-radius:99px;background:rgba(0,0,0,.08);overflow:hidden}
-.cap-tile-bar i{display:block;height:100%;border-radius:99px;background:currentColor}
-.cap-tile.blue{background:#eff6ff;border-color:#bfdbfe;color:#2563eb}
-.cap-tile.green{background:#ecfdf3;border-color:#bbf7d0;color:#16a34a}
-.cap-tile.orange{background:#fff7ed;border-color:#fed7aa;color:#f59e0b}
-.cap-tile.purple{background:#f5f3ff;border-color:#ddd6fe;color:#7c3aed}
-body.dark .cap-tile{background:#0f172a!important;border-color:#2c4258!important}
-body.dark .cap-tile span,body.dark .cap-tile small{color:#94a3b8!important}
-body.dark .cap-tile b{color:#f1f5f9!important}
-body.dark .cap-tile-ico{background:#172033}
-
-html body #app .executive-stats{gap:12px!important}
-html body #app .exec-stat{min-height:0!important;height:auto!important;padding:12px 16px!important;border-radius:18px!important;gap:4px 12px!important}
-html body #app .exec-stat .exec-icon{width:42px!important;height:42px!important;font-size:19px!important}
-html body #app .exec-stat b{font-size:30px!important}
-html body #app .exec-stat span{font-size:14px!important}
-html body #app .exec-stat small{font-size:11.5px!important;line-height:1.3!important}
-.weather-week{display:flex;gap:8px;overflow-x:auto;margin-top:14px;padding-bottom:4px;scrollbar-width:thin}
-.wk-day{flex:1 0 66px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 6px;border-radius:14px;background:#f4f8fb;border:1px solid #dbe7f0}
-.wk-day.today{background:#e0f2fe;border-color:#7dd3fc}
-.wk-name{font-size:12px;font-weight:700;color:#475b6e;white-space:nowrap}
-.wk-ico{font-style:normal;font-size:24px;line-height:1.2}
-.wk-max{font-size:15px;color:#0b2744}
-.wk-min{font-size:12.5px;font-style:normal;color:#64788b}
-.wk-rain{font-size:11px;color:#0284c7;font-weight:700}
-body.dark .wk-day{background:#0f172a!important;border-color:#2c4258!important}
-body.dark .wk-day.today{background:#12304a!important;border-color:#0ea5e9!important}
-body.dark .wk-name,body.dark .wk-min{color:#94a3b8!important}
-body.dark .wk-max{color:#f1f5f9!important}
-
-/* تصغير بطاقات الطاقة الاستيعابية وإظهار محتوى لوحات الرئيسية كاملًا */
-#capacityPage .capacity-grid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))!important;gap:12px!important}
-#capacityPage .capacity-card{padding:13px!important;border-radius:18px!important;box-shadow:0 6px 18px rgba(11,39,68,.07)!important}
-#capacityPage .capacity-card:before{height:4px!important}
-body.dark #capacityPage .capacity-card{background:var(--card)!important}
-#capacityPage .capacity-head{margin:4px 0 10px!important}
-#capacityPage .capacity-facility{font-size:15px!important}
-#capacityPage .capacity-resource{font-size:11px!important}
-#capacityPage .capacity-status{font-size:11px!important;padding:5px 9px!important}
-#capacityPage .capacity-items{gap:8px!important}
-#capacityPage .capacity-item{padding:8px 10px!important;gap:3px!important;border-radius:12px!important}
-#capacityPage .capacity-item>span{font-size:11.5px!important}
-#capacityPage .capacity-item>strong{font-size:18px!important}
-#capacityPage .capacity-item>strong b{font-size:20px}
-#capacityPage .capacity-icu,#capacityPage .capacity-er{padding:10px!important;border-radius:14px!important}
-#capacityPage .capacity-icu-head,#capacityPage .capacity-er-head{font-size:13px!important;margin-bottom:8px!important}
-#capacityPage .capacity-er-badge{font-size:10px!important;padding:3px 8px!important}
-#capacityPage .capacity-icu-values,#capacityPage .capacity-er-values{gap:6px!important}
-#capacityPage .capacity-icu-values>div,#capacityPage .capacity-er-values>div{padding:6px 4px!important;min-height:50px!important;border-radius:10px!important}
-#capacityPage .capacity-icu-values small,#capacityPage .capacity-er-values small{font-size:10px!important}
-#capacityPage .capacity-icu-values b,#capacityPage .capacity-er-values b{font-size:17px!important}
-#capacityPage .capacity-input{font-size:16px!important;padding:6px 4px!important;border-radius:10px!important}
-#capacityPage .capacity-progress{height:9px!important;margin-top:9px!important}
-#capacityPage .capacity-icu-status{font-size:11.5px!important;margin-top:7px!important}
-#capacityPage .capacity-card .primary{margin-top:10px!important;padding:9px!important;font-size:13px!important}
-#capacityPage .capacity-note{font-size:10.5px!important;margin-top:8px!important}
-html body:not(.tv-mode) #app .professional-home-grid .pro-panel{height:auto!important;min-height:0!important;overflow:visible!important}
-html body:not(.tv-mode) #app .professional-home-grid .pro-content{height:auto!important;max-height:none!important;overflow:visible!important}
-html body:not(.tv-mode) #app .professional-home-grid .pro-latest .pro-content,html body:not(.tv-mode) #app .professional-home-grid .pro-active-final .pro-content{max-height:300px!important;overflow:auto!important}
-.cap-tiles{gap:8px}
-.cap-tile{padding:9px 11px;gap:3px;border-radius:14px}
-.cap-tile-ico{width:30px;height:30px;font-size:15px;border-radius:10px}
-.cap-tile span{font-size:11.5px}
-.cap-tile b{font-size:22px}
-.cap-tile-bar{height:6px}
-.wk-day{flex:1 0 58px;padding:8px 4px;border-radius:12px}
-.wk-ico{font-size:21px}
-
-/* ===== الرئيسية: حذف لوحة المنشآت، وصف الطقس والطاقة في الأعلى ===== */
-#homeFacilitiesSummary{display:none!important}
-html body:not(.tv-mode) #app #professionalHomeGrid{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-areas:none!important;gap:16px!important;align-items:stretch!important}
-html body:not(.tv-mode) #app #professionalHomeGrid .pro-panel{grid-area:auto!important;grid-column:span 2!important;margin:0!important}
-html body:not(.tv-mode) #app #homeWeatherSummary{grid-column:span 3!important;order:1!important}
-html body:not(.tv-mode) #app #homeCapacitySummary{grid-column:span 3!important;order:2!important}
-html body:not(.tv-mode) #app #homeReadinessSummary{order:3!important}
-html body:not(.tv-mode) #app #homeLatestReportsSummary{order:4!important}
-html body:not(.tv-mode) #app #homeActiveOnlySummary{order:5!important}
-@media(max-width:820px){html body:not(.tv-mode) #app #professionalHomeGrid{grid-template-columns:1fr!important}html body:not(.tv-mode) #app #professionalHomeGrid .pro-panel{grid-column:1/-1!important}}
-.wx-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:4px 2px 14px}
-.wx-main{display:flex;align-items:center;gap:14px}
-.wx-icon{font-size:58px;line-height:1}
-.wx-temp{font-size:48px;font-weight:800;line-height:1;color:var(--text)}
-.wx-temp small{font-size:18px;font-weight:700;margin-inline-start:3px;color:var(--muted)}
-.wx-label{font-size:16px;font-weight:800;margin-top:5px;color:var(--text)}
-.wx-loc{font-size:12px;color:var(--muted);margin-top:1px}
-.wx-chips{display:flex;gap:8px}
-.wx-chip{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:74px;padding:9px 10px;border-radius:14px;background:#f4f8fb;border:1px solid #dbe7f0}
-.wx-chip span{font-size:11.5px;color:#5b7388;font-weight:700}
-.wx-chip b{font-size:15px;color:#0b2744}
-.weather-week{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;overflow:visible!important;margin-top:4px}
-.wk-day{min-width:0;flex:none}
-.wk-name{font-size:11px}
-.cap-meter{padding:12px 14px;border-radius:16px;margin-bottom:12px;border:1px solid;background:#f4f8fb}
-.cap-meter-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.cap-meter-head span{font-size:12.5px;font-weight:700;color:#475b6e}
-.cap-meter-head b{font-size:26px;font-weight:800;line-height:1}
-.cap-meter-head em{font-style:normal;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:99px;background:#fff}
-.cap-meter-bar{height:10px;border-radius:99px;background:rgba(0,0,0,.08);margin-top:10px;overflow:hidden}
-.cap-meter-bar i{display:block;height:100%;border-radius:99px;background:currentColor}
-.cap-meter.green{color:#16a34a;border-color:#bbf7d0;background:#f0fdf4}
-.cap-meter.orange{color:#d97706;border-color:#fed7aa;background:#fff7ed}
-.cap-meter.red{color:#dc2626;border-color:#fecaca;background:#fef2f2}
-.cap-tiles{grid-template-columns:repeat(4,minmax(0,1fr))!important}
-body.dark .wx-chip,body.dark .cap-meter{background:#0f172a!important;border-color:#2c4258!important}
-body.dark .wx-chip span,body.dark .cap-meter-head span{color:#94a3b8!important}
-body.dark .wx-chip b{color:#f1f5f9!important}
-body.dark .cap-meter-head em{background:#172033!important}
-</style>
-
-<style id="tv-fit-v1">
-/* وضع شاشة العرض: كل شيء داخل الشاشة بدون تمرير، الأحجام نسبة لارتفاع الشاشة */
-html body.tv-mode #app #professionalHomeGrid{grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:minmax(0,1.2fr) minmax(0,1fr)!important;grid-template-areas:none!important;gap:clamp(8px,1.2vh,14px)!important}
-html body.tv-mode #app #professionalHomeGrid>.pro-panel{grid-area:auto!important;min-width:0}
-html body.tv-mode #app #homeWeatherSummary{grid-column:1/4!important;grid-row:1!important}
-html body.tv-mode #app #homeCapacitySummary{grid-column:4/7!important;grid-row:1!important}
-html body.tv-mode #app #homeReadinessSummary{grid-column:1/3!important;grid-row:2!important}
-html body.tv-mode #app #homeLatestReportsSummary{grid-column:3/5!important;grid-row:2!important}
-html body.tv-mode #app #homeActiveOnlySummary{grid-column:5/7!important;grid-row:2!important}
-html body.tv-mode #app .pro-panel{padding:clamp(6px,1.1vh,12px) clamp(10px,1vw,18px)!important}
-html body.tv-mode #app .pro-panel-head{padding-bottom:.5vh!important;margin-bottom:.4vh!important}
-html body.tv-mode #app .pro-panel-head>div>span,html body.tv-mode #app .pro-panel-head button{display:none!important}
-html body.tv-mode #app .pro-panel-head b{font-size:clamp(15px,2.1vh,28px)!important}
-html body.tv-mode #app .executive-stats .exec-stat small{display:none!important}
-html body.tv-mode #app .executive-stats .exec-stat{padding:.8vh 1.2vw!important}
-html body.tv-mode #app .executive-stats .exec-stat .exec-icon{width:clamp(34px,5vh,60px)!important;height:clamp(34px,5vh,60px)!important;font-size:clamp(16px,2.4vh,28px)!important}
-html body.tv-mode #app .executive-stats b{font-size:clamp(24px,4.2vh,52px)!important}
-html body.tv-mode #app .executive-stats span{font-size:clamp(12px,1.8vh,22px)!important}
-html body.tv-mode #app .kpi-strip{height:clamp(66px,9.5vh,108px)!important}
-html body.tv-mode .wx-hero{padding:0 0 .8vh!important;gap:1vw!important;flex-wrap:nowrap!important}
-html body.tv-mode .wx-icon{font-size:clamp(32px,5.2vh,64px)!important}
-html body.tv-mode .wx-temp{font-size:clamp(28px,5.6vh,66px)!important}
-html body.tv-mode .wx-temp small{font-size:clamp(12px,1.8vh,22px)!important}
-html body.tv-mode .wx-label{font-size:clamp(12px,2vh,24px)!important;margin-top:.3vh!important}
-html body.tv-mode .wx-loc{display:none!important}
-html body.tv-mode .wx-chip{padding:.6vh .8vw!important;min-width:0!important}
-html body.tv-mode .wx-chip span{font-size:clamp(10px,1.4vh,17px)!important}
-html body.tv-mode .wx-chip b{font-size:clamp(12px,1.9vh,23px)!important}
-html body.tv-mode .weather-week{margin-top:.4vh!important;gap:.4vw!important}
-html body.tv-mode .wk-day{padding:.6vh .2vw!important;gap:.2vh!important}
-html body.tv-mode .wk-name{font-size:clamp(10px,1.45vh,17px)!important}
-html body.tv-mode .wk-ico{font-size:clamp(16px,2.8vh,34px)!important}
-html body.tv-mode .wk-max{font-size:clamp(12px,1.9vh,23px)!important}
-html body.tv-mode .wk-min{font-size:clamp(10px,1.5vh,18px)!important}
-html body.tv-mode .wk-rain{display:none!important}
-html body.tv-mode .weather-update-pro{display:none!important}
-html body.tv-mode .cap-meter{padding:.8vh 1vw!important;margin-bottom:.8vh!important;border-radius:12px!important}
-html body.tv-mode .cap-meter-head b{font-size:clamp(20px,3.6vh,44px)!important}
-html body.tv-mode .cap-meter-head span{font-size:clamp(11px,1.7vh,21px)!important}
-html body.tv-mode .cap-meter-head em{font-size:clamp(10px,1.5vh,18px)!important;padding:.3vh .8vw!important}
-html body.tv-mode .cap-meter-bar{height:clamp(6px,1vh,12px)!important;margin-top:.6vh!important}
-html body.tv-mode .cap-tiles{gap:.5vw!important}
-html body.tv-mode .cap-tile{padding:.6vh .6vw!important;gap:.2vh!important;border-radius:12px!important}
-html body.tv-mode .cap-tile-ico{display:none!important}
-html body.tv-mode .cap-tile span{font-size:clamp(10px,1.5vh,18px)!important}
-html body.tv-mode .cap-tile b{font-size:clamp(18px,3.4vh,42px)!important}
-html body.tv-mode .cap-tile small{font-size:clamp(10px,1.4vh,17px)!important}
-html body.tv-mode .cap-tile-bar{height:clamp(4px,.7vh,9px)!important}
-html body.tv-mode #homeOpenIncidents>*:nth-child(n+5),html body.tv-mode #homeActiveOnlyContent>*:nth-child(n+5){display:none!important}
-</style>
-
-<script>
-/* ضبط تلقائي لوضع الشاشة: إذا زاد محتوى لوحة عن مساحتها يُصغَّر حتى يظهر كاملًا */
-function tvFit(){
-  try{
-    if(!document.body.classList.contains('tv-mode')) return;
-    document.querySelectorAll('#professionalHomeGrid .pro-panel').forEach(function(p){
-      var c=p.querySelector('.pro-content'); if(!c) return;
-      var kids=Array.prototype.slice.call(c.children), z=1;
-      kids.forEach(function(k){k.style.zoom=1;});
-      while(c.scrollHeight>c.clientHeight+2 && z>0.5){
-        z-=0.05; kids.forEach(function(k){k.style.zoom=z;});
-      }
-    });
-  }catch(e){}
-}
-(function(){
-  var _r=window.renderHomeSummaries;
-  if(typeof _r==='function'){window.renderHomeSummaries=function(){var x=_r.apply(this,arguments);setTimeout(tvFit,50);return x;};}
-  window.addEventListener('resize',function(){setTimeout(tvFit,150);});
-  setInterval(tvFit,5000);
 })();
 </script>
