@@ -1692,7 +1692,7 @@ body.dark .readiness-line i{background:#26384b;}
   <div class="side-spacer"></div>
   <div id="verStamp" style="margin:6px 0 10px;font-size:11px;opacity:.55;text-align:center">الإصدار 15</div>
   <button class="side-link" onclick="toggleTvMode()"><span class="ico">🖥</span><span>وضع شاشة العرض</span></button>
-  <button class="side-link side-settings" onclick="toggleTheme()"><span class="ico">⚙</span><span>الإعدادات</span></button>
+  <button class="side-link side-settings" onclick="toggleTheme()" aria-label="تبديل النمط الليلي"><span class="ico">🌙</span><span>النمط الليلي</span></button>
   <button class="side-link side-logout" onclick="logout()"><span class="ico">⇥</span><span>تسجيل الخروج</span></button>
 </aside>
 
@@ -2619,6 +2619,12 @@ function toggleTheme(){
 
 
 function updateThemeButton(){
+
+  const sb=document.querySelector(".side-settings");
+  if(sb){
+    const d=document.body.classList.contains("dark");
+    sb.innerHTML='<span class="ico">'+(d?"☀️":"🌙")+'</span><span>'+(d?"النمط النهاري":"النمط الليلي")+'</span>';
+  }
 
   const button =
     document.getElementById("themeButton");
@@ -5296,6 +5302,135 @@ body.dark .capacity-icu,body.dark .capacity-er{background:#162b40!important;bord
 body.dark .capacity-icu-values>div,body.dark .capacity-er-values>div{background:#18283a!important;border-color:#30465a!important}
 body.dark .capacity-input{background:#0f172a!important;color:#f1f5f9!important;border-color:#38516d!important}
 @media(max-width:700px){.capacity-card{border-radius:16px!important}.capacity-facility{font-size:13px!important}}
+</style>
+<style id="dark-mode-complete">
+/* النمط الليلي الشامل: يعمل فقط عند body.dark */
+body.dark input,body.dark select,body.dark textarea{background:#0f172a!important;color:#f1f5f9!important;border-color:#334155!important}
+body.dark .side-settings{background:#ffffff12}
+body.dark .login-logo{background:hsl(212,45%,16%)!important;color:#e5ecf4!important}
+body.dark .login-error{background:hsl(0,39%,16%)!important;color:hsl(0,52%,78%)!important;border-color:#2c4258!important}
+body.dark .admin-badge{background:hsl(251,41%,16%)!important;color:hsl(263,49%,78%)!important}
+body.dark .theme-btn{background:hsl(210,18%,16%)!important;color:hsl(215,17%,78%)!important}
+body.dark .logout{background:hsl(0,42%,16%)!important;color:hsl(0,52%,78%)!important}
+body.dark .badge{background:hsl(145,36%,16%)!important;color:#e5ecf4!important}
+body.dark .badge.o{background:hsl(33,45%,16%)!important;color:#e5ecf4!important}
+body.dark .badge.p{background:hsl(251,41%,16%)!important;color:hsl(263,49%,78%)!important}
+body.dark .secondary{background:hsl(226,45%,16%)!important;color:hsl(224,53%,78%)!important}
+body.dark .danger{background:hsl(0,42%,16%)!important;color:hsl(0,52%,78%)!important}
+body.dark .neutral{background:hsl(210,18%,16%)!important;color:hsl(215,17%,78%)!important}
+body.dark .admin-button{background:hsl(251,41%,16%)!important;color:hsl(263,49%,78%)!important}
+body.dark .errorbox{background:hsl(0,39%,16%)!important;color:hsl(0,52%,78%)!important;border-color:#2c4258!important}
+body.dark th{background:hsl(210,18%,16%)!important;color:#e5ecf4!important}
+body.dark .delete-btn{background:hsl(0,42%,16%)!important;color:hsl(0,52%,78%)!important}
+body.dark .report-print{background:hsl(210,18%,16%)!important;color:hsl(215,17%,78%)!important}
+body.dark .badge.high{background:hsl(0,42%,16%)!important;color:hsl(0,52%,78%)!important}
+body.dark .escalation-box{background:hsl(250,45%,16%)!important;color:hsl(263,49%,78%)!important;border-color:#2c4258!important}
+body.dark .capacity-table th{background:hsl(210,18%,16%)!important;color:#e5ecf4!important}
+body.dark .capacity-status.green{background:hsl(145,36%,16%)!important;color:#e5ecf4!important}
+body.dark .capacity-status.orange{background:hsl(33,45%,16%)!important;color:#e5ecf4!important}
+body.dark .capacity-status.red{background:hsl(0,42%,16%)!important;color:#e5ecf4!important}
+body.dark .capacity-progress{background:hsl(220,6%,16%)!important;color:#e5ecf4!important}
+body.dark header{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .logo{background:hsl(209,45%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .badge.high{background:hsl(351,45%,16%)!important;color:hsl(0,46%,78%)!important;border-color:#2c4258!important}
+body.dark .badge.o{background:hsl(37,45%,16%)!important;color:hsl(32,70%,78%)!important;border-color:#2c4258!important}
+body.dark .dashboard-live{background:hsl(148,31%,16%)!important;color:hsl(154,53%,78%)!important;border-color:#2c4258!important}
+body.dark .total-stat .exec-icon{background:hsl(217,45%,16%)!important;color:hsl(221,58%,78%)!important}
+body.dark .ready-stat .exec-icon{background:hsl(143,28%,16%)!important;color:hsl(142,53%,78%)!important}
+body.dark .watch-stat .exec-icon{background:hsl(38,45%,16%)!important;color:hsl(32,66%,78%)!important}
+body.dark .critical-stat .exec-icon,body.dark .incident-stat .exec-icon{background:hsl(0,45%,16%)!important;color:hsl(0,51%,78%)!important}
+body.dark .quick-actions button:hover{background:hsl(206,35%,16%)!important;color:#e5ecf4!important}
+body.dark .count-pill{background:hsl(0,45%,16%)!important;color:hsl(0,51%,78%)!important}
+body.dark .update-request-panel{background:hsl(202,45%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .update-request-btn.capacity{background:hsl(209,45%,16%)!important;color:hsl(205,56%,78%)!important}
+body.dark .update-request-btn.weather{background:hsl(164,23%,16%)!important;color:hsl(169,62%,78%)!important}
+body.dark .update-request-btn.close{background:hsl(356,45%,16%)!important;color:hsl(345,58%,78%)!important}
+body.dark .request-banner{background:hsl(202,45%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .request-status.pending{background:hsl(35,45%,16%)!important;color:hsl(26,63%,78%)!important}
+body.dark .request-status.done{background:hsl(148,25%,16%)!important;color:hsl(168,62%,78%)!important}
+body.dark .request-status.closed{background:hsl(213,16%,16%)!important;color:hsl(215,11%,78%)!important}
+body.dark .request-response-row{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .jazan-hero-logo{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-card{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-item{background:hsl(204,20%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-icu,body.dark .capacity-er{background:hsl(210,45%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-er-badge{background:hsl(204,32%,16%)!important;color:hsl(211,44%,78%)!important;border-color:#2c4258!important}
+body.dark .capacity-icu-values>div,body.dark .capacity-er-values>div{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-progress{background:hsl(207,13%,16%)!important;color:#e5ecf4!important}
+body.dark .capacity-status.green{background:hsl(146,26%,16%)!important;color:hsl(150,53%,78%)!important;border-color:#2c4258!important}
+body.dark .capacity-status.orange{background:hsl(36,45%,16%)!important;color:hsl(33,70%,78%)!important;border-color:#2c4258!important}
+body.dark .capacity-status.red{background:hsl(0,45%,16%)!important;color:hsl(0,48%,78%)!important;border-color:#2c4258!important}
+body.dark .capacity-input{background:hsl(0,0%,16%)!important;color:hsl(211,51%,78%)!important;border-color:#2c4258!important}
+body.dark .report-brand-logo{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark #homeFacilitiesList .facility-mini-row span.green{background:hsl(144,23%,16%)!important;color:hsl(149,50%,78%)!important}
+body.dark #homeFacilitiesList .facility-mini-row span.orange{background:hsl(39,45%,16%)!important;color:hsl(36,70%,78%)!important}
+body.dark #homeFacilitiesList .facility-mini-row span.red{background:hsl(355,45%,16%)!important;color:hsl(355,46%,78%)!important}
+body.dark .readiness-line i{background:hsl(220,6%,16%)!important;color:#e5ecf4!important}
+body.dark .priority-facility{background:hsl(39,45%,16%)!important;color:hsl(39,70%,78%)!important}
+body.dark .facility-state-count{background:hsl(216,20%,16%)!important;color:#e5ecf4!important}
+body.dark .incoming-alert{background:hsl(0,45%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .incoming-alert-icon{background:hsl(355,45%,16%)!important;color:#e5ecf4!important}
+body.dark .incoming-open{background:hsl(203,25%,16%)!important;color:hsl(200,50%,78%)!important}
+body.dark .home-update-request-alert{background:hsl(164,26%,16%)!important;color:#e5ecf4!important}
+body.dark .home-update-request-alert .update-home-alert-icon{background:hsl(164,25%,16%)!important;color:#e5ecf4!important}
+body.dark .receive-incident-context{background:hsl(200,24%,16%)!important;color:hsl(198,48%,78%)!important}
+body.dark .modal-actions .secondary{background:hsl(200,15%,16%)!important;color:hsl(202,26%,78%)!important}
+body.dark .theme-btn.icon-only{background:hsl(207,21%,16%)!important;color:hsl(204,50%,78%)!important;border-color:#2c4258!important}
+body.dark .dashboard-live{background:hsl(164,23%,16%)!important;color:hsl(169,62%,78%)!important;border-color:#2c4258!important}
+body.dark .exec-stat{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .total-stat .exec-icon{background:hsl(206,36%,16%)!important;color:hsl(205,56%,78%)!important}
+body.dark .ready-stat .exec-icon{background:hsl(161,24%,16%)!important;color:hsl(166,60%,78%)!important}
+body.dark .watch-stat .exec-icon{background:hsl(34,45%,16%)!important;color:hsl(34,65%,78%)!important}
+body.dark .incident-stat .exec-icon{background:hsl(356,45%,16%)!important;color:hsl(357,50%,78%)!important}
+body.dark .home-panel{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .home-panel-head{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-bottom:1px solid #2c4258!important}
+body.dark .priority-high{background:hsl(354,45%,16%)!important;color:hsl(356,48%,78%)!important}
+body.dark .priority-mid{background:hsl(36,45%,16%)!important;color:hsl(33,70%,78%)!important}
+body.dark .mini-ready{background:hsl(160,24%,16%)!important;color:hsl(168,62%,78%)!important}
+body.dark .mini-watch{background:hsl(34,45%,16%)!important;color:hsl(32,70%,78%)!important}
+body.dark .mini-high{background:hsl(352,45%,16%)!important;color:hsl(355,47%,78%)!important}
+body.dark .weather-count{background:hsl(200,19%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-metric{background:hsl(200,27%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-bar{background:hsl(200,11%,16%)!important;color:#e5ecf4!important}
+body.dark .facility-status-legend{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .reference-hero .blue-header-actions button{background:hsl(0,0%,16%)!important;color:hsl(202,62%,78%)!important}
+body.dark .reference-stats .exec-stat{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .reference-stats .total-stat{background:hsl(210,45%,16%)!important;color:#e5ecf4!important}
+body.dark .reference-stats .ready-stat{background:hsl(153,45%,16%)!important;color:#e5ecf4!important}
+body.dark .reference-stats .incident-stat{background:hsl(0,45%,16%)!important;color:#e5ecf4!important}
+body.dark .pro-panel{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .capacity-three div{background:hsl(200,27%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .map-silhouette{background:hsl(200,33%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .pro-command-alerts .command-alert-item{background:hsl(210,45%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .pro-command-alerts .tag.red{background:hsl(355,45%,16%)!important;color:hsl(355,46%,78%)!important}
+body.dark .pro-command-alerts .tag.orange{background:hsl(39,45%,16%)!important;color:hsl(36,70%,78%)!important}
+body.dark .pro-command-alerts .tag.blue{background:hsl(201,31%,16%)!important;color:hsl(201,59%,78%)!important}
+body.dark .panel-live{background:hsl(152,28%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .reference-hero .jazan-hero-logo{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .reference-hero .blue-header-actions button,body.dark .reference-hero .blue-header-actions .blue-logout{background:hsl(0,0%,16%)!important;color:hsl(202,62%,78%)!important}
+body.dark .reference-hero .blue-header-actions.notifications-only button#blueNotificationButton{background:hsl(0,0%,16%)!important;color:hsl(202,62%,78%)!important}
+body.dark .reference-hero .blue-header-actions.notifications-only #blueNotificationButton{background:hsl(0,0%,16%)!important;color:hsl(202,62%,78%)!important}
+body.dark .reference-hero .hero-identity-divider{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .pro-panel{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .pro-status.red{background:hsl(0,42%,16%)!important;color:hsl(4,54%,78%)!important}
+body.dark .pro-status.orange{background:hsl(40,45%,16%)!important;color:hsl(34,70%,78%)!important}
+body.dark .pro-status.closed{background:hsl(148,18%,16%)!important;color:hsl(154,46%,78%)!important}
+body.dark .pro-bar{background:hsl(206,12%,16%)!important;color:#e5ecf4!important}
+body.dark .capacity-ring i{background:hsl(0,0%,16%)!important;color:#e5ecf4!important}
+body.dark .history-incident-icon{background:hsl(201,29%,16%)!important;color:#e5ecf4!important}
+body.dark .history-status.closed{background:hsl(213,16%,16%)!important;color:hsl(215,11%,78%)!important}
+body.dark .history-status.watch{background:hsl(36,45%,16%)!important;color:hsl(26,63%,78%)!important}
+body.dark .history-status.critical{background:hsl(0,45%,16%)!important;color:hsl(0,51%,78%)!important}
+body.dark .history-details-btn{background:hsl(200,36%,16%)!important;color:hsl(201,63%,78%)!important;border-color:#2c4258!important}
+body.dark .history-details-btn:hover{background:hsl(198,34%,16%)!important;color:#e5ecf4!important}
+body.dark .history-delete-btn{background:hsl(354,45%,16%)!important;color:hsl(345,58%,78%)!important;border-color:#2c4258!important}
+body.dark .kpi-card{background:hsl(0,0%,16%)!important;color:#e5ecf4!important;border-color:#2c4258!important}
+body.dark .kpi-ico{background:hsl(205,31%,16%)!important;color:hsl(202,61%,78%)!important}
+body.dark .kpi-week .kpi-ico{background:hsl(38,45%,16%)!important;color:hsl(32,66%,78%)!important}
+body.dark .kpi-top .kpi-ico{background:hsl(0,45%,16%)!important;color:hsl(0,51%,78%)!important}
+body.dark .kpi-type-row i{background:hsl(205,21%,16%)!important;color:#e5ecf4!important}
+body.dark .req-go{background:hsl(0,0%,16%)!important;color:hsl(4,54%,78%)!important}
+body.dark .increq-go{background:hsl(0,0%,16%)!important;color:hsl(4,54%,78%)!important}
 </style>
 </head>
 
