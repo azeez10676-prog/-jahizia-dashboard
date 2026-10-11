@@ -3620,14 +3620,15 @@ function renderHomeSummaries(){
   let icuTotal=0,icuCur=0; facilities.forEach(f=>{const r=byType.get(`${f}|أسرة العناية المركزة`);icuTotal+=Number((typeof ICU_TOTALS!=='undefined'&&ICU_TOTALS[f])??r?.total_capacity??0);icuCur+=Number(r?.current_count||0);});
   const icuAvail=Math.max(0,icuTotal-icuCur), icuPct=icuTotal?Math.round(icuAvail/icuTotal*100):0, erOccPct=erTotal?100-pct:0;
   const capTile=(cls,ico,label,val,p)=>`<div class="cap-tile ${cls}"><div class="cap-tile-ico">${ico}</div><span>${label}</span><b>${Number(val).toLocaleString('en-US')}</b>${p===null?'<small>على مستوى المنطقة</small>':`<div class="cap-tile-bar"><i style="width:${p}%"></i></div><small>${p}٪</small>`}</div>`;
-  homeCap.innerHTML=`<div class="cap-tiles">${capTile('blue','🛏️','إجمالي أسرة الطوارئ',erTotal,null)}${capTile('green','✅','المتاحة',erAvailable,pct)}${capTile('orange','🧍','المشغولة',erCurrent,erOccPct)}${capTile('purple','🏥','عناية مركزة متاحة',icuAvail,icuPct)}</div>`;
+  const capCls=pct>=50?'green':pct>=20?'orange':'red', capLbl=pct>=50?'جاهزية جيدة':pct>=20?'تحتاج متابعة':'متابعة عالية';
+  homeCap.innerHTML=`<div class="cap-meter ${capCls}"><div class="cap-meter-head"><span>نسبة توفر أسرة الطوارئ</span><b>${pct}٪</b><em>${capLbl}</em></div><div class="cap-meter-bar"><i style="width:${pct}%"></i></div></div><div class="cap-tiles">${capTile('blue','🛏️','إجمالي الطوارئ',erTotal,null)}${capTile('green','✅','المتاحة',erAvailable,pct)}${capTile('orange','🧍','المشغولة',erCurrent,erOccPct)}${capTile('purple','🏥','عناية مركزة متاحة',icuAvail,icuPct)}</div>`;
 
   const rw=window.regionalWeatherState;
   const weekHtml=(rw&&rw.days&&rw.days.length)?'<div class="weather-week" aria-label="توقعات الأسبوع">'+rw.days.map(function(d,i){
     var nm=i===0?'اليوم':i===1?'غدًا':new Date(d.date+'T12:00:00').toLocaleDateString('ar-SA',{weekday:'long'});
     return '<div class="wk-day'+(i===0?' today':'')+'" title="'+escapeHtml(d.label)+'"><span class="wk-name">'+escapeHtml(nm)+'</span><i class="wk-ico">'+d.icon+'</i><b class="wk-max">'+d.max+'°</b><em class="wk-min">'+d.min+'°</em>'+(d.rain>=20?'<small class="wk-rain">💧 '+d.rain+'%</small>':'')+'</div>';
   }).join('')+'</div>':'';
-  homeWeather.innerHTML=rw?`<div class="regional-weather"><div class="weather-icon-pro">${rw.icon}</div><div><b>${escapeHtml(rw.label)}</b><span>منطقة جازان • ${rw.temp}°م • المحسوسة ${rw.feels}°م</span><small>الرطوبة ${rw.humidity}% • الرياح ${rw.wind} كم/س</small></div></div>${weekHtml}<div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
+  homeWeather.innerHTML=rw?`<div class="wx-hero"><div class="wx-main"><div class="wx-icon">${rw.icon}</div><div><div class="wx-temp">${rw.temp}°<small>م</small></div><div class="wx-label">${escapeHtml(rw.label)}</div><div class="wx-loc">منطقة جازان</div></div></div><div class="wx-chips"><div class="wx-chip"><span>المحسوسة</span><b>${rw.feels}°</b></div><div class="wx-chip"><span>الرطوبة</span><b>${rw.humidity}%</b></div><div class="wx-chip"><span>الرياح</span><b>${rw.wind} كم/س</b></div></div></div>${weekHtml}<div class="weather-update-pro">آخر تحديث: ${rw.updated}</div>`:'<div class="pro-empty">جاري تحديث بيانات طقس منطقة جازان...</div>';
 
   if(homeActiveOnly){
     const activeOnly=active.slice(0,5);
@@ -8281,4 +8282,44 @@ html body:not(.tv-mode) #app .professional-home-grid .pro-latest .pro-content,ht
 .cap-tile-bar{height:6px}
 .wk-day{flex:1 0 58px;padding:8px 4px;border-radius:12px}
 .wk-ico{font-size:21px}
+
+/* ===== الرئيسية: حذف لوحة المنشآت، وصف الطقس والطاقة في الأعلى ===== */
+#homeFacilitiesSummary{display:none!important}
+html body:not(.tv-mode) #app #professionalHomeGrid{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-areas:none!important;gap:16px!important;align-items:stretch!important}
+html body:not(.tv-mode) #app #professionalHomeGrid .pro-panel{grid-area:auto!important;grid-column:span 2!important;margin:0!important}
+html body:not(.tv-mode) #app #homeWeatherSummary{grid-column:span 3!important;order:1!important}
+html body:not(.tv-mode) #app #homeCapacitySummary{grid-column:span 3!important;order:2!important}
+html body:not(.tv-mode) #app #homeReadinessSummary{order:3!important}
+html body:not(.tv-mode) #app #homeLatestReportsSummary{order:4!important}
+html body:not(.tv-mode) #app #homeActiveOnlySummary{order:5!important}
+@media(max-width:820px){html body:not(.tv-mode) #app #professionalHomeGrid{grid-template-columns:1fr!important}html body:not(.tv-mode) #app #professionalHomeGrid .pro-panel{grid-column:1/-1!important}}
+.wx-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:4px 2px 14px}
+.wx-main{display:flex;align-items:center;gap:14px}
+.wx-icon{font-size:58px;line-height:1}
+.wx-temp{font-size:48px;font-weight:800;line-height:1;color:var(--text)}
+.wx-temp small{font-size:18px;font-weight:700;margin-inline-start:3px;color:var(--muted)}
+.wx-label{font-size:16px;font-weight:800;margin-top:5px;color:var(--text)}
+.wx-loc{font-size:12px;color:var(--muted);margin-top:1px}
+.wx-chips{display:flex;gap:8px}
+.wx-chip{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:74px;padding:9px 10px;border-radius:14px;background:#f4f8fb;border:1px solid #dbe7f0}
+.wx-chip span{font-size:11.5px;color:#5b7388;font-weight:700}
+.wx-chip b{font-size:15px;color:#0b2744}
+.weather-week{display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;overflow:visible!important;margin-top:4px}
+.wk-day{min-width:0;flex:none}
+.wk-name{font-size:11px}
+.cap-meter{padding:12px 14px;border-radius:16px;margin-bottom:12px;border:1px solid;background:#f4f8fb}
+.cap-meter-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.cap-meter-head span{font-size:12.5px;font-weight:700;color:#475b6e}
+.cap-meter-head b{font-size:26px;font-weight:800;line-height:1}
+.cap-meter-head em{font-style:normal;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:99px;background:#fff}
+.cap-meter-bar{height:10px;border-radius:99px;background:rgba(0,0,0,.08);margin-top:10px;overflow:hidden}
+.cap-meter-bar i{display:block;height:100%;border-radius:99px;background:currentColor}
+.cap-meter.green{color:#16a34a;border-color:#bbf7d0;background:#f0fdf4}
+.cap-meter.orange{color:#d97706;border-color:#fed7aa;background:#fff7ed}
+.cap-meter.red{color:#dc2626;border-color:#fecaca;background:#fef2f2}
+.cap-tiles{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+body.dark .wx-chip,body.dark .cap-meter{background:#0f172a!important;border-color:#2c4258!important}
+body.dark .wx-chip span,body.dark .cap-meter-head span{color:#94a3b8!important}
+body.dark .wx-chip b{color:#f1f5f9!important}
+body.dark .cap-meter-head em{background:#172033!important}
 </style>
