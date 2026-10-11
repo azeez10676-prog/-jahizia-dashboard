@@ -8323,3 +8323,77 @@ body.dark .wx-chip span,body.dark .cap-meter-head span{color:#94a3b8!important}
 body.dark .wx-chip b{color:#f1f5f9!important}
 body.dark .cap-meter-head em{background:#172033!important}
 </style>
+
+<style id="tv-fit-v1">
+/* وضع شاشة العرض: كل شيء داخل الشاشة بدون تمرير، الأحجام نسبة لارتفاع الشاشة */
+html body.tv-mode #app #professionalHomeGrid{grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-template-rows:minmax(0,1.2fr) minmax(0,1fr)!important;grid-template-areas:none!important;gap:clamp(8px,1.2vh,14px)!important}
+html body.tv-mode #app #professionalHomeGrid>.pro-panel{grid-area:auto!important;min-width:0}
+html body.tv-mode #app #homeWeatherSummary{grid-column:1/4!important;grid-row:1!important}
+html body.tv-mode #app #homeCapacitySummary{grid-column:4/7!important;grid-row:1!important}
+html body.tv-mode #app #homeReadinessSummary{grid-column:1/3!important;grid-row:2!important}
+html body.tv-mode #app #homeLatestReportsSummary{grid-column:3/5!important;grid-row:2!important}
+html body.tv-mode #app #homeActiveOnlySummary{grid-column:5/7!important;grid-row:2!important}
+html body.tv-mode #app .pro-panel{padding:clamp(6px,1.1vh,12px) clamp(10px,1vw,18px)!important}
+html body.tv-mode #app .pro-panel-head{padding-bottom:.5vh!important;margin-bottom:.4vh!important}
+html body.tv-mode #app .pro-panel-head>div>span,html body.tv-mode #app .pro-panel-head button{display:none!important}
+html body.tv-mode #app .pro-panel-head b{font-size:clamp(15px,2.1vh,28px)!important}
+html body.tv-mode #app .executive-stats .exec-stat small{display:none!important}
+html body.tv-mode #app .executive-stats .exec-stat{padding:.8vh 1.2vw!important}
+html body.tv-mode #app .executive-stats .exec-stat .exec-icon{width:clamp(34px,5vh,60px)!important;height:clamp(34px,5vh,60px)!important;font-size:clamp(16px,2.4vh,28px)!important}
+html body.tv-mode #app .executive-stats b{font-size:clamp(24px,4.2vh,52px)!important}
+html body.tv-mode #app .executive-stats span{font-size:clamp(12px,1.8vh,22px)!important}
+html body.tv-mode #app .kpi-strip{height:clamp(66px,9.5vh,108px)!important}
+html body.tv-mode .wx-hero{padding:0 0 .8vh!important;gap:1vw!important;flex-wrap:nowrap!important}
+html body.tv-mode .wx-icon{font-size:clamp(32px,5.2vh,64px)!important}
+html body.tv-mode .wx-temp{font-size:clamp(28px,5.6vh,66px)!important}
+html body.tv-mode .wx-temp small{font-size:clamp(12px,1.8vh,22px)!important}
+html body.tv-mode .wx-label{font-size:clamp(12px,2vh,24px)!important;margin-top:.3vh!important}
+html body.tv-mode .wx-loc{display:none!important}
+html body.tv-mode .wx-chip{padding:.6vh .8vw!important;min-width:0!important}
+html body.tv-mode .wx-chip span{font-size:clamp(10px,1.4vh,17px)!important}
+html body.tv-mode .wx-chip b{font-size:clamp(12px,1.9vh,23px)!important}
+html body.tv-mode .weather-week{margin-top:.4vh!important;gap:.4vw!important}
+html body.tv-mode .wk-day{padding:.6vh .2vw!important;gap:.2vh!important}
+html body.tv-mode .wk-name{font-size:clamp(10px,1.45vh,17px)!important}
+html body.tv-mode .wk-ico{font-size:clamp(16px,2.8vh,34px)!important}
+html body.tv-mode .wk-max{font-size:clamp(12px,1.9vh,23px)!important}
+html body.tv-mode .wk-min{font-size:clamp(10px,1.5vh,18px)!important}
+html body.tv-mode .wk-rain{display:none!important}
+html body.tv-mode .weather-update-pro{display:none!important}
+html body.tv-mode .cap-meter{padding:.8vh 1vw!important;margin-bottom:.8vh!important;border-radius:12px!important}
+html body.tv-mode .cap-meter-head b{font-size:clamp(20px,3.6vh,44px)!important}
+html body.tv-mode .cap-meter-head span{font-size:clamp(11px,1.7vh,21px)!important}
+html body.tv-mode .cap-meter-head em{font-size:clamp(10px,1.5vh,18px)!important;padding:.3vh .8vw!important}
+html body.tv-mode .cap-meter-bar{height:clamp(6px,1vh,12px)!important;margin-top:.6vh!important}
+html body.tv-mode .cap-tiles{gap:.5vw!important}
+html body.tv-mode .cap-tile{padding:.6vh .6vw!important;gap:.2vh!important;border-radius:12px!important}
+html body.tv-mode .cap-tile-ico{display:none!important}
+html body.tv-mode .cap-tile span{font-size:clamp(10px,1.5vh,18px)!important}
+html body.tv-mode .cap-tile b{font-size:clamp(18px,3.4vh,42px)!important}
+html body.tv-mode .cap-tile small{font-size:clamp(10px,1.4vh,17px)!important}
+html body.tv-mode .cap-tile-bar{height:clamp(4px,.7vh,9px)!important}
+html body.tv-mode #homeOpenIncidents>*:nth-child(n+5),html body.tv-mode #homeActiveOnlyContent>*:nth-child(n+5){display:none!important}
+</style>
+
+<script>
+/* ضبط تلقائي لوضع الشاشة: إذا زاد محتوى لوحة عن مساحتها يُصغَّر حتى يظهر كاملًا */
+function tvFit(){
+  try{
+    if(!document.body.classList.contains('tv-mode')) return;
+    document.querySelectorAll('#professionalHomeGrid .pro-panel').forEach(function(p){
+      var c=p.querySelector('.pro-content'); if(!c) return;
+      var kids=Array.prototype.slice.call(c.children), z=1;
+      kids.forEach(function(k){k.style.zoom=1;});
+      while(c.scrollHeight>c.clientHeight+2 && z>0.5){
+        z-=0.05; kids.forEach(function(k){k.style.zoom=z;});
+      }
+    });
+  }catch(e){}
+}
+(function(){
+  var _r=window.renderHomeSummaries;
+  if(typeof _r==='function'){window.renderHomeSummaries=function(){var x=_r.apply(this,arguments);setTimeout(tvFit,50);return x;};}
+  window.addEventListener('resize',function(){setTimeout(tvFit,150);});
+  setInterval(tvFit,5000);
+})();
+</script>
