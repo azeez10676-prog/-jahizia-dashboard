@@ -8243,4 +8243,42 @@ body.dark .wk-day{background:#0f172a!important;border-color:#2c4258!important}
 body.dark .wk-day.today{background:#12304a!important;border-color:#0ea5e9!important}
 body.dark .wk-name,body.dark .wk-min{color:#94a3b8!important}
 body.dark .wk-max{color:#f1f5f9!important}
+
+/* تصغير بطاقات الطاقة الاستيعابية وإظهار محتوى لوحات الرئيسية كاملًا */
+#capacityPage .capacity-grid{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))!important;gap:12px!important}
+#capacityPage .capacity-card{padding:13px!important;border-radius:18px!important;box-shadow:0 6px 18px rgba(11,39,68,.07)!important}
+#capacityPage .capacity-card:before{height:4px!important}
+body.dark #capacityPage .capacity-card{background:var(--card)!important}
+#capacityPage .capacity-head{margin:4px 0 10px!important}
+#capacityPage .capacity-facility{font-size:15px!important}
+#capacityPage .capacity-resource{font-size:11px!important}
+#capacityPage .capacity-status{font-size:11px!important;padding:5px 9px!important}
+#capacityPage .capacity-items{gap:8px!important}
+#capacityPage .capacity-item{padding:8px 10px!important;gap:3px!important;border-radius:12px!important}
+#capacityPage .capacity-item>span{font-size:11.5px!important}
+#capacityPage .capacity-item>strong{font-size:18px!important}
+#capacityPage .capacity-item>strong b{font-size:20px}
+#capacityPage .capacity-icu,#capacityPage .capacity-er{padding:10px!important;border-radius:14px!important}
+#capacityPage .capacity-icu-head,#capacityPage .capacity-er-head{font-size:13px!important;margin-bottom:8px!important}
+#capacityPage .capacity-er-badge{font-size:10px!important;padding:3px 8px!important}
+#capacityPage .capacity-icu-values,#capacityPage .capacity-er-values{gap:6px!important}
+#capacityPage .capacity-icu-values>div,#capacityPage .capacity-er-values>div{padding:6px 4px!important;min-height:50px!important;border-radius:10px!important}
+#capacityPage .capacity-icu-values small,#capacityPage .capacity-er-values small{font-size:10px!important}
+#capacityPage .capacity-icu-values b,#capacityPage .capacity-er-values b{font-size:17px!important}
+#capacityPage .capacity-input{font-size:16px!important;padding:6px 4px!important;border-radius:10px!important}
+#capacityPage .capacity-progress{height:9px!important;margin-top:9px!important}
+#capacityPage .capacity-icu-status{font-size:11.5px!important;margin-top:7px!important}
+#capacityPage .capacity-card .primary{margin-top:10px!important;padding:9px!important;font-size:13px!important}
+#capacityPage .capacity-note{font-size:10.5px!important;margin-top:8px!important}
+html body:not(.tv-mode) #app .professional-home-grid .pro-panel{height:auto!important;min-height:0!important;overflow:visible!important}
+html body:not(.tv-mode) #app .professional-home-grid .pro-content{height:auto!important;max-height:none!important;overflow:visible!important}
+html body:not(.tv-mode) #app .professional-home-grid .pro-latest .pro-content,html body:not(.tv-mode) #app .professional-home-grid .pro-active-final .pro-content{max-height:300px!important;overflow:auto!important}
+.cap-tiles{gap:8px}
+.cap-tile{padding:9px 11px;gap:3px;border-radius:14px}
+.cap-tile-ico{width:30px;height:30px;font-size:15px;border-radius:10px}
+.cap-tile span{font-size:11.5px}
+.cap-tile b{font-size:22px}
+.cap-tile-bar{height:6px}
+.wk-day{flex:1 0 58px;padding:8px 4px;border-radius:12px}
+.wk-ico{font-size:21px}
 </style>
